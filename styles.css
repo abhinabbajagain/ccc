@@ -9,13 +9,13 @@
   --bg: #eef1f5;
   --panel: #ffffff;
   --panel2: #f4f6f9;
-  --ink: #17202b;
-  --muted: #5d6b7c;
+  --ink: #172a3a;
+  --muted: #536579;
   --line: #dce2ea;
   --line-soft: #e8edf3;
-  --accent: #1f5fa8;
-  --accent-deep: #0d2a4a;
-  --accent-soft: #e8f0fa;
+  --accent: #2868ad;
+  --accent-deep: #123b63;
+  --accent-soft: #e8f2fc;
   --good: #1e7145;
   --hi: #ffe58a;              /* search highlight */
   --shadow: 0 1px 2px rgba(16, 24, 40, .06), 0 8px 24px -12px rgba(16, 24, 40, .18);
@@ -28,13 +28,13 @@ html[data-theme="dark"] {
   --bg: #0e1218;
   --panel: #151b24;
   --panel2: #1b2330;
-  --ink: #e7ebf1;
-  --muted: #94a1b3;
+  --ink: #edf4fc;
+  --muted: #a8b8cc;
   --line: #273140;
   --line-soft: #202a38;
-  --accent: #7fb2ff;
-  --accent-deep: #0d2a4a;
-  --accent-soft: #182638;
+  --accent: #8ec5ff;
+  --accent-deep: #d9eaff;
+  --accent-soft: #1a2d43;
   --good: #58c98d;
   --hi: #8a6d1a;
   --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 10px 28px -12px rgba(0, 0, 0, .6);
@@ -525,6 +525,29 @@ html[data-theme="dark"] .src-techno .examsec { background: #141d2b; }
 html[data-theme="dark"] .src-techno .diagram { background: #10161f; }
 html[data-theme="dark"] .src-techno .revision { background: #13221b; border-color: #2c5a35; }
 html[data-theme="dark"] .src-techno code.hyp { background: #242e3d; color: #9fd3ff; }
+
+/* Keep the wrapped guides readable and visually connected to the library shell. */
+html[data-theme="light"] .src-dbms,
+html[data-theme="light"] .src-sad,
+html[data-theme="light"] .src-techno {
+  color: #243447;
+}
+html[data-theme="dark"] .src-dbms,
+html[data-theme="dark"] .src-sad,
+html[data-theme="dark"] .src-techno {
+  color: #e7eef8;
+}
+html[data-theme="dark"] .src-dbms p,
+html[data-theme="dark"] .src-dbms li,
+html[data-theme="dark"] .src-dbms td,
+html[data-theme="dark"] .src-sad p,
+html[data-theme="dark"] .src-sad li,
+html[data-theme="dark"] .src-sad td,
+html[data-theme="dark"] .src-techno p,
+html[data-theme="dark"] .src-techno li,
+html[data-theme="dark"] .src-techno td {
+  color: inherit;
+}
 
 /* --------------------------------------------------------------------------
    Responsive
