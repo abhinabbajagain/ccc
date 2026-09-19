@@ -529,13 +529,35 @@ html[data-theme="dark"] .src-techno code.hyp { background: #242e3d; color: #9fd3
 /* Keep the wrapped guides readable and visually connected to the library shell. */
 html[data-theme="light"] .src-dbms,
 html[data-theme="light"] .src-sad,
-html[data-theme="light"] .src-techno {
+html[data-theme="light"] .src-techno,
+html[data-theme="light"] .src-ai {
   color: #243447;
 }
 html[data-theme="dark"] .src-dbms,
 html[data-theme="dark"] .src-sad,
-html[data-theme="dark"] .src-techno {
+html[data-theme="dark"] .src-techno,
+html[data-theme="dark"] .src-ai,
+html[data-theme="dark"] .src-compiler-design {
   color: #e7eef8;
+}
+html[data-theme="light"] .src-ai {
+  --ink: #172a3a;
+  --muted: #536579;
+  --steel: #2868ad;
+  --steel-soft: #e8f2fc;
+}
+html[data-theme="dark"] .src-ai {
+  --ink: #edf4fc;
+  --muted: #a8b8cc;
+  --steel: #8ec5ff;
+  --steel-soft: #1a2d43;
+}
+html[data-theme="light"] .src-compiler-design,
+html[data-theme="dark"] .src-compiler-design {
+  --text: #e7eef8;
+  --muted: #a8b8cc;
+  --accent: #8ec5ff;
+  --accent2: #f5c867;
 }
 html[data-theme="dark"] .src-dbms p,
 html[data-theme="dark"] .src-dbms li,
@@ -545,7 +567,10 @@ html[data-theme="dark"] .src-sad li,
 html[data-theme="dark"] .src-sad td,
 html[data-theme="dark"] .src-techno p,
 html[data-theme="dark"] .src-techno li,
-html[data-theme="dark"] .src-techno td {
+html[data-theme="dark"] .src-techno td,
+html[data-theme="dark"] .src-ai p,
+html[data-theme="dark"] .src-ai li,
+html[data-theme="dark"] .src-ai td {
   color: inherit;
 }
 
