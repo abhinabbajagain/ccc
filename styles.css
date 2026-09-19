@@ -592,6 +592,149 @@ html[data-theme="dark"] .src-ai td {
 }
 
 /* --------------------------------------------------------------------------
+   Dark theme: quiet charcoal surfaces and paper-backed diagrams
+   -------------------------------------------------------------------------- */
+html[data-theme="dark"] .src-dbms,
+html[data-theme="dark"] .src-sad,
+html[data-theme="dark"] .src-technopreneurship,
+html[data-theme="dark"] .src-ai,
+html[data-theme="dark"] .src-compiler-design {
+  background: #111820;
+  color: #e8eef5;
+}
+
+html[data-theme="dark"] .src-dbms {
+  --navy: #1d496e;
+  --blue: #8fc8f7;
+  --lightblue: #202c37;
+  --bg: #111820;
+  --border: #344452;
+  --gray: #a9b7c5;
+}
+html[data-theme="dark"] .src-dbms .wrap,
+html[data-theme="dark"] .src-dbms table td,
+html[data-theme="dark"] .src-dbms tr:nth-child(even) td {
+  background: #18222c;
+}
+html[data-theme="dark"] .src-dbms th {
+  background: #234a6d;
+  color: #f2f7fc;
+}
+html[data-theme="dark"] .src-dbms .diagram,
+html[data-theme="dark"] .src-dbms .diagram svg,
+html[data-theme="dark"] .src-dbms .qa {
+  background: #f5f7fa;
+  color: #1d2b38;
+  border-color: #c8d3dd;
+}
+html[data-theme="dark"] .src-dbms h1,
+html[data-theme="dark"] .src-dbms h2,
+html[data-theme="dark"] .src-dbms h3,
+html[data-theme="dark"] .src-dbms h4 {
+  color: #b8dcfa;
+}
+html[data-theme="dark"] .src-dbms .chapter h1 {
+  background: #1d496e;
+  color: #f7fbff;
+}
+
+html[data-theme="dark"] .src-sad {
+  --bg: #111820;
+  --panel: #18222c;
+  --ink: #e8eef5;
+  --muted: #a9b7c5;
+  --line: #344452;
+  --def: #1d3547;
+  --warn: #40262a;
+  --ex: #1c392c;
+  --formula: #40351f;
+}
+html[data-theme="dark"] .src-sad table td,
+html[data-theme="dark"] .src-sad .qbank details {
+  background: #18222c;
+}
+html[data-theme="dark"] .src-sad th {
+  background: #234a6d;
+  color: #f2f7fc;
+}
+html[data-theme="dark"] .src-sad svg {
+  background: #f5f7fa;
+  color: #1d2b38;
+  border-color: #c8d3dd;
+}
+
+html[data-theme="dark"] .src-technopreneurship {
+  --navy: #1d496e;
+  --blue: #8fc8f7;
+  --bg: #111820;
+  --card: #18222c;
+  --border: #344452;
+  --text: #e8eef5;
+  --muted: #a9b7c5;
+  --good: #83d0a1;
+  --warn: #f0b66b;
+}
+html[data-theme="dark"] .src-technopreneurship section.chapter,
+html[data-theme="dark"] .src-technopreneurship table td,
+html[data-theme="dark"] .src-technopreneurship tr:nth-child(even) td {
+  background: #18222c;
+}
+html[data-theme="dark"] .src-technopreneurship table th {
+  background: #234a6d;
+  color: #f2f7fc;
+}
+html[data-theme="dark"] .src-technopreneurship .diagram,
+html[data-theme="dark"] .src-technopreneurship .diagram svg {
+  background: #f5f7fa;
+  color: #1d2b38;
+  border-color: #c8d3dd;
+}
+html[data-theme="dark"] .src-technopreneurship h1.doctitle,
+html[data-theme="dark"] .src-technopreneurship h2.chaptitle,
+html[data-theme="dark"] .src-technopreneurship h4 {
+  color: #dbeeff;
+}
+html[data-theme="dark"] .src-technopreneurship h3 {
+  color: #9bd0f6;
+}
+
+html[data-theme="dark"] .src-ai {
+  --ink: #e8eef5;
+  --paper: #111820;
+  --panel: #18222c;
+  --rule: #344452;
+  --steel: #9bd0f6;
+  --steel-soft: #213548;
+  --amber: #f0c477;
+  --amber-soft: #40351f;
+  --moss: #8fd0a5;
+  --moss-soft: #1d392b;
+  --rose: #f0a3ad;
+  --rose-soft: #40272d;
+  --muted: #a9b7c5;
+}
+html[data-theme="dark"] .src-ai figure svg {
+  background: #f5f7fa;
+  border-color: #c8d3dd;
+}
+html[data-theme="dark"] .src-ai .tablewrap,
+html[data-theme="dark"] .src-ai table {
+  background: #18222c;
+}
+
+/* Compiler Design is already dark, but its diagrams stay on a calm neutral canvas. */
+html[data-theme="dark"] .src-compiler-design {
+  --bg: #111820;
+  --panel: #18222c;
+  --panel2: #202d39;
+  --text: #e8eef5;
+  --muted: #a9b7c5;
+  --accent: #9bd0f6;
+  --accent2: #f0c477;
+  --border: #344452;
+}
+
+/* --------------------------------------------------------------------------
    Responsive
    -------------------------------------------------------------------------- */
 @media (max-width: 1100px) {
