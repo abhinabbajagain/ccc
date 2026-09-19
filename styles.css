@@ -484,6 +484,15 @@ html[data-theme="dark"] .src-dbms .box.tip { background: #241c0d; }
 html[data-theme="dark"] .src-dbms .box.mistake { background: #281518; }
 html[data-theme="dark"] .src-dbms .revision { background: #1d1708; }
 html[data-theme="dark"] .src-dbms code { background: #1a2436; color: #9fd3ff; }
+html[data-theme="dark"] .src-dbms h1,
+html[data-theme="dark"] .src-dbms h2,
+html[data-theme="dark"] .src-dbms h3,
+html[data-theme="dark"] .src-dbms h4 {
+  color: #9acbff;
+}
+html[data-theme="dark"] .src-dbms .chapter h1 {
+  color: #ffffff;
+}
 
 html[data-theme="dark"] .src-sad {
   --bg: #0f141d;
@@ -504,7 +513,7 @@ html[data-theme="dark"] .src-sad .cov-yes { color: #58c98d; }
 html[data-theme="dark"] .src-sad .badge.sq { background: #d98a5a; }
 html[data-theme="dark"] .src-sad .badge.lq { background: #b06ad0; }
 
-html[data-theme="dark"] .src-techno {
+html[data-theme="dark"] .src-technopreneurship {
   --navy: #123152;
   --blue: #6ea8e8;
   --accent: #e8a33d;
@@ -516,26 +525,34 @@ html[data-theme="dark"] .src-techno {
   --good: #4fbf87;
   --warn: #d98a4a;
 }
-html[data-theme="dark"] .src-techno tr:nth-child(even) td { background: #131a28; }
-html[data-theme="dark"] .src-techno .checklist { background: #141d2b; }
-html[data-theme="dark"] .src-techno .defbox { background: #13221b; }
-html[data-theme="dark"] .src-techno .worked { background: #1d1708; border-color: #3d3116; }
-html[data-theme="dark"] .src-techno .mistake { background: #281518; }
-html[data-theme="dark"] .src-techno .examsec { background: #141d2b; }
-html[data-theme="dark"] .src-techno .diagram { background: #10161f; }
-html[data-theme="dark"] .src-techno .revision { background: #13221b; border-color: #2c5a35; }
-html[data-theme="dark"] .src-techno code.hyp { background: #242e3d; color: #9fd3ff; }
+html[data-theme="dark"] .src-technopreneurship tr:nth-child(even) td { background: #131a28; }
+html[data-theme="dark"] .src-technopreneurship .checklist { background: #141d2b; }
+html[data-theme="dark"] .src-technopreneurship .defbox { background: #13221b; }
+html[data-theme="dark"] .src-technopreneurship .worked { background: #1d1708; border-color: #3d3116; }
+html[data-theme="dark"] .src-technopreneurship .mistake { background: #281518; }
+html[data-theme="dark"] .src-technopreneurship .examsec { background: #141d2b; }
+html[data-theme="dark"] .src-technopreneurship .diagram { background: #10161f; }
+html[data-theme="dark"] .src-technopreneurship .revision { background: #13221b; border-color: #2c5a35; }
+html[data-theme="dark"] .src-technopreneurship code.hyp { background: #242e3d; color: #9fd3ff; }
+html[data-theme="dark"] .src-technopreneurship h1.doctitle,
+html[data-theme="dark"] .src-technopreneurship h2.chaptitle,
+html[data-theme="dark"] .src-technopreneurship h4 {
+  color: #d9eaff;
+}
+html[data-theme="dark"] .src-technopreneurship h3 {
+  color: #8ec5ff;
+}
 
 /* Keep the wrapped guides readable and visually connected to the library shell. */
 html[data-theme="light"] .src-dbms,
 html[data-theme="light"] .src-sad,
-html[data-theme="light"] .src-techno,
+html[data-theme="light"] .src-technopreneurship,
 html[data-theme="light"] .src-ai {
   color: #243447;
 }
 html[data-theme="dark"] .src-dbms,
 html[data-theme="dark"] .src-sad,
-html[data-theme="dark"] .src-techno,
+html[data-theme="dark"] .src-technopreneurship,
 html[data-theme="dark"] .src-ai,
 html[data-theme="dark"] .src-compiler-design {
   color: #e7eef8;
@@ -565,9 +582,9 @@ html[data-theme="dark"] .src-dbms td,
 html[data-theme="dark"] .src-sad p,
 html[data-theme="dark"] .src-sad li,
 html[data-theme="dark"] .src-sad td,
-html[data-theme="dark"] .src-techno p,
-html[data-theme="dark"] .src-techno li,
-html[data-theme="dark"] .src-techno td,
+html[data-theme="dark"] .src-technopreneurship p,
+html[data-theme="dark"] .src-technopreneurship li,
+html[data-theme="dark"] .src-technopreneurship td,
 html[data-theme="dark"] .src-ai p,
 html[data-theme="dark"] .src-ai li,
 html[data-theme="dark"] .src-ai td {
