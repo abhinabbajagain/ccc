@@ -1,0 +1,2353 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BIT 231 — Database Management System — My Study Library</title>
+<meta name="description" content="Twelve chapters covering the full BIT 231 syllabus — ER modelling, relational algebra, normalisation, SQL — with per-chapter VSQA / SQA / LQA banks, practice drills and a rapid-revision section.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230d2a4a'/%3E%3Cpath d='M9 8h9a4 4 0 0 1 0 8H9zm0 8h11a4 4 0 0 1 0 8H9z' fill='none' stroke='%237dd3fc' stroke-width='2.2'/%3E%3C/svg%3E">
+
+<link rel="stylesheet" href="../styles.css">
+<style>
+/* =====================================================================
+   Original stylesheet from DBMS.html — mechanically scoped to .src-dbms.
+   The note's own design is preserved exactly; only selectors were
+   prefixed so they apply inside this library page.
+   ===================================================================== */
+.src-dbms {
+--navy:#0d2a4a; --blue:#1f5fa8; --lightblue:#eaf2fb; --amber:#b8860b;
+  --green:#1e7145; --red:#b3261e; --gray:#555; --bg:#fdfdfb; --border:#d8dee6;
+}
+.src-dbms * {
+box-sizing:border-box;
+}
+.src-dbms {
+font-family:"Georgia","Cambria",serif;background:var(--bg);color:#1a1a1a;margin:0;line-height:1.55;
+}
+.src-dbms .wrap {
+max-width:980px;margin:0 auto;padding:0 24px 80px;
+}
+.src-dbms header.title-page {
+background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;padding:60px 24px;text-align:center;
+}
+.src-dbms header.title-page h1 {
+font-size:2.2em;margin:0 0 8px;
+}
+.src-dbms header.title-page p {
+margin:4px 0;font-size:1.05em;opacity:.92;
+}
+.src-dbms nav#toc {
+background:var(--lightblue);border:1px solid var(--border);border-radius:8px;padding:20px 28px;margin:30px 0;
+}
+.src-dbms nav#toc h2 {
+margin-top:0;color:var(--navy);font-family:Arial,sans-serif;
+}
+.src-dbms nav#toc ul {
+columns:2;-webkit-columns:2;gap:24px;list-style:none;padding-left:0;
+}
+.src-dbms nav#toc li {
+margin:4px 0;break-inside:avoid;
+}
+.src-dbms nav#toc a {
+color:var(--blue);text-decoration:none;font-size:.95em;
+}
+.src-dbms nav#toc a:hover {
+text-decoration:underline;
+}
+.src-dbms h1,
+.src-dbms h2,
+.src-dbms h3,
+.src-dbms h4 {
+font-family:Arial,Helvetica,sans-serif;color:var(--navy);
+}
+.src-dbms .chapter {
+border-top:4px solid var(--blue);margin-top:60px;padding-top:10px;
+}
+.src-dbms .chapter h1 {
+font-size:1.7em;background:var(--navy);color:#fff;padding:12px 18px;border-radius:6px;
+}
+.src-dbms .chapter h2 {
+font-size:1.25em;border-bottom:2px solid var(--lightblue);padding-bottom:4px;margin-top:34px;
+}
+.src-dbms .chapter h3 {
+font-size:1.05em;color:var(--blue);margin-top:22px;
+}
+.src-dbms table {
+border-collapse:collapse;width:100%;margin:14px 0;font-family:Arial,sans-serif;font-size:.92em;
+}
+.src-dbms th,
+.src-dbms td {
+border:1px solid var(--border);padding:7px 10px;text-align:left;vertical-align:top;
+}
+.src-dbms th {
+background:var(--navy);color:#fff;
+}
+.src-dbms tr:nth-child(even) td {
+background:#f4f7fb;
+}
+.src-dbms code,
+.src-dbms .sql {
+font-family:"Consolas","Menlo",monospace;
+}
+.src-dbms pre.sql {
+background:#10233b;color:#e8f0fe;padding:14px 16px;border-radius:6px;overflow-x:auto;font-size:.9em;line-height:1.5;
+}
+.src-dbms pre.sql .kw {
+color:#7fb2ff;font-weight:bold;
+}
+.src-dbms .box {
+border-left:5px solid var(--blue);background:var(--lightblue);padding:10px 16px;margin:14px 0;border-radius:0 6px 6px 0;
+}
+.src-dbms .box.def {
+border-color:var(--green);background:#eaf7ee;
+}
+.src-dbms .box.tip {
+border-color:var(--amber);background:#fdf3e0;
+}
+.src-dbms .box.mistake {
+border-color:var(--red);background:#fbe9e7;
+}
+.src-dbms .box h4 {
+margin:0 0 6px;font-family:Arial,sans-serif;
+}
+.src-dbms .badge {
+display:inline-block;font-family:Arial,sans-serif;font-size:.75em;font-weight:bold;color:#fff;padding:2px 9px;border-radius:12px;margin-right:6px;
+}
+.src-dbms .badge.vsqa {
+background:var(--green);
+}
+.src-dbms .badge.sqa {
+background:var(--amber);
+}
+.src-dbms .badge.lqa {
+background:var(--red);
+}
+.src-dbms .checklist {
+list-style:none;padding-left:0;
+}
+.src-dbms .checklist li {
+padding:3px 0;
+}
+.src-dbms .checklist li:before {
+content:"☑ ";color:var(--green);font-weight:bold;
+}
+.src-dbms .diagram {
+background:#fff;border:1px solid var(--border);border-radius:6px;padding:16px;margin:16px 0;text-align:center;
+}
+.src-dbms .diagram svg {
+max-width:100%;height:auto;
+}
+.src-dbms .qa {
+margin:10px 0 20px;padding:10px 14px;background:#fff;border:1px solid var(--border);border-radius:6px;
+}
+.src-dbms .qa .q {
+font-weight:bold;font-family:Arial,sans-serif;
+}
+.src-dbms .revision {
+background:#fff8e1;border:2px dashed var(--amber);border-radius:8px;padding:16px 20px;margin:24px 0;
+}
+.src-dbms a.backtop {
+font-size:.8em;
+}
+</style>
+</head>
+<body class="page-subject" data-subject="dbms">
+<div class="shell">
+  <header class="topbar">
+    <button class="iconbtn nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <a class="brand" href="../index.html">
+      <svg viewBox="0 0 32 32" width="24" height="24" aria-hidden="true"><rect width="32" height="32" rx="7" fill="currentColor" opacity="0.14"/><path d="M9 8h9a4 4 0 0 1 0 8H9zm0 8h11a4 4 0 0 1 0 8H9z" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>
+      <span>Study Library</span>
+    </a>
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../index.html">Library</a><span class="sep">/</span><strong>BIT 231 — Database Management System</strong>
+    </nav>
+    <div class="topbar-search" role="search">
+      <svg class="s-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-3.8-3.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <input id="search-input" type="search" placeholder="Search all notes…  ( / )" autocomplete="off" spellcheck="false" aria-label="Search all notes">
+      <div class="search-results" id="search-results" hidden></div>
+    </div>
+    <button class="iconbtn theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
+  </header>
+
+  <div class="shell-body">
+  <aside class="sidebar" id="sidebar" aria-label="Subjects and chapters">
+    <div class="side-block">
+      <div class="side-head">
+        <h2><span class="dot" style="background:#3b82f6"></span>BIT 231 — Database Management System</h2>
+        <button id="mark-all" class="mark-all" type="button" title="Toggle reviewed status for every section of this subject">✓ reviewed</button>
+      </div>
+      <div class="side-progress" aria-hidden="true">
+        <div class="bar"><span id="prog-bar" style="width:0%"></span></div>
+        <em id="prog-label">0 of 0 reviewed</em>
+      </div>
+      <nav class="side-chapters" id="side-chapters"></nav>
+    </div>
+    <div class="side-block">
+      <h3 class="side-sub">Other subjects</h3>
+      <ul class="side-others" id="side-others"></ul>
+    </div>
+  </aside>
+  <div class="scrim" id="scrim" hidden></div>
+
+  <main class="content" id="content">
+    <div class="content-inner src src-dbms">
+<span id="toc" hidden></span>
+<header class="title-page">
+<h1>BIT 231 — Database Management System</h1>
+<p>Audited & Finalized Board Examination Master Study Guide</p>
+<p>Bachelor of Information Technology (BIT)</p>
+<p style="margin-top:16px;font-size:.9em;opacity:.8;">Question pattern: VSQA (2 marks) · SQA (7 marks) · LQA (15 marks)</p>
+</header>
+<div class="wrap">
+
+
+
+<section class="chapter" id="ch1">
+<h1>Chapter 1 — Introduction to Database Systems</h1>
+
+<h2>1. Chapter Overview</h2>
+<p>This chapter establishes the foundation of database systems: why data management matters, how data is physically and logically stored, the different categories of database systems, DBMS architecture, and how distributed databases differ from centralized relational databases.</p>
+
+<h2>2. Syllabus Coverage Checklist</h2>
+<ul class="checklist">
+<li>Importance of Data & Data Management</li>
+<li>How Data are Stored in Database</li>
+<li>Different Database Systems</li>
+<li>Physical & Logical Structure of Database</li>
+<li>Database Management Systems and Database Systems</li>
+<li>Database Architecture</li>
+<li>Difference Between Distributed Database & Relational Database</li>
+<li>History</li>
+</ul>
+
+<h2>3. Importance of Data & Data Management</h2>
+<div class="box def"><h4>Definition</h4>Data is a collection of raw, unorganized facts (numbers, text, dates) that by itself carries no meaning until processed into information. <strong>Data management</strong> is the practice of collecting, storing, organizing, securing, and maintaining data so that it is accurate, available, and usable.</div>
+<p><strong>Why data management matters:</strong></p>
+<table>
+<tr><th>Reason</th><th>Explanation</th></tr>
+<tr><td>Decision making</td><td>Accurate, timely data lets organizations (banks, hospitals, colleges) make correct operational and strategic decisions.</td></tr>
+<tr><td>Avoiding redundancy</td><td>Proper management prevents the same data being duplicated inconsistently across files.</td></tr>
+<tr><td>Data integrity</td><td>Ensures data remains accurate and consistent over its lifecycle (e.g., a student's CGPA is the same everywhere it appears).</td></tr>
+<tr><td>Security & privacy</td><td>Controlled access prevents unauthorized viewing/modification of sensitive data (e.g., patient records, bank balances).</td></tr>
+<tr><td>Sharing & concurrency</td><td>Multiple users/applications can access the same data simultaneously without conflict.</td></tr>
+<tr><td>Recovery</td><td>Backup/recovery mechanisms protect against data loss from crashes or disasters.</td></tr>
+</table>
+<p><strong>Example:</strong> A university (Texas College of Management & IT type institution) manages student records, course enrollment, fee payment (e.g., via eSewa/Khalti-style digital payment integration), and grades. Poor data management would cause duplicate student IDs, lost marks, or incorrect fee balances — proper data management via a DBMS prevents this.</p>
+
+<h2>4. How Data are Stored in a Database</h2>
+<p>Data in a database is stored in a structured, organized form rather than as flat, disconnected files. The typical storage hierarchy is:</p>
+<table>
+<tr><th>Level</th><th>Description</th></tr>
+<tr><td>Bit</td><td>Smallest unit — 0 or 1.</td></tr>
+<tr><td>Byte / Character</td><td>Group of bits representing a character.</td></tr>
+<tr><td>Field / Attribute / Column</td><td>A single data item, e.g., <code>StudentName</code>.</td></tr>
+<tr><td>Record / Row / Tuple</td><td>A collection of related fields describing one entity instance, e.g., one student's full record.</td></tr>
+<tr><td>Table / File / Relation</td><td>A collection of related records, e.g., the <code>STUDENT</code> table.</td></tr>
+<tr><td>Database</td><td>A collection of related tables, e.g., the whole college database (STUDENT, COURSE, DEPARTMENT...).</td></tr>
+</table>
+<p>Internally, the DBMS stores this data on secondary storage (disk) using data structures such as heap files, sorted files, hashed files, and indexes (B+ trees) to allow efficient retrieval — this is the physical storage layer, distinct from how the user logically views the data (see Section 5).</p>
+
+<h2>5. Physical & Logical Structure of a Database</h2>
+<div class="box def"><h4>Definition</h4>
+<strong>Physical structure</strong> refers to how data is actually stored on the storage device (disk blocks, file organization, indexing, access paths).<br>
+<strong>Logical structure</strong> refers to how the data is organized and perceived by the user/application (tables, relationships, constraints) — independent of the physical storage details.
+</div>
+<div class="diagram">
+<svg viewBox="0 0 640 220" xmlns="http://www.w3.org/2000/svg">
+<rect x="20" y="20" width="280" height="70" rx="8" fill="#eaf2fb" stroke="#1f5fa8"/>
+<text x="160" y="45" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#0d2a4a">Logical Level</text>
+<text x="160" y="65" text-anchor="middle" font-family="Arial" font-size="11" fill="#333">Tables, Relationships, Constraints</text>
+<rect x="20" y="130" width="280" height="70" rx="8" fill="#fdf3e0" stroke="#b8860b"/>
+<text x="160" y="155" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#0d2a4a">Physical Level</text>
+<text x="160" y="175" text-anchor="middle" font-family="Arial" font-size="11" fill="#333">Files, Blocks, Indexes on Disk</text>
+<line x1="160" y1="90" x2="160" y2="130" stroke="#555" stroke-width="2" marker-end="url(#arrow1)"/>
+<defs><marker id="arrow1" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker></defs>
+<text x="330" y="65" font-family="Arial" font-size="12" fill="#333">Users write SQL against the logical view —</text>
+<text x="330" y="82" font-family="Arial" font-size="12" fill="#333">they never need to know disk layout.</text>
+<text x="330" y="160" font-family="Arial" font-size="12" fill="#333">Physical independence: storage can</text>
+<text x="330" y="177" font-family="Arial" font-size="12" fill="#333">change without affecting logical queries.</text>
+</svg>
+</div>
+<p>This separation is called <strong>data independence</strong>:</p>
+<table>
+<tr><th>Type</th><th>Meaning</th></tr>
+<tr><td>Physical Data Independence</td><td>Ability to change the physical storage/access method (e.g., adding an index) without changing the logical schema or applications.</td></tr>
+<tr><td>Logical Data Independence</td><td>Ability to change the logical schema (e.g., adding a new table/column) without requiring changes to application programs that don't use that part of the schema.</td></tr>
+</table>
+
+<h2>6. Different Database Systems</h2>
+<table>
+<tr><th>Type</th><th>Description</th><th>Example</th></tr>
+<tr><td>Hierarchical Database</td><td>Data organized in a tree (parent-child, one-to-many) structure.</td><td>IBM IMS</td></tr>
+<tr><td>Network Database</td><td>Data organized as a graph; a child can have multiple parents (many-to-many).</td><td>IDMS</td></tr>
+<tr><td>Relational Database (RDBMS)</td><td>Data organized into tables (relations) linked by keys; based on relational algebra/calculus.</td><td>MySQL, Oracle, PostgreSQL, SQL Server</td></tr>
+<tr><td>Object-Oriented Database</td><td>Data stored as objects (like in OOP), combining data and behavior.</td><td>db4o, ObjectDB</td></tr>
+<tr><td>Distributed Database</td><td>Data stored across multiple physical locations/sites, logically integrated.</td><td>Google Spanner</td></tr>
+<tr><td>NoSQL Database</td><td>Non-relational with flexible data models; often suited to large-scale or specialized workloads.</td><td>MongoDB, Cassandra</td></tr>
+</table>
+
+<h2>7. Database Management Systems (DBMS) vs Database Systems</h2>
+<div class="box def"><h4>Definitions</h4>
+<strong>Database:</strong> An organized, persistent collection of related data.<br>
+<strong>DBMS:</strong> Software that enables users to define, create, maintain, and control access to the database.<br>
+<strong>Database System:</strong> The DBMS + the database itself + the application programs that use it — the complete environment.
+</div>
+<table>
+<tr><th>Database</th><th>DBMS</th><th>Database System</th></tr>
+<tr><td>Just the stored data (e.g., student records file).</td><td>The software (e.g., MySQL engine) that manages that data.</td><td>Software + data + applications + users working together.</td></tr>
+</table>
+<div class="box mistake"><h4>Common Mistake</h4>Students often use "database" and "DBMS" interchangeably in exam answers — a database is <em>data</em>; a DBMS is the <em>software</em> that manages that data. Always distinguish them explicitly.</div>
+
+<h2>8. Database Architecture (Three-Schema Architecture / ANSI-SPARC)</h2>
+<div class="diagram">
+<svg viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg">
+<rect x="120" y="20" width="260" height="60" rx="6" fill="#eaf7ee" stroke="#1e7145"/>
+<text x="250" y="45" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold">External Level (Views)</text>
+<text x="250" y="63" text-anchor="middle" font-family="Arial" font-size="10">User-specific views of the data</text>
+<rect x="120" y="120" width="260" height="60" rx="6" fill="#eaf2fb" stroke="#1f5fa8"/>
+<text x="250" y="145" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold">Conceptual Level</text>
+<text x="250" y="163" text-anchor="middle" font-family="Arial" font-size="10">Whole logical structure (entities, relationships)</text>
+<rect x="120" y="220" width="260" height="60" rx="6" fill="#fdf3e0" stroke="#b8860b"/>
+<text x="250" y="245" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold">Internal (Physical) Level</text>
+<text x="250" y="263" text-anchor="middle" font-family="Arial" font-size="10">Actual storage on disk</text>
+<line x1="250" y1="80" x2="250" y2="120" stroke="#555" stroke-width="2"/>
+<line x1="250" y1="180" x2="250" y2="220" stroke="#555" stroke-width="2"/>
+</svg>
+</div>
+<table>
+<tr><th>Level</th><th>Describes</th><th>Example</th></tr>
+<tr><td>External</td><td>How individual users see the data — customized views hiding irrelevant parts.</td><td>An admissions officer's view shows only admission-related fields; an accountant's view shows only fee data.</td></tr>
+<tr><td>Conceptual</td><td>The community/global logical view of the entire database — all entities, attributes, relationships, and constraints.</td><td>The full STUDENT–COURSE–ENROLLMENT schema.</td></tr>
+<tr><td>Internal</td><td>The physical storage details — file organization, indexing, storage allocation.</td><td>B+ tree index on StudentID, data stored in 4KB blocks.</td></tr>
+</table>
+
+<h2>9. Distributed Database vs Relational (Centralized) Database</h2>
+<div class="box tip"><h4>Classification Note (read before the table)</h4>"Relational" and "distributed" are answers to two <em>different</em> questions and are not opposite ends of the same scale:
+<ul>
+<li><strong>Relational</strong> describes the <em>data model</em> — data organized into tables (relations) linked by keys, as opposed to hierarchical, network, or object models.</li>
+<li><strong>Distributed</strong> describes <em>physical location</em> — data spread across multiple sites, as opposed to centralized (single-site) storage.</li>
+</ul>
+A database can therefore be: centralized + relational (e.g., a single-server MySQL college database), distributed + relational (e.g., a relational database replicated across multiple campus servers), or distributed + non-relational (e.g., a distributed NoSQL store). The table below specifically contrasts a <strong>centralized relational database</strong> with a <strong>distributed database</strong> to highlight the practical trade-offs of distribution — it is not claiming that "relational" and "distributed" are mutually exclusive categories.</div>
+<table>
+<tr><th>Basis</th><th>Relational (Centralized) Database</th><th>Distributed Database</th></tr>
+<tr><td>Location</td><td>Data resides at a single physical site.</td><td>Data is stored across multiple, possibly geographically separated, sites.</td></tr>
+<tr><td>Data model</td><td>Organized strictly into relations (tables) linked by keys.</td><td>May be relational or otherwise; the defining trait is physical distribution, not the data model.</td></tr>
+<tr><td>Failure impact</td><td>Single point of failure — site failure makes the whole database unavailable.</td><td>More fault tolerant — failure of one site need not bring down the whole system.</td></tr>
+<tr><td>Complexity</td><td>Simpler to design, manage, and query.</td><td>More complex — needs distributed query processing, concurrency control, and replication.</td></tr>
+<tr><td>Performance for local users</td><td>Uniform performance for all users regardless of location.</td><td>Better performance for local queries (data closer to the user); slower for cross-site queries.</td></tr>
+<tr><td>Cost</td><td>Lower infrastructure/network cost.</td><td>Higher cost due to network and replication overhead.</td></tr>
+</table>
+<div class="box mistake"><h4>Common Mistake</h4>"Relational" describes the <em>data model</em> (tables/keys); "distributed" describes <em>physical location</em>. A database can be both relational and distributed at once — they are not mutually exclusive categories, so don't present them as if only one can be true.</div>
+
+<h2>10. History of Database Systems</h2>
+<table>
+<tr><th>Era</th><th>Development</th></tr>
+<tr><td>1960s</td><td>File-based systems; early hierarchical (IMS) and network (CODASYL/IDMS) database models.</td></tr>
+<tr><td>1970</td><td>E. F. Codd publishes the relational model, introducing relations, keys, and relational algebra as a mathematical foundation.</td></tr>
+<tr><td>1970s–80s</td><td>Commercial RDBMS emerge (System R, INGRES); SQL standardized as the relational query language.</td></tr>
+<tr><td>1980s–90s</td><td>Object-oriented and object-relational databases; growth of client-server DBMS.</td></tr>
+<tr><td>2000s</td><td>Rise of distributed and web-scale databases; data warehousing and OLAP.</td></tr>
+<tr><td>2010s–present</td><td>NoSQL, NewSQL, cloud-native and big-data database systems (MongoDB, Cassandra, Google Spanner).</td></tr>
+</table>
+
+<h2>11. Common Mistakes (Chapter-wide)</h2>
+<ul>
+<li>Confusing "database" with "DBMS."</li>
+<li>Thinking physical and logical independence are the same concept.</li>
+<li>Assuming distributed databases must be non-relational.</li>
+</ul>
+
+<h2>12. Exam Focus</h2>
+<p>High-yield: DBMS vs Database, Three-schema architecture, Data independence (physical/logical), Distributed vs Relational database comparison.</p>
+
+<h2>13. VSQA — 2 Marks</h2>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Define DBMS.</span><br>Software system that enables definition, creation, maintenance, and controlled access to a database.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">What is data independence?</span><br>The capacity to change the schema at one level of a database without affecting the schema at the next higher level.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Name two types of database systems.</span><br>Relational database and Distributed database (also acceptable: Hierarchical, Network, Object-oriented).</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Differentiate physical and logical structure of a database (one line each).</span><br>Physical = actual storage on disk; Logical = user/application view of data as tables and relationships.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Give one difference between a distributed database and a centralized relational database.</span><br>A centralized relational database resides at a single site; a distributed database spans multiple sites. (Note: "relational" and "distributed" are independent classifications — a database can be both.)</div>
+
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Who proposed the relational model, and in which year?</span><br>E. F. Codd proposed the relational model in 1970.</div>
+<h2>14. SQA — 7 Marks</h2>
+<div class="qa"><span class="badge sqa">7M</span><span class="q">Trace the major stages in the history of database systems.</span>
+<p>File-processing systems → hierarchical/network databases → relational model (Codd, 1970) → commercial relational DBMS and SQL → object/object-relational and client-server systems → distributed/web-scale systems → NoSQL/NewSQL/cloud databases. Mention the main improvement at each stage.</p></div>
+
+<div class="qa"><span class="badge sqa">7M</span><span class="q">Explain the three-schema (ANSI-SPARC) database architecture with a diagram.</span>
+<p>Introduce the purpose (achieving data independence) → describe External, Conceptual, Internal levels with examples → relate each level to physical/logical data independence → diagram (see Section 8) → conclude on why this layered architecture is important for large multi-user database systems.</p></div>
+
+<h2>15. LQA — 15 Marks</h2>
+<div class="qa"><span class="badge lqa">15M</span><span class="q">Discuss the importance of data management and explain how DBMS architecture supports it, comparing distributed databases with centralized relational databases.</span>
+<p><strong>Suggested structure:</strong> (1) Introduction — data vs information vs database. (2) Importance of data management (Section 3 table). (3) Brief history/evolution of database systems (Section 10). (4) Three-schema architecture diagram + explanation. (3) Three-schema architecture diagram + explanation. (4) Distributed vs relational comparison table (Section 9). (5) Real example (college/bank system). (6) Conclusion on how architecture and distribution choice depend on organizational scale.</p></div>
+
+<div class="revision" id="ch1-revision">
+<h3>Chapter 1 — Quick Revision Sheet</h3>
+<ul>
+<li><strong>Data</strong> = raw facts; <strong>Information</strong> = processed data; <strong>Database</strong> = organized data; <strong>DBMS</strong> = managing software.</li>
+<li>Storage hierarchy: Bit → Byte → Field → Record → Table → Database.</li>
+<li>Physical structure = disk storage; Logical structure = tables/relationships.</li>
+<li>Three-schema architecture: External → Conceptual → Internal.</li>
+<li>Distributed DB = multiple sites; Relational DB = tabular data model (can overlap).</li>
+<li>Codd (1970) introduced the relational model.</li>
+</ul>
+</div>
+<p><a class="backtop" href="#toc">↑ Back to Table of Contents</a></p>
+</section>
+
+<section class="chapter" id="ch2">
+<h1>Chapter 2 — The Relational Data Models</h1>
+
+<h2>1. Chapter Overview</h2>
+<p>This chapter covers the Entity-Relationship (ER) approach to modeling data conceptually, and the Relational Model that ER diagrams are eventually translated into. It explains entities, attributes, relationships, ER diagram notation, and the advantages/disadvantages of the ER approach.</p>
+
+<h2>2. Syllabus Coverage Checklist</h2>
+<ul class="checklist">
+<li>Entity Relationship and Object</li>
+<li>ER Diagram</li>
+<li>Importance of ER Diagram</li>
+<li>Relational Model</li>
+<li>Advantages and Disadvantages of E-R Data Model</li>
+<li>(Supporting) Entity, Attribute, Relationship, Cardinality, Participation, Keys, ER-to-relational mapping</li>
+</ul>
+
+<h2>3. Entity, Relationship, and Object</h2>
+<div class="box def"><h4>Definitions</h4>
+<strong>Entity:</strong> A real-world object or concept that can be distinctly identified and about which data is stored (e.g., STUDENT, COURSE).<br>
+<strong>Entity Set:</strong> A collection of entities of the same type (e.g., all students).<br>
+<strong>Attribute:</strong> A property that describes an entity (e.g., StudentName, RollNo).<br>
+<strong>Relationship:</strong> An association between two or more entities (e.g., a STUDENT <em>enrolls in</em> a COURSE).<br>
+<strong>Object:</strong> In object-oriented data modeling, an object is an identifiable instance that contains state (data/attributes) and may also contain behavior (methods). In basic ER modeling, the closer equivalent is an entity instance; ER itself models data structure rather than object behavior.
+</div>
+
+<h3>Types of Attributes</h3>
+<table>
+<tr><th>Type</th><th>Description</th><th>Example</th></tr>
+<tr><td>Simple</td><td>Cannot be divided further.</td><td>Age</td></tr>
+<tr><td>Composite</td><td>Can be broken into sub-parts.</td><td>Name → FirstName + LastName</td></tr>
+<tr><td>Single-valued</td><td>Holds one value per entity.</td><td>DateOfBirth</td></tr>
+<tr><td>Multi-valued</td><td>Can hold multiple values.</td><td>PhoneNumbers</td></tr>
+<tr><td>Derived</td><td>Computed from another attribute.</td><td>Age (derived from DOB)</td></tr>
+<tr><td>Key attribute</td><td>Uniquely identifies an entity.</td><td>StudentID</td></tr>
+</table>
+
+<h3>Cardinality and Participation</h3>
+<table>
+<tr><th>Concept</th><th>Meaning</th></tr>
+<tr><td>Cardinality</td><td>The number of entity instances on each side of a relationship: One-to-One (1:1), One-to-Many (1:N), Many-to-Many (M:N).</td></tr>
+<tr><td>Participation — Total</td><td>Every entity instance must participate in the relationship (double line in ER diagram).</td></tr>
+<tr><td>Participation — Partial</td><td>Entity instances may or may not participate (single line).</td></tr>
+</table>
+<p><strong>Example:</strong> A STUDENT <em>enrolls in</em> COURSE is Many-to-Many (a student takes many courses; a course has many students). A DEPARTMENT <em>has</em> HEAD-OF-DEPARTMENT is typically One-to-One.</p>
+
+<h2>4. ER Diagram (Notation)</h2>
+<div class="diagram">
+<svg viewBox="0 0 620 260" xmlns="http://www.w3.org/2000/svg">
+<rect x="30" y="90" width="120" height="60" fill="#eaf2fb" stroke="#1f5fa8" stroke-width="2"/>
+<text x="90" y="125" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold">STUDENT</text>
+<polygon points="280,90 350,120 280,150 210,120" fill="#fdf3e0" stroke="#b8860b" stroke-width="2"/>
+<text x="280" y="124" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold">Enrolls In</text>
+<rect x="460" y="90" width="120" height="60" fill="#eaf2fb" stroke="#1f5fa8" stroke-width="2"/>
+<text x="520" y="125" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold">COURSE</text>
+<line x1="150" y1="120" x2="210" y2="120" stroke="#333" stroke-width="2"/>
+<line x1="350" y1="120" x2="460" y2="120" stroke="#333" stroke-width="2"/>
+<text x="170" y="112" font-family="Arial" font-size="11">M</text>
+<text x="400" y="112" font-family="Arial" font-size="11">N</text>
+<ellipse cx="90" cy="40" rx="45" ry="20" fill="#eaf7ee" stroke="#1e7145"/>
+<text x="90" y="45" text-anchor="middle" font-family="Arial" font-size="11">RollNo (key)</text>
+<line x1="90" y1="60" x2="90" y2="90" stroke="#333"/>
+<ellipse cx="520" cy="40" rx="55" ry="20" fill="#eaf7ee" stroke="#1e7145"/>
+<text x="520" y="45" text-anchor="middle" font-family="Arial" font-size="11">CourseCode (key)</text>
+<line x1="520" y1="60" x2="520" y2="90" stroke="#333"/>
+<ellipse cx="280" cy="210" rx="55" ry="20" fill="#eaf7ee" stroke="#1e7145"/>
+<text x="280" y="215" text-anchor="middle" font-family="Arial" font-size="11">EnrollDate</text>
+<line x1="280" y1="150" x2="280" y2="190" stroke="#333"/>
+</svg>
+</div>
+<table>
+<tr><th>Symbol</th><th>Represents</th></tr>
+<tr><td>Rectangle</td><td>Entity</td></tr>
+<tr><td>Ellipse/Oval</td><td>Attribute</td></tr>
+<tr><td>Diamond</td><td>Relationship</td></tr>
+<tr><td>Underlined attribute</td><td>Key/primary attribute</td></tr>
+<tr><td>Double rectangle</td><td>Weak entity</td></tr>
+<tr><td>Double diamond</td><td>Identifying relationship (for weak entity)</td></tr>
+<tr><td>Line</td><td>Connects entity to attribute, or entity to relationship</td></tr>
+<tr><td>Double line</td><td>Total participation</td></tr>
+</table>
+
+<h2>5. Importance of ER Diagram</h2>
+<ul>
+<li>Provides a clear visual blueprint of the database before implementation.</li>
+<li>Helps identify entities, relationships, and constraints early, reducing costly design errors later.</li>
+<li>Acts as a communication tool between database designers and non-technical stakeholders (e.g., college administration).</li>
+<li>Forms the direct basis for deriving the logical (relational) schema — each entity typically becomes a table.</li>
+<li>Helps enforce data integrity rules (cardinality, participation) at the design stage.</li>
+</ul>
+
+<h2>6. Relational Model</h2>
+<div class="box def"><h4>Definition</h4>The Relational Model, proposed by E. F. Codd (1970), represents data as a collection of two-dimensional tables called <strong>relations</strong>, where each row is a <strong>tuple</strong> and each column is an <strong>attribute</strong>. Relationships between data are represented by common values (keys) shared across tables, not by physical pointers.</div>
+<table>
+<tr><th>Relational Term</th><th>Informal Equivalent</th></tr>
+<tr><td>Relation</td><td>Table</td></tr>
+<tr><td>Tuple</td><td>Row / Record</td></tr>
+<tr><td>Attribute</td><td>Column / Field</td></tr>
+<tr><td>Degree</td><td>Number of attributes (columns)</td></tr>
+<tr><td>Cardinality</td><td>Number of tuples (rows)</td></tr>
+<tr><td>Domain</td><td>Set of allowable values for an attribute</td></tr>
+</table>
+
+<h3>Keys in the Relational Model</h3>
+<table>
+<tr><th>Key Type</th><th>Definition</th></tr>
+<tr><td>Super Key</td><td>Any attribute/set of attributes that uniquely identifies a tuple.</td></tr>
+<tr><td>Candidate Key</td><td>A minimal super key (no redundant attribute).</td></tr>
+<tr><td>Primary Key</td><td>The candidate key chosen to uniquely identify tuples in a relation; cannot be NULL.</td></tr>
+<tr><td>Alternate Key</td><td>Candidate key(s) not chosen as the primary key.</td></tr>
+<tr><td>Foreign Key</td><td>An attribute in one relation that references the primary key of another relation, establishing a relationship.</td></tr>
+<tr><td>Composite Key</td><td>A primary key made of two or more attributes together.</td></tr>
+</table>
+<p><strong>Example (ER → Relational mapping):</strong> The ER diagram above maps to relations:</p>
+<pre class="sql">STUDENT(<u>RollNo</u>, Name, DOB)
+COURSE(<u>CourseCode</u>, Title, Credit)
+ENROLLS(<u>RollNo</u>, <u>CourseCode</u>, EnrollDate)   -- RollNo, CourseCode are foreign keys</pre>
+<p>The Many-to-Many "Enrolls In" relationship becomes its own relation (ENROLLS) whose primary key is the combination of both foreign keys — this is the standard rule for converting M:N relationships to relational tables.</p>
+
+<h2>7. Advantages and Disadvantages of the E-R Data Model</h2>
+<table>
+<tr><th>Advantages</th><th>Disadvantages</th></tr>
+<tr><td>Simple, intuitive graphical notation understandable by both technical and non-technical users.</td><td>Cannot represent complex constraints (e.g., business rules) directly — needs supplementary notes.</td></tr>
+<tr><td>Provides a clear conceptual overview before physical implementation.</td><td>No standard notation — different tools/textbooks use slightly different symbols.</td></tr>
+<tr><td>Easy translation into relational tables.</td><td>Struggles to model highly dynamic or unstructured data.</td></tr>
+<tr><td>Helps identify redundancy and normalization needs early.</td><td>Large systems produce very large, hard-to-read diagrams.</td></tr>
+<tr><td>Supports iterative refinement during requirement analysis.</td><td>Doesn't capture behavior/processes — only structure.</td></tr>
+</table>
+
+<h2>8. Common Mistakes</h2>
+<ul>
+<li>Drawing a relationship diamond between two attributes instead of two entities.</li>
+<li>Forgetting to resolve M:N relationships into a separate relation with a composite key.</li>
+<li>Confusing "candidate key" with "primary key" — every primary key is a candidate key, but not vice versa.</li>
+<li>Marking a foreign key as unique/primary in its own table when it need not be.</li>
+</ul>
+
+<h2>9. Exam Focus</h2>
+<p>High-yield: ER diagram symbols and their meaning, ER-to-relational mapping (especially M:N → separate relation), Key types table, Advantages/disadvantages of ER model.</p>
+
+<h2>10. VSQA — 2 Marks</h2>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Define entity and attribute.</span><br>Entity = a distinctly identifiable real-world object; Attribute = a property describing an entity.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">What is a foreign key?</span><br>An attribute in one relation that refers to the primary key of another relation, creating a link between the two.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Differentiate candidate key and primary key.</span><br>Candidate key = any minimal unique identifier; primary key = the one candidate key chosen to identify tuples.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">What symbol represents a relationship in an ER diagram?</span><br>A diamond.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Give one advantage of the ER model.</span><br>It provides a simple, intuitive visual blueprint of the database understandable by both technical and non-technical stakeholders.</div>
+
+<h2>11. SQA — 7 Marks</h2>
+<div class="qa"><span class="badge sqa">7M</span><span class="q">Explain the ER model with its components and draw a suitable ER diagram.</span>
+<p>Definition of ER model → Entity, attribute, relationship, cardinality, participation → notation table → the STUDENT–ENROLLS–COURSE diagram (Section 4) → brief note on translating it to relations.</p></div>
+
+<h2>12. LQA — 15 Marks</h2>
+<div class="qa"><span class="badge lqa">15M</span><span class="q">Describe the Entity-Relationship model in detail, including its diagram notation, cardinality/participation constraints, its advantages and disadvantages, and how an ER diagram is converted into a relational schema. Illustrate with an example.</span>
+<p><strong>Suggested structure:</strong> Introduction → Entity/attribute/relationship/key definitions → ER diagram notation table → cardinality & participation → worked ER diagram example (Section 4) → ER-to-relational mapping rules with the STUDENT/COURSE/ENROLLS example → advantages/disadvantages table → conclusion.</p></div>
+
+<div class="revision" id="ch2-revision">
+<h3>Chapter 2 — Quick Revision Sheet</h3>
+<ul>
+<li>Entity = rectangle, Attribute = ellipse, Relationship = diamond, Key attribute = underlined.</li>
+<li>Cardinality: 1:1, 1:N, M:N. Participation: total (double line) vs partial (single line).</li>
+<li>Relational model terms: Relation=table, Tuple=row, Attribute=column, Degree=#columns, Cardinality=#rows.</li>
+<li>Key hierarchy: Super Key ⊇ Candidate Key → Primary Key (chosen) / Alternate Key (not chosen); Foreign Key links tables.</li>
+<li>M:N relationship → becomes its own relation with a composite primary key from both foreign keys.</li>
+</ul>
+</div>
+<p><a class="backtop" href="#toc">↑ Back to Table of Contents</a></p>
+</section>
+
+<section class="chapter" id="ch3">
+<h1>Chapter 3 — Relational Algebra & Calculus</h1>
+
+<h2>1. Chapter Overview</h2>
+<p>Relational Algebra is a procedural query language: a set of operators that take one or two relations as input and produce a new relation as output. This chapter covers every operator with definition, notation, and worked table examples using a consistent sample database, plus the fundamentals of relational calculus as a declarative counterpart.</p>
+
+<h2>2. Syllabus Coverage Checklist</h2>
+<ul class="checklist">
+<li>Fundamental Operations of Relational Algebra</li>
+<li>Select</li>
+<li>Project</li>
+<li>Rename</li>
+<li>Union</li>
+<li>Intersection</li>
+<li>Minus / Set Difference</li>
+<li>Cartesian Product</li>
+<li>Theta Join</li>
+<li>Equijoin</li>
+<li>Natural Join</li>
+<li>Division</li>
+<li>Unary Operators</li>
+<li>Binary Operators</li>
+<li>Union All, Intersect (SQL-adjacent set operator distinctions)</li>
+<li>Relational Calculus (fundamentals — Tuple Relational Calculus, Domain Relational Calculus)</li>
+</ul>
+
+<h2>3. Sample Relations Used Throughout This Chapter</h2>
+<p><strong>STUDENT</strong></p>
+<table><tr><th>RollNo</th><th>Name</th><th>DeptID</th><th>Age</th></tr>
+<tr><td>S01</td><td>Aayush</td><td>D1</td><td>20</td></tr>
+<tr><td>S02</td><td>Bibek</td><td>D2</td><td>21</td></tr>
+<tr><td>S03</td><td>Chitra</td><td>D1</td><td>19</td></tr>
+<tr><td>S04</td><td>Diya</td><td>D3</td><td>22</td></tr>
+</table>
+<p><strong>DEPARTMENT</strong></p>
+<table><tr><th>DeptID</th><th>DeptName</th></tr>
+<tr><td>D1</td><td>Computer Science</td></tr>
+<tr><td>D2</td><td>Business</td></tr>
+<tr><td>D3</td><td>Civil</td></tr>
+</table>
+<p><strong>ENROLLS</strong></p>
+<table><tr><th>RollNo</th><th>CourseCode</th></tr>
+<tr><td>S01</td><td>C1</td></tr>
+<tr><td>S01</td><td>C2</td></tr>
+<tr><td>S02</td><td>C1</td></tr>
+<tr><td>S03</td><td>C1</td></tr>
+<tr><td>S03</td><td>C2</td></tr>
+</table>
+
+<h2>4. Unary vs Binary Operators (Classification)</h2>
+<table>
+<tr><th>Category</th><th>Operators</th><th>Meaning</th></tr>
+<tr><td>Unary Operators</td><td>Select (σ), Project (π), Rename (ρ)</td><td>Operate on a single relation.</td></tr>
+<tr><td>Binary Operators</td><td>Union (∪), Intersection (∩), Set Difference (−), Cartesian Product (×), all Joins (⋈), Division (÷)</td><td>Operate on two relations. Union, Intersection, and Set Difference additionally require the two relations to be <strong>union-compatible</strong> (same number of attributes, matching domains).</td></tr>
+</table>
+
+<h2>5. SELECT (σ) — Selection</h2>
+<div class="box def"><h4>Definition</h4>Selects rows (tuples) from a relation that satisfy a given condition. Symbol: <strong>σ</strong>&nbsp;<sub>condition</sub>(Relation). It is a horizontal operation — filters rows.</div>
+<pre class="sql">σ<sub>Age &gt; 20</sub>(STUDENT)</pre>
+<table><tr><th>RollNo</th><th>Name</th><th>DeptID</th><th>Age</th></tr>
+<tr><td>S02</td><td>Bibek</td><td>D2</td><td>21</td></tr>
+<tr><td>S04</td><td>Diya</td><td>D3</td><td>22</td></tr>
+</table>
+<p><strong>Exam note:</strong> Result relation has the same attributes as input, but only qualifying rows.</p>
+<div class="box mistake"><h4>Common Mistake</h4>Writing σ as if it removes columns — Select never removes columns, only rows. Column removal is Project's job.</div>
+
+<h2>6. PROJECT (π) — Projection</h2>
+<div class="box def"><h4>Definition</h4>Selects specified columns (attributes) from a relation, and removes duplicate rows from the result. Symbol: <strong>π</strong><sub>attribute-list</sub>(Relation). It is a vertical operation.</div>
+<pre class="sql">π<sub>Name, DeptID</sub>(STUDENT)</pre>
+<table><tr><th>Name</th><th>DeptID</th></tr>
+<tr><td>Aayush</td><td>D1</td></tr><tr><td>Bibek</td><td>D2</td></tr><tr><td>Chitra</td><td>D1</td></tr><tr><td>Diya</td><td>D3</td></tr></table>
+<div class="box mistake"><h4>Common Mistake</h4>Forgetting that Project automatically eliminates duplicate rows in the result (since a relation is a <em>set</em> of tuples) — e.g. π<sub>DeptID</sub>(STUDENT) yields {D1, D2, D3}, not four rows with D1 repeated.</div>
+
+<h2>7. RENAME (ρ)</h2>
+<div class="box def"><h4>Definition</h4>Renames a relation and/or its attributes without changing its content. Symbol: <strong>ρ</strong><sub>NewName</sub>(Relation) or ρ<sub>NewName(attr1,attr2,...)</sub>(Relation).</div>
+<pre class="sql">ρ<sub>PUPIL(ID, StudentName, DeptID, Age)</sub>(STUDENT)</pre>
+<p>Produces a relation identical in content to STUDENT, but named PUPIL with RollNo renamed to ID and Name renamed to StudentName. Rename is essential before self-joins or Cartesian products between relations that share attribute names.</p>
+
+<h2>8. UNION (∪)</h2>
+<div class="box def"><h4>Definition</h4>Combines tuples from two <em>union-compatible</em> relations, producing a relation with all tuples from both, removing duplicates. Symbol: R ∪ S.</div>
+<p><strong>Example:</strong> Let A = π<sub>RollNo</sub>(σ<sub>DeptID='D1'</sub>(STUDENT)) = {S01, S03}, and B = π<sub>RollNo</sub>(σ<sub>Age&gt;20</sub>(STUDENT)) = {S02, S04}.</p>
+<pre class="sql">A ∪ B = {S01, S02, S03, S04}</pre>
+
+<h2>9. INTERSECTION (∩)</h2>
+<div class="box def"><h4>Definition</h4>Returns tuples that appear in <em>both</em> union-compatible relations. Symbol: R ∩ S.</div>
+<p>Using A and B above (both empty intersection here since D1 students {S01,S03} and Age&gt;20 students {S02,S04} don't overlap): A ∩ B = {} (empty set). If instead C = π<sub>RollNo</sub>(σ<sub>Age&gt;19</sub>(STUDENT)) = {S01,S02,S04}, then A ∩ C = {S01}.</p>
+
+<h2>10. MINUS / SET DIFFERENCE (−)</h2>
+<div class="box def"><h4>Definition</h4>Returns tuples present in R but <em>not</em> in S. Symbol: R − S. Note R − S ≠ S − R (not commutative).</div>
+<pre class="sql">A − B  where A={S01,S03}, B={S02,S04}  →  Result = {S01, S03}</pre>
+
+<h2>11. CARTESIAN PRODUCT (×)</h2>
+<div class="box def"><h4>Definition</h4>Combines every tuple of relation R with every tuple of relation S, producing all possible pairings. Result has (rows of R × rows of S) tuples and (columns of R + columns of S) attributes.</div>
+<pre class="sql">STUDENT × DEPARTMENT</pre>
+<p>STUDENT has 4 rows, DEPARTMENT has 3 rows → result has 4×3 = 12 rows, each combining a student with every department (most combinations are meaningless until filtered by a matching condition — this is why Cartesian Product is almost always followed by a Select, forming a Theta Join).</p>
+
+<h2>12. THETA JOIN (⋈<sub>θ</sub>)</h2>
+<div class="box def"><h4>Definition</h4>Combines Cartesian Product and Selection: R ⋈<sub>θ</sub> S = σ<sub>θ</sub>(R × S), where θ is any comparison condition (=, &lt;, &gt;, ≤, ≥, ≠), not necessarily equality.</div>
+<pre class="sql">STUDENT ⋈<sub>STUDENT.DeptID = DEPARTMENT.DeptID AND STUDENT.Age &gt; 20</sub> DEPARTMENT</pre>
+<p>This theta join first matches each student to the department with the same DeptID and also requires Age &gt; 20. With the sample data, the matched students are S02 (Business, 22), S04 (Civil, 23), and S05 (Business, 21). The condition is meaningful because it relates attributes from both input relations.</p>
+
+<h2>13. EQUIJOIN</h2>
+<div class="box def"><h4>Definition</h4>A special case of Theta Join where the condition uses only the equality (=) operator.</div>
+<pre class="sql">STUDENT ⋈<sub>STUDENT.DeptID = DEPARTMENT.DeptID</sub> DEPARTMENT</pre>
+<table><tr><th>RollNo</th><th>Name</th><th>STUDENT.DeptID</th><th>Age</th><th>DEPARTMENT.DeptID</th><th>DeptName</th></tr>
+<tr><td>S01</td><td>Aayush</td><td>D1</td><td>20</td><td>D1</td><td>Computer Science</td></tr>
+<tr><td>S02</td><td>Bibek</td><td>D2</td><td>21</td><td>D2</td><td>Business</td></tr>
+<tr><td>S03</td><td>Chitra</td><td>D1</td><td>19</td><td>D1</td><td>Computer Science</td></tr>
+<tr><td>S04</td><td>Diya</td><td>D3</td><td>22</td><td>D3</td><td>Civil</td></tr>
+</table>
+<p>Note the join column (DeptID) appears <em>twice</em> in the result — this is what distinguishes Equijoin from Natural Join.</p>
+
+<h2>14. NATURAL JOIN (⋈)</h2>
+<div class="box def"><h4>Definition</h4>An Equijoin performed on all attributes common to both relations, with the duplicate join column automatically removed from the result. Symbol: R ⋈ S (no subscript).</div>
+<pre class="sql">STUDENT ⋈ DEPARTMENT</pre>
+<table><tr><th>RollNo</th><th>Name</th><th>DeptID</th><th>Age</th><th>DeptName</th></tr>
+<tr><td>S01</td><td>Aayush</td><td>D1</td><td>20</td><td>Computer Science</td></tr>
+<tr><td>S02</td><td>Bibek</td><td>D2</td><td>21</td><td>Business</td></tr>
+<tr><td>S03</td><td>Chitra</td><td>D1</td><td>19</td><td>Computer Science</td></tr>
+<tr><td>S04</td><td>Diya</td><td>D3</td><td>22</td><td>Civil</td></tr>
+</table>
+<div class="box mistake"><h4>Common Mistake</h4>Saying Natural Join and Equijoin are identical — Natural Join is a <em>specific type</em> of Equijoin that (a) joins on <em>all</em> common attributes and (b) removes the duplicate column. A general Equijoin keeps both join columns and can join on any chosen equality condition, not necessarily all shared attributes.</div>
+
+<h2>15. DIVISION (÷)</h2>
+<div class="box def"><h4>Definition</h4>Given R(A,B) and S(B), R ÷ S returns all values of A in R that are associated with <em>every</em> value of B found in S. Used for "find X related to ALL Y" queries.</div>
+<p><strong>Example:</strong> Find students enrolled in <em>every</em> course listed in a target set S = {C1, C2}.</p>
+<pre class="sql">ENROLLS ÷ π<sub>CourseCode</sub>(σ<sub>CourseCode IN ('C1','C2')</sub>(ENROLLS))</pre>
+<p>From ENROLLS: S01→{C1,C2}, S02→{C1}, S03→{C1,C2}. Only S01 and S03 have <em>both</em> C1 and C2, so:</p>
+<pre class="sql">Result = {S01, S03}</pre>
+
+<h2>16. Relational Calculus (Fundamentals)</h2>
+<div class="box tip"><h4>Note on Scope</h4>The syllabus title mentions "Relational Algebra & Calculus" but lists only algebra operators explicitly. The following covers the fundamental relational-calculus concepts as standard supplementary academic content (Silberschatz/Ramakrishnan) so the topic named in the chapter title is not left unaddressed — this is <em>not</em> an invented extended syllabus.</div>
+<p>Relational Calculus is a <strong>declarative</strong> query language — it describes <em>what</em> data to retrieve (using logical predicates), not <em>how</em> to retrieve it (unlike algebra's step-by-step procedure).</p>
+<table>
+<tr><th>Type</th><th>Description</th><th>Notation Style</th></tr>
+<tr><td>Tuple Relational Calculus (TRC)</td><td>Variables range over tuples of a relation.</td><td>{ t &#124; P(t) } — "the set of tuples t such that predicate P(t) is true"</td></tr>
+<tr><td>Domain Relational Calculus (DRC)</td><td>Variables range over individual domain values (attribute values) rather than whole tuples.</td><td>{ &lt;x1,x2,...&gt; &#124; P(x1,x2,...) }</td></tr>
+</table>
+<p><strong>TRC Example:</strong> Find names of students in department D1:</p>
+<pre class="sql">{ t.Name | t ∈ STUDENT ∧ t.DeptID = 'D1' }</pre>
+<p><strong>DRC Example</strong> (same query): </p>
+<pre class="sql">{ &lt;n&gt; | ∃ r, d, a ( &lt;r,n,d,a&gt; ∈ STUDENT ∧ d = 'D1' ) }</pre>
+<p>Relational calculus is theoretically important because it is <em>equivalent in expressive power</em> to relational algebra (Codd's theorem) — every algebra expression has an equivalent calculus expression and vice versa. SQL itself is influenced by both: its procedural clause structure resembles algebra, while its declarative "describe the result" style resembles calculus.</p>
+
+<h2>17. UNION ALL and INTERSECT (Set-Operator Distinctions)</h2>
+<table>
+<tr><th>Operator</th><th>Behavior</th></tr>
+<tr><td>UNION</td><td>Combines two result sets and removes duplicates (matches pure relational-algebra Union, since a relation is a set).</td></tr>
+<tr><td>UNION ALL</td><td>Combines two result sets and <strong>keeps</strong> duplicates — not a pure relational-algebra operator, but a practical SQL extension since SQL tables are technically multisets (bags), not strict sets.</td></tr>
+<tr><td>INTERSECT</td><td>Returns rows common to both result sets — the SQL equivalent of relational-algebra Intersection.</td></tr>
+</table>
+<div class="box mistake"><h4>Common Mistake</h4>Assuming UNION ALL is "the same as UNION but faster" — they can return <em>different</em> row counts because UNION ALL retains duplicate rows while UNION eliminates them.</div>
+
+<h2>18. Common Mistakes (Chapter-wide)</h2>
+<ul>
+<li>Using Select when a query actually needs Project (or vice versa) — Select filters rows, Project filters columns.</li>
+<li>Forgetting union-compatibility requirement (same degree, matching domains) before applying ∪, ∩, or −.</li>
+<li>Treating Equijoin and Natural Join as identical.</li>
+<li>Confusing Division's purpose ("associated with ALL values") with a simple filter.</li>
+</ul>
+
+<h2>19. Exam Focus</h2>
+<p>High-yield: definitions + symbols of all operators, Natural Join vs Equijoin distinction, Division use-case ("for all" queries), unary vs binary classification.</p>
+
+<h2>20. VSQA — 2 Marks</h2>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Define Selection operation in relational algebra.</span><br>Selection (σ) extracts rows from a relation that satisfy a given condition; it is a horizontal, row-filtering operation.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">What is the symbol for Projection, and what does it do?</span><br>π — selects specified columns from a relation and removes duplicate rows.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Differentiate Equijoin and Natural Join in one line.</span><br>Equijoin keeps both join columns (matched by equality on a chosen condition); Natural Join joins on all common attributes and removes the duplicate column.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">List the unary operators of relational algebra.</span><br>Select (σ), Project (π), Rename (ρ).</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">When is the Division operator used?</span><br>To find tuples in one relation associated with <em>all</em> values in another relation (e.g., students enrolled in every course of a given set).</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">What is Cartesian Product?</span><br>An operator that pairs every tuple of one relation with every tuple of another, producing all possible combinations.</div>
+
+<h2>21. SQA — 7 Marks</h2>
+<div class="qa"><span class="badge sqa">7M</span><span class="q">Explain Join operations in relational algebra (Theta Join, Equijoin, Natural Join) with suitable examples.</span>
+<p>Definition of Join generally → Theta Join (general condition) with example → Equijoin (equality-only) with example table → Natural Join (common attributes, no duplicate column) with example table → comparison table summarizing the three → common mistake note.</p></div>
+
+<h2>22. LQA — 15 Marks</h2>
+<div class="qa"><span class="badge lqa">15M</span><span class="q">Explain all fundamental operations of relational algebra with definitions, notation, and examples using a sample database. Also briefly describe relational calculus and its relationship to relational algebra.</span>
+<p><strong>Suggested structure:</strong> Introduction to relational algebra as a procedural query language → sample relations (Section 3) → unary operators (Select, Project, Rename) with examples → set operators (Union, Intersection, Minus) with union-compatibility note → Cartesian Product → Join family (Theta/Equi/Natural) with comparison → Division with worked example → brief TRC/DRC explanation and their equivalence to algebra → conclusion.</p></div>
+
+<div class="revision" id="ch3-revision">
+<h3>Chapter 3 — Quick Revision Sheet</h3>
+<table>
+<tr><th>Operator</th><th>Symbol</th><th>Type</th><th>Purpose</th></tr>
+<tr><td>Select</td><td>σ</td><td>Unary</td><td>Filter rows</td></tr>
+<tr><td>Project</td><td>π</td><td>Unary</td><td>Filter columns, remove duplicates</td></tr>
+<tr><td>Rename</td><td>ρ</td><td>Unary</td><td>Rename relation/attributes</td></tr>
+<tr><td>Union</td><td>∪</td><td>Binary</td><td>Combine, remove duplicates (needs union-compatibility)</td></tr>
+<tr><td>Intersection</td><td>∩</td><td>Binary</td><td>Common tuples (needs union-compatibility)</td></tr>
+<tr><td>Set Difference</td><td>−</td><td>Binary</td><td>Tuples in R not in S</td></tr>
+<tr><td>Cartesian Product</td><td>×</td><td>Binary</td><td>All possible pairings</td></tr>
+<tr><td>Theta Join</td><td>⋈<sub>θ</sub></td><td>Binary</td><td>Product + condition (any comparison)</td></tr>
+<tr><td>Equijoin</td><td>⋈<sub>=</sub></td><td>Binary</td><td>Theta join with only "="</td></tr>
+<tr><td>Natural Join</td><td>⋈</td><td>Binary</td><td>Equijoin on all common attrs, dup column removed</td></tr>
+<tr><td>Division</td><td>÷</td><td>Binary</td><td>"Associated with ALL" queries</td></tr>
+</table>
+<p>TRC: {t | P(t)} — tuple variables. DRC: {&lt;x1,...&gt; | P(x1,...)} — domain variables. Both equal in power to relational algebra.</p>
+</div>
+<p><a class="backtop" href="#toc">↑ Back to Table of Contents</a></p>
+</section>
+
+<section class="chapter" id="ch4">
+<h1>Chapter 4 — SQL (High-Priority Chapter)</h1>
+
+<h2>1. Chapter Overview</h2>
+<p>SQL (Structured Query Language) is the standard language for defining, manipulating, and controlling relational databases. This chapter covers SQL's classification (DDL/DML/DCL), execution process, and every query-construction topic in the syllabus, taught through a single consistent sample database.</p>
+
+<h2>2. Syllabus Coverage Checklist</h2>
+<ul class="checklist">
+<li>SQL Introduction</li>
+<li>Types of SQL (DDL, DML, DCL)</li>
+<li>SQL Execution Process</li>
+<li>SQL Fundamentals</li>
+<li>Multi-table Queries</li>
+<li>Duplicate Rows</li>
+<li>Row Selection</li>
+<li>Search Conditions: Comparison (=,&lt;,&gt;,&lt;=,&gt;=), Range (BETWEEN), Set Membership (IN), Pattern Matching (LIKE), NULL Test (IS NULL)</li>
+<li>Compound Search Conditions (AND, OR, NOT)</li>
+<li>Sorting Query Results (ORDER BY)</li>
+<li>Developing Subqueries</li>
+</ul>
+
+<h2>3. SQL Introduction</h2>
+<div class="box def"><h4>Definition</h4>SQL is a declarative, standardized language used to create database objects, insert/modify/retrieve/delete data, and control access permissions in a relational DBMS. It is declarative because the user specifies <em>what</em> data is needed, and the DBMS's query optimizer determines <em>how</em> to retrieve it efficiently.</div>
+
+<h2>4. Types of SQL Commands</h2>
+<table>
+<tr><th>Category</th><th>Full Form</th><th>Purpose</th><th>Key Commands</th></tr>
+<tr><td>DDL</td><td>Data Definition Language</td><td>Defines/modifies database structure (schema).</td><td>CREATE, ALTER, DROP, TRUNCATE</td></tr>
+<tr><td>DML</td><td>Data Manipulation Language</td><td>Manipulates the actual data stored in tables.</td><td>SELECT, INSERT, UPDATE, DELETE</td></tr>
+<tr><td>DCL</td><td>Data Control Language</td><td>Controls access rights/permissions on database objects.</td><td>GRANT, REVOKE</td></tr>
+<tr><td>TCL <em>(supplementary)</em></td><td>Transaction Control Language</td><td>Manages transactions.</td><td>COMMIT, ROLLBACK, SAVEPOINT</td></tr>
+</table>
+<pre class="sql">-- DDL example
+CREATE TABLE DEPARTMENT (
+  DeptID    CHAR(3) PRIMARY KEY,
+  DeptName  VARCHAR(50) NOT NULL
+);
+
+-- DML example
+INSERT INTO DEPARTMENT VALUES ('D1', 'Computer Science');
+
+-- DCL example
+GRANT SELECT ON STUDENT TO exam_officer;</pre>
+
+<h2>5. SQL Execution Process</h2>
+<div class="diagram">
+<svg viewBox="0 0 700 130" xmlns="http://www.w3.org/2000/svg">
+<g font-family="Arial" font-size="11">
+<rect x="10" y="40" width="110" height="50" fill="#eaf2fb" stroke="#1f5fa8"/><text x="65" y="70" text-anchor="middle">SQL Query</text>
+<rect x="150" y="40" width="110" height="50" fill="#fdf3e0" stroke="#b8860b"/><text x="205" y="65" text-anchor="middle">Parser</text><text x="205" y="78" text-anchor="middle">(syntax check)</text>
+<rect x="290" y="40" width="120" height="50" fill="#fdf3e0" stroke="#b8860b"/><text x="350" y="65" text-anchor="middle">Optimizer</text><text x="350" y="78" text-anchor="middle">(best execution plan)</text>
+<rect x="440" y="40" width="120" height="50" fill="#eaf7ee" stroke="#1e7145"/><text x="500" y="65" text-anchor="middle">Execution Engine</text><text x="500" y="78" text-anchor="middle">(runs the plan)</text>
+<rect x="590" y="40" width="100" height="50" fill="#eaf2fb" stroke="#1f5fa8"/><text x="640" y="70" text-anchor="middle">Result Set</text>
+<line x1="120" y1="65" x2="150" y2="65" stroke="#333" marker-end="url(#a2)"/>
+<line x1="260" y1="65" x2="290" y2="65" stroke="#333" marker-end="url(#a2)"/>
+<line x1="410" y1="65" x2="440" y2="65" stroke="#333" marker-end="url(#a2)"/>
+<line x1="560" y1="65" x2="590" y2="65" stroke="#333" marker-end="url(#a2)"/>
+</g>
+<defs><marker id="a2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0L8,4L0,8z" fill="#333"/></marker></defs>
+</svg>
+</div>
+<table>
+<tr><th>Stage</th><th>What Happens</th></tr>
+<tr><td>1. Parsing</td><td>SQL statement is checked for correct syntax and referenced objects (tables/columns) are validated.</td></tr>
+<tr><td>2. Optimization</td><td>The query optimizer evaluates multiple possible execution plans (e.g., which index to use, join order) and picks the cheapest based on estimated cost.</td></tr>
+<tr><td>3. Execution</td><td>The chosen plan is executed by the database engine, accessing storage via the internal (physical) level.</td></tr>
+<tr><td>4. Result Return</td><td>The resulting rows are returned to the calling application/user.</td></tr>
+</table>
+
+<h2>6. SQL Fundamentals — Basic SELECT</h2>
+<pre class="sql">SELECT column1, column2, ...
+FROM table_name
+WHERE condition
+ORDER BY column;</pre>
+<p>SQL clause execution (logical) order differs from the order it's written: <strong>FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY</strong>. This matters because a WHERE clause cannot reference a column alias defined in SELECT.</p>
+
+<h2>7. Sample Database (used for the rest of this chapter)</h2>
+<p><strong>STUDENT</strong>(RollNo, Name, DeptID, Age, Email)</p>
+<table><tr><th>RollNo</th><th>Name</th><th>DeptID</th><th>Age</th><th>Email</th></tr>
+<tr><td>S01</td><td>Aayush Sharma</td><td>D1</td><td>20</td><td>aayush@gmail.com</td></tr>
+<tr><td>S02</td><td>Bibek Thapa</td><td>D2</td><td>22</td><td>bibek@gmail.com</td></tr>
+<tr><td>S03</td><td>Chitra Karki</td><td>D1</td><td>19</td><td>chitra@gmail.com</td></tr>
+<tr><td>S04</td><td>Diya Gurung</td><td>D3</td><td>23</td><td>NULL</td></tr>
+<tr><td>S05</td><td>Aayush Sharma</td><td>D2</td><td>21</td><td>aayush2@gmail.com</td></tr>
+</table>
+<p><strong>DEPARTMENT</strong>(DeptID, DeptName)</p>
+<table><tr><th>DeptID</th><th>DeptName</th></tr><tr><td>D1</td><td>Computer Science</td></tr><tr><td>D2</td><td>Business</td></tr><tr><td>D3</td><td>Civil</td></tr></table>
+<p><strong>INSTRUCTOR</strong>(InstructorID, Name, DeptID)</p>
+<table><tr><th>InstructorID</th><th>Name</th><th>DeptID</th></tr><tr><td>I1</td><td>Ramesh Koirala</td><td>D1</td></tr><tr><td>I2</td><td>Sunita Rai</td><td>D2</td></tr></table>
+<p><strong>COURSE</strong>(CourseCode, Title, Credit, InstructorID)</p>
+<table><tr><th>CourseCode</th><th>Title</th><th>Credit</th><th>InstructorID</th></tr>
+<tr><td>C1</td><td>Database Management</td><td>3</td><td>I1</td></tr>
+<tr><td>C2</td><td>Programming Fundamentals</td><td>4</td><td>I1</td></tr>
+<tr><td>C3</td><td>Marketing Basics</td><td>3</td><td>I2</td></tr>
+<tr><td>C4</td><td>Structural Analysis</td><td>4</td><td>NULL</td></tr>
+</table>
+<p><strong>ENROLLMENT</strong>(RollNo, CourseCode, EnrollDate, Grade) — composite PK (RollNo, CourseCode)</p>
+<table><tr><th>RollNo</th><th>CourseCode</th><th>EnrollDate</th><th>Grade</th></tr>
+<tr><td>S01</td><td>C1</td><td>2024-01-10</td><td>A</td></tr>
+<tr><td>S01</td><td>C2</td><td>2024-01-10</td><td>B</td></tr>
+<tr><td>S02</td><td>C3</td><td>2024-01-11</td><td>B</td></tr>
+<tr><td>S03</td><td>C1</td><td>2024-01-10</td><td>A</td></tr>
+<tr><td>S03</td><td>C2</td><td>2024-01-12</td><td>NULL</td></tr>
+<tr><td>S05</td><td>C1</td><td>2024-01-15</td><td>C</td></tr>
+</table>
+<div class="box tip"><h4>Executable sample setup</h4>For practice, the following is a coherent <strong>MySQL 8-style</strong> setup matching the sample rows above. Other DBMSs may use slightly different data types or DCL syntax.</div>
+<pre class="sql">CREATE TABLE DEPARTMENT (
+  DeptID CHAR(3) PRIMARY KEY,
+  DeptName VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE INSTRUCTOR (
+  InstructorID CHAR(3) PRIMARY KEY,
+  Name VARCHAR(50) NOT NULL,
+  DeptID CHAR(3),
+  FOREIGN KEY (DeptID) REFERENCES DEPARTMENT(DeptID)
+);
+
+CREATE TABLE STUDENT (
+  RollNo CHAR(3) PRIMARY KEY,
+  Name VARCHAR(50) NOT NULL,
+  DeptID CHAR(3),
+  Age INT,
+  Email VARCHAR(50),
+  FOREIGN KEY (DeptID) REFERENCES DEPARTMENT(DeptID)
+);
+
+CREATE TABLE COURSE (
+  CourseCode CHAR(3) PRIMARY KEY,
+  Title VARCHAR(60) NOT NULL,
+  Credit INT NOT NULL,
+  InstructorID CHAR(3),
+  FOREIGN KEY (InstructorID) REFERENCES INSTRUCTOR(InstructorID)
+);
+
+CREATE TABLE ENROLLMENT (
+  RollNo CHAR(3),
+  CourseCode CHAR(3),
+  EnrollDate DATE,
+  Grade CHAR(1),
+  PRIMARY KEY (RollNo, CourseCode),
+  FOREIGN KEY (RollNo) REFERENCES STUDENT(RollNo),
+  FOREIGN KEY (CourseCode) REFERENCES COURSE(CourseCode)
+);
+
+INSERT INTO DEPARTMENT VALUES
+('D1','Computer Science'),('D2','Business'),('D3','Civil');
+
+INSERT INTO INSTRUCTOR VALUES
+('I1','Ramesh Koirala','D1'),('I2','Sunita Rai','D2');
+
+INSERT INTO STUDENT VALUES
+('S01','Aayush Sharma','D1',20,'aayush@gmail.com'),
+('S02','Bibek Thapa','D2',22,'bibek@gmail.com'),
+('S03','Chitra Karki','D1',19,'chitra@gmail.com'),
+('S04','Diya Gurung','D3',23,NULL),
+('S05','Aayush Sharma','D2',21,'aayush2@gmail.com');
+
+INSERT INTO COURSE VALUES
+('C1','Database Management',3,'I1'),
+('C2','Programming Fundamentals',4,'I1'),
+('C3','Marketing Basics',3,'I2'),
+('C4','Structural Analysis',4,NULL);
+
+INSERT INTO ENROLLMENT VALUES
+('S01','C1','2024-01-10','A'),
+('S01','C2','2024-01-10','B'),
+('S02','C3','2024-01-11','B'),
+('S03','C1','2024-01-10','A'),
+('S03','C2','2024-01-12',NULL),
+('S05','C1','2024-01-15','C');</pre>
+
+<h2>8. Row Selection and Search Conditions</h2>
+
+<h3>8.1 Comparison Test ( = , &lt; , &gt; , &lt;= , &gt;= )</h3>
+<pre class="sql">SELECT Name, Age FROM STUDENT WHERE Age &gt;= 21;</pre>
+<table><tr><th>Name</th><th>Age</th></tr><tr><td>Bibek Thapa</td><td>22</td></tr><tr><td>Diya Gurung</td><td>23</td></tr><tr><td>Aayush Sharma</td><td>21</td></tr></table>
+<p>Explanation: filters STUDENT rows to only those where Age is greater than or equal to 21.</p>
+
+<h3>8.2 Range Test — BETWEEN</h3>
+<pre class="sql">SELECT Name, Age FROM STUDENT WHERE Age BETWEEN 20 AND 22;</pre>
+<table><tr><th>Name</th><th>Age</th></tr><tr><td>Aayush Sharma</td><td>20</td></tr><tr><td>Bibek Thapa</td><td>22</td></tr><tr><td>Aayush Sharma</td><td>21</td></tr></table>
+<div class="box mistake"><h4>Common Mistake</h4>BETWEEN is <strong>inclusive</strong> on both ends (Age BETWEEN 20 AND 22 includes 20 and 22). Students often assume it is exclusive.</div>
+
+<h3>8.3 Set Membership Test — IN</h3>
+<pre class="sql">SELECT Name, DeptID FROM STUDENT WHERE DeptID IN ('D1', 'D3');</pre>
+<table><tr><th>Name</th><th>DeptID</th></tr><tr><td>Aayush Sharma</td><td>D1</td></tr><tr><td>Chitra Karki</td><td>D1</td></tr><tr><td>Diya Gurung</td><td>D3</td></tr></table>
+<p><code>IN</code> is equivalent to a chain of OR conditions: <code>DeptID='D1' OR DeptID='D3'</code>, but more concise and readable.</p>
+
+<h3>8.4 Pattern Matching Test — LIKE</h3>
+<pre class="sql">SELECT Name FROM STUDENT WHERE Name LIKE 'A%';</pre>
+<table><tr><th>Name</th></tr><tr><td>Aayush Sharma</td></tr><tr><td>Aayush Sharma</td></tr></table>
+<table>
+<tr><th>Wildcard</th><th>Meaning</th></tr>
+<tr><td>%</td><td>Matches zero or more characters.</td></tr>
+<tr><td>_</td><td>Matches exactly one character.</td></tr>
+</table>
+<p>Example: <code>WHERE Email LIKE '%@gmail.com'</code> matches any email ending in @gmail.com. <code>WHERE Name LIKE '_ibek%'</code> matches "Bibek..." (any single character, then "ibek").</p>
+
+<h3>8.5 NULL Value Test — IS NULL</h3>
+<pre class="sql">SELECT Name FROM STUDENT WHERE Email IS NULL;</pre>
+<table><tr><th>Name</th></tr><tr><td>Diya Gurung</td></tr></table>
+<div class="box mistake"><h4>Common Mistake</h4>Writing <code>WHERE Email = NULL</code> — this is always false/unknown in SQL. NULL represents "unknown," so it cannot be compared using <code>=</code>; the correct test is <code>IS NULL</code> / <code>IS NOT NULL</code>.</div>
+
+<h3>8.6 Compound Search Conditions — AND, OR, NOT</h3>
+<pre class="sql">SELECT Name, DeptID, Age FROM STUDENT
+WHERE DeptID = 'D1' AND Age &lt; 20;</pre>
+<table><tr><th>Name</th><th>DeptID</th><th>Age</th></tr><tr><td>Chitra Karki</td><td>D1</td><td>19</td></tr></table>
+<pre class="sql">SELECT Name FROM STUDENT WHERE DeptID = 'D2' OR DeptID = 'D3';</pre>
+<table><tr><th>Name</th></tr><tr><td>Bibek Thapa</td></tr><tr><td>Diya Gurung</td></tr><tr><td>Aayush Sharma</td></tr></table>
+<pre class="sql">SELECT Name FROM STUDENT WHERE NOT DeptID = 'D1';</pre>
+<p>Returns students <em>not</em> in D1: Bibek Thapa, Diya Gurung, Aayush Sharma (S05).</p>
+<div class="box tip"><h4>Exam Tip</h4>Operator precedence: <code>NOT</code> is evaluated before <code>AND</code>, which is evaluated before <code>OR</code>. Use parentheses to make compound conditions unambiguous, e.g. <code>WHERE (DeptID='D1' OR DeptID='D2') AND Age &gt; 19</code>.</div>
+
+<h2>9. Duplicate Rows — DISTINCT</h2>
+<pre class="sql">SELECT Name FROM STUDENT;</pre>
+<p>Returns 5 rows including "Aayush Sharma" twice (S01 and S05 share the same name).</p>
+<pre class="sql">SELECT DISTINCT Name FROM STUDENT;</pre>
+<table><tr><th>Name</th></tr><tr><td>Aayush Sharma</td></tr><tr><td>Bibek Thapa</td></tr><tr><td>Chitra Karki</td></tr><tr><td>Diya Gurung</td></tr></table>
+<p><code>DISTINCT</code> removes duplicate rows from the result set — conceptually the SQL equivalent of relational algebra's Projection, which also removes duplicates automatically.</p>
+
+<h2>10. Sorting Query Results — ORDER BY</h2>
+<pre class="sql">SELECT Name, Age FROM STUDENT ORDER BY Age DESC;</pre>
+<table><tr><th>Name</th><th>Age</th></tr>
+<tr><td>Diya Gurung</td><td>23</td></tr><tr><td>Bibek Thapa</td><td>22</td></tr><tr><td>Aayush Sharma</td><td>21</td></tr><tr><td>Aayush Sharma</td><td>20</td></tr><tr><td>Chitra Karki</td><td>19</td></tr></table>
+<p><code>ASC</code> (ascending) is the default if omitted; <code>DESC</code> sorts descending. Multiple columns can be used: <code>ORDER BY DeptID ASC, Age DESC</code> sorts first by department, then by age within each department.</p>
+
+<h2>11. Multi-Table Queries (Joins in SQL)</h2>
+<pre class="sql">SELECT S.Name, D.DeptName
+FROM STUDENT S
+JOIN DEPARTMENT D ON S.DeptID = D.DeptID;</pre>
+<table><tr><th>Name</th><th>DeptName</th></tr>
+<tr><td>Aayush Sharma</td><td>Computer Science</td></tr>
+<tr><td>Bibek Thapa</td><td>Business</td></tr>
+<tr><td>Chitra Karki</td><td>Computer Science</td></tr>
+<tr><td>Diya Gurung</td><td>Civil</td></tr>
+<tr><td>Aayush Sharma</td><td>Business</td></tr>
+</table>
+<p><strong>Three-table join example</strong> — list each student with the courses they're enrolled in and grades:</p>
+<pre class="sql">SELECT S.Name, C.Title, E.Grade
+FROM STUDENT S
+JOIN ENROLLMENT E ON S.RollNo = E.RollNo
+JOIN COURSE C ON E.CourseCode = C.CourseCode
+ORDER BY S.Name, C.Title, E.Grade;</pre>
+<table><tr><th>Name</th><th>Title</th><th>Grade</th></tr>
+<tr><td>Aayush Sharma</td><td>Database Management</td><td>A</td></tr>
+<tr><td>Aayush Sharma</td><td>Database Management</td><td>C</td></tr>
+<tr><td>Aayush Sharma</td><td>Programming Fundamentals</td><td>B</td></tr>
+<tr><td>Bibek Thapa</td><td>Marketing Basics</td><td>B</td></tr>
+<tr><td>Chitra Karki</td><td>Database Management</td><td>A</td></tr>
+<tr><td>Chitra Karki</td><td>Programming Fundamentals</td><td>NULL</td></tr>
+</table>
+<div class="box mistake"><h4>Common Mistake</h4>Omitting the join condition (or writing <code>FROM STUDENT, ENROLLMENT</code> with no matching WHERE clause) silently produces a Cartesian Product — every student paired with every enrollment row — instead of the intended matched pairs.</div>
+
+<h2>12. Developing Subqueries</h2>
+<div class="box def"><h4>Definition</h4>A subquery (inner query/nested query) is a SELECT statement embedded inside another SQL statement's WHERE, FROM, or SELECT clause, used when a query's condition depends on the result of another query.</div>
+<p><strong>Subquery with IN:</strong> Find names of students enrolled in course C1.</p>
+<pre class="sql">SELECT Name FROM STUDENT
+WHERE RollNo IN (SELECT RollNo FROM ENROLLMENT WHERE CourseCode = 'C1');</pre>
+<table><tr><th>Name</th></tr><tr><td>Aayush Sharma</td></tr><tr><td>Chitra Karki</td></tr><tr><td>Aayush Sharma</td></tr></table>
+<p><strong>Subquery with comparison operator:</strong> Find students older than the average student age.</p>
+<pre class="sql">SELECT Name, Age FROM STUDENT
+WHERE Age &gt; (SELECT AVG(Age) FROM STUDENT);</pre>
+<p>Average age = (20+22+19+23+21)/5 = 21. So result: Bibek Thapa (22), Diya Gurung (23).</p>
+<p><strong>Correlated subquery:</strong> Find courses whose credit is the maximum within courses taught by the same instructor.</p>
+<pre class="sql">SELECT Title FROM COURSE C1
+WHERE Credit = (SELECT MAX(Credit) FROM COURSE C2 WHERE C2.InstructorID = C1.InstructorID);</pre>
+<p>Unlike a simple subquery (executed once), a correlated subquery re-executes for each row of the outer query because it references the outer query's table (C1) inside the inner query.</p>
+<div class="box mistake"><h4>Common Mistake</h4>Using <code>=</code> instead of <code>IN</code> when a subquery can return multiple rows — <code>WHERE RollNo = (SELECT RollNo FROM ENROLLMENT WHERE CourseCode='C1')</code> would error out or behave unpredictably since the subquery returns three rows, not one.</div>
+
+<h2>13. Common Mistakes (Chapter-wide)</h2>
+<ul>
+<li>Comparing NULL using <code>=</code> instead of <code>IS NULL</code>.</li>
+<li>Forgetting <code>DISTINCT</code> when duplicate rows are not desired.</li>
+<li>Missing join conditions, accidentally producing a Cartesian Product.</li>
+<li>Using a single-row comparison operator (<code>=</code>) with a subquery that can return multiple rows.</li>
+<li>Assuming BETWEEN is exclusive (it is inclusive).</li>
+</ul>
+
+<h2>14. Exam Focus</h2>
+<p>High-yield: DDL/DML/DCL classification, all search-condition types with correct syntax, JOIN syntax for multi-table queries, DISTINCT for duplicates, subquery vs correlated subquery.</p>
+
+<h2>15. VSQA — 2 Marks</h2>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">What is DDL? Give one example command.</span><br>Data Definition Language — defines database structure; example: CREATE TABLE.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">How do you remove duplicate rows from a SELECT result?</span><br>Use the DISTINCT keyword: SELECT DISTINCT column FROM table;</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Write a query to test for NULL values in a column.</span><br>SELECT * FROM STUDENT WHERE Email IS NULL;</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">What does the LIKE operator do? Give one wildcard.</span><br>Performs pattern matching on strings; % matches zero or more characters, _ matches exactly one.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Differentiate a simple subquery and a correlated subquery in one line.</span><br>A simple subquery executes once independently; a correlated subquery references the outer query and re-executes for each outer row.</div>
+
+<h2>16. SQA — 7 Marks</h2>
+<div class="qa"><span class="badge sqa">7M</span><span class="q">Explain the different types of search conditions in SQL with suitable examples.</span>
+<p>Definition of search condition (WHERE clause) → Comparison test → Range test (BETWEEN) → Set membership (IN) → Pattern matching (LIKE) → NULL test (IS NULL) → Compound conditions (AND/OR/NOT) — each with a query + result table from Section 8. Conclude with operator precedence note.</p></div>
+
+<h2>17. LQA — 15 Marks</h2>
+<div class="qa"><span class="badge lqa">15M</span><span class="q">Discuss SQL as a database language: its types (DDL/DML/DCL), execution process, and demonstrate multi-table queries and subqueries with examples.</span>
+<p><strong>Suggested structure:</strong> Introduction to SQL → DDL/DML/DCL table with example commands (Section 4) → SQL execution process diagram (Section 5) → sample database (Section 7) → multi-table (JOIN) query examples (Section 11) → subquery and correlated subquery examples (Section 12) → common mistakes → conclusion on SQL's role as the standard relational query language.</p></div>
+
+<div class="revision" id="ch4-revision">
+<h3>Chapter 4 — Quick Revision Sheet</h3>
+<ul>
+<li>DDL: CREATE, ALTER, DROP, TRUNCATE | DML: SELECT, INSERT, UPDATE, DELETE | DCL: GRANT, REVOKE</li>
+<li>Logical execution order: FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY</li>
+<li>Comparison: = &lt; &gt; &lt;= &gt;= | Range: BETWEEN...AND (inclusive) | Set: IN | Pattern: LIKE (% , _) | NULL: IS NULL / IS NOT NULL</li>
+<li>Compound logic precedence: NOT → AND → OR (use parentheses to be explicit)</li>
+<li>DISTINCT removes duplicate rows; missing JOIN condition ⇒ accidental Cartesian Product</li>
+<li>Subquery = nested SELECT; Correlated subquery = references outer query, re-evaluated per row</li>
+</ul>
+</div>
+<p><a class="backtop" href="#toc">↑ Back to Table of Contents</a></p>
+</section>
+
+<section class="chapter" id="ch5">
+<h1>Chapter 5 — Conceptual Design</h1>
+
+<h2>1. Chapter Overview</h2>
+<p>Conceptual design is the first phase of database design: understanding what the organization needs from the database, before any table structures or physical storage decisions are made. Output of this phase is typically an ER diagram representing entities and relationships in business terms.</p>
+
+<h2>2. Syllabus Coverage Checklist</h2>
+<ul class="checklist">
+<li>Conceptual Design Process</li>
+<li>Requirement Analysis</li>
+<li>Identify the Relation</li>
+</ul>
+
+<h2>3. Conceptual Design Process</h2>
+<div class="box def"><h4>Definition</h4>Conceptual design is the process of building a high-level, implementation-independent model of the data requirements of an organization, describing <em>what</em> data must be stored and how it relates, without deciding <em>how</em> it will be physically implemented in a specific DBMS.</div>
+<div class="diagram">
+<svg viewBox="0 0 680 130" xmlns="http://www.w3.org/2000/svg">
+<g font-family="Arial" font-size="11">
+<rect x="0" y="40" width="140" height="55" fill="#eaf2fb" stroke="#1f5fa8"/><text x="70" y="65" text-anchor="middle">Requirement</text><text x="70" y="78" text-anchor="middle">Gathering</text>
+<rect x="180" y="40" width="140" height="55" fill="#fdf3e0" stroke="#b8860b"/><text x="250" y="65" text-anchor="middle">Requirement</text><text x="250" y="78" text-anchor="middle">Analysis</text>
+<rect x="360" y="40" width="140" height="55" fill="#eaf7ee" stroke="#1e7145"/><text x="430" y="65" text-anchor="middle">Identify Entities</text><text x="430" y="78" text-anchor="middle">& Relations</text>
+<rect x="540" y="40" width="140" height="55" fill="#eaf2fb" stroke="#1f5fa8"/><text x="610" y="65" text-anchor="middle">Build ER</text><text x="610" y="78" text-anchor="middle">Diagram</text>
+<line x1="140" y1="67" x2="180" y2="67" stroke="#333" marker-end="url(#a3)"/>
+<line x1="320" y1="67" x2="360" y2="67" stroke="#333" marker-end="url(#a3)"/>
+<line x1="500" y1="67" x2="540" y2="67" stroke="#333" marker-end="url(#a3)"/>
+</g>
+<defs><marker id="a3" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0L8,4L0,8z" fill="#333"/></marker></defs>
+</svg>
+</div>
+<table>
+<tr><th>Step</th><th>Activity</th></tr>
+<tr><td>1. Requirement gathering</td><td>Interview stakeholders, review existing forms/reports/documents to understand what data the organization needs.</td></tr>
+<tr><td>2. Requirement analysis</td><td>Organize gathered requirements into a clear list of data objects, their properties, and business rules.</td></tr>
+<tr><td>3. Identify entities and relationships</td><td>From the analyzed requirements, identify candidate entities, their attributes, and how entities relate.</td></tr>
+<tr><td>4. Build the ER model</td><td>Draw the ER diagram capturing entities, attributes, relationships, cardinality, and participation constraints.</td></tr>
+<tr><td>5. Review with stakeholders</td><td>Validate the conceptual model against real business requirements before proceeding to logical design.</td></tr>
+</table>
+
+<h2>4. Requirement Analysis</h2>
+<div class="box def"><h4>Definition</h4>Requirement analysis is the systematic study of what data an organization needs to store, how that data will be used, and what business rules/constraints govern it.</div>
+<p><strong>Techniques used:</strong> interviews with users, questionnaires, studying existing documents/forms (e.g., a college's existing paper admission form, fee receipt), observing current workflows.</p>
+<p><strong>Example (college admission system):</strong> Requirement analysis for a college might reveal: "Each student belongs to exactly one department," "A student can enroll in many courses," "Each course is taught by exactly one instructor at a time," and "Fee payments must be tracked per student per semester." These become the raw material for identifying entities and relationships.</p>
+
+<h2>5. Identify the Relation (Identifying Entities and Relationships)</h2>
+<div class="box tip"><h4>Terminology note</h4>The syllabus phrase <strong>Identify the Relation</strong> is treated here as the design step of identifying the relevant data objects/entities and their relationships from requirements. At this stage, the designer is not yet finalizing physical tables; the relational schema is developed during logical design.</div>
+<p>From the analyzed requirements, the designer identifies:</p>
+<table>
+<tr><th>From Requirement Statement</th><th>Identified As</th></tr>
+<tr><td>Nouns describing a real-world object with independent existence ("student," "course," "department")</td><td>Entities</td></tr>
+<tr><td>Properties describing an entity ("name," "age," "credit hours")</td><td>Attributes</td></tr>
+<tr><td>Verbs/phrases linking two entities ("enrolls in," "teaches," "belongs to")</td><td>Relationships</td></tr>
+<tr><td>Statements about how many of one entity relate to another ("a student can enroll in many courses")</td><td>Cardinality</td></tr>
+</table>
+<p><strong>Worked example:</strong> Requirement: "The college has students who enroll in courses. Each course is taught by one instructor. Each student belongs to exactly one department." This yields:</p>
+<ul>
+<li>Entities: STUDENT, COURSE, INSTRUCTOR, DEPARTMENT</li>
+<li>Relationships: STUDENT–enrolls in–COURSE (M:N), INSTRUCTOR–teaches–COURSE (1:N), STUDENT–belongs to–DEPARTMENT (N:1)</li>
+</ul>
+<p>This directly matches the ER diagram and relational schema developed in Chapter 2, confirming the pipeline: requirements → entities/relationships → ER diagram → relational schema (Chapter 6).</p>
+
+<h2>6. Common Mistakes</h2>
+<ul>
+<li>Jumping straight to table design without first analyzing requirements — leads to missing entities/attributes discovered too late.</li>
+<li>Confusing an attribute for an entity (e.g., treating "Department" as just a text attribute of Student when it actually needs its own entity with its own attributes like DeptName, Head).</li>
+<li>Skipping stakeholder validation of the conceptual model.</li>
+</ul>
+
+<h2>7. Exam Focus</h2>
+<p>High-yield: steps of conceptual design process, techniques of requirement analysis, how to identify entities/relationships from a requirement statement (practice deriving entities from a scenario).</p>
+
+<h2>8. VSQA — 2 Marks</h2>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">What is conceptual design?</span><br>The process of building a high-level, implementation-independent model of an organization's data requirements, typically expressed as an ER diagram.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Name two techniques used in requirement analysis.</span><br>Stakeholder interviews and studying existing forms/documents.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">From "a student enrolls in many courses," identify the entities and the relationship.</span><br>Entities: STUDENT, COURSE; Relationship: enrolls in.</div>
+
+<h2>9. SQA — 7 Marks</h2>
+<div class="qa"><span class="badge sqa">7M</span><span class="q">Explain the conceptual design process with its steps and a suitable example.</span>
+<p>Definition → process diagram (Section 3) → requirement gathering and analysis → identifying entities/relationships (Section 5) → worked college example → note on stakeholder validation.</p></div>
+
+<h2>10. LQA — 15 Marks</h2>
+<div class="qa"><span class="badge lqa">15M</span><span class="q">Describe in detail the conceptual database design process, including requirement analysis and identification of relations, with a complete worked example leading to an ER diagram.</span>
+<p><strong>Suggested structure:</strong> Introduction to conceptual design's role in the database life cycle → process steps diagram → requirement analysis techniques and example → identify-the-relation table (Section 5) → full worked college example deriving entities/relationships/cardinality → resulting ER diagram (reference Chapter 2 notation) → common mistakes → conclusion linking to logical design (Chapter 6).</p></div>
+
+<div class="revision" id="ch5-revision">
+<h3>Chapter 5 — Quick Revision Sheet</h3>
+<ul>
+<li>Conceptual design = requirement gathering → analysis → identify entities/relations → build ER model → validate.</li>
+<li>Requirement analysis techniques: interviews, questionnaires, document study, observation.</li>
+<li>Nouns → entities; properties → attributes; verbs linking entities → relationships; "how many" statements → cardinality.</li>
+</ul>
+</div>
+<p><a class="backtop" href="#toc">↑ Back to Table of Contents</a></p>
+</section>
+
+<section class="chapter" id="ch6">
+<h1>Chapter 6 — Logical Design</h1>
+
+<h2>1. Chapter Overview</h2>
+<p>Logical design translates the conceptual (ER) model into a concrete relational schema: tables, columns, primary keys, foreign keys, and constraints — still independent of a specific physical storage engine, but now expressed in relational-model terms ready for SQL implementation.</p>
+
+<h2>2. Syllabus Coverage Checklist</h2>
+<ul class="checklist">
+<li>Logical Design Process</li>
+<li>Design Entity Relation Diagram</li>
+<li>Create Tables and Constraint</li>
+<li>Create Referential Keys</li>
+</ul>
+
+<h2>3. Logical Design Process</h2>
+<div class="box def"><h4>Definition</h4>Logical design is the process of converting the conceptual ER model into a logical schema composed of relations (tables), expressed independent of any particular DBMS product, but fully specifying tables, attributes, keys, and constraints.</div>
+<table>
+<tr><th>Step</th><th>Activity</th></tr>
+<tr><td>1. Review/refine ER diagram</td><td>Confirm entities, attributes, relationships, and cardinalities are finalized from conceptual design.</td></tr>
+<tr><td>2. Map entities to tables</td><td>Each strong entity becomes a table; its attributes become columns.</td></tr>
+<tr><td>3. Map relationships</td><td>1:N relationships → foreign key placed on the "many" side; M:N relationships → a new bridge/junction table.</td></tr>
+<tr><td>4. Define primary keys</td><td>Choose the primary key for each table from its candidate keys.</td></tr>
+<tr><td>5. Define foreign keys/constraints</td><td>Add referential integrity constraints, NOT NULL, UNIQUE, CHECK as needed.</td></tr>
+<tr><td>6. Validate against requirements</td><td>Ensure the logical schema fully supports the queries/business rules identified during conceptual design.</td></tr>
+</table>
+
+<h2>4. Design Entity-Relation Diagram (Refining the ER Diagram for Logical Design)</h2>
+<p>At the logical design stage, the ER diagram from Chapter 5 is refined with concrete data types and finalized keys, ready for direct translation. Using the college example:</p>
+<div class="diagram">
+<svg viewBox="0 0 640 220" xmlns="http://www.w3.org/2000/svg">
+<rect x="20" y="20" width="140" height="60" fill="#eaf2fb" stroke="#1f5fa8"/><text x="90" y="45" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold">STUDENT</text><text x="90" y="62" text-anchor="middle" font-family="Arial" font-size="10">RollNo(PK), Name, DeptID(FK)</text>
+<rect x="240" y="20" width="150" height="60" fill="#fdf3e0" stroke="#b8860b"/><text x="315" y="45" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold">DEPARTMENT</text><text x="315" y="62" text-anchor="middle" font-family="Arial" font-size="10">DeptID(PK), DeptName</text>
+<rect x="20" y="140" width="140" height="60" fill="#eaf7ee" stroke="#1e7145"/><text x="90" y="165" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold">ENROLLMENT</text><text x="90" y="182" text-anchor="middle" font-family="Arial" font-size="10">RollNo(FK),CourseCode(FK)</text>
+<rect x="240" y="140" width="150" height="60" fill="#eaf2fb" stroke="#1f5fa8"/><text x="315" y="165" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold">COURSE</text><text x="315" y="182" text-anchor="middle" font-family="Arial" font-size="10">CourseCode(PK), Title</text>
+<line x1="160" y1="50" x2="240" y2="50" stroke="#333" stroke-width="2"/>
+<line x1="90" y1="80" x2="90" y2="140" stroke="#333" stroke-width="2"/>
+<line x1="315" y1="80" x2="315" y2="140" stroke="#333" stroke-width="2"/>
+<text x="200" y="45" font-family="Arial" font-size="10">FK</text>
+</svg>
+</div>
+<p>This diagram-with-keys form is the immediate precursor to CREATE TABLE statements.</p>
+
+<h2>5. Create Tables and Constraints</h2>
+<pre class="sql">CREATE TABLE DEPARTMENT (
+  DeptID    CHAR(3) PRIMARY KEY,
+  DeptName  VARCHAR(50) NOT NULL UNIQUE
+);
+
+CREATE TABLE STUDENT (
+  RollNo   CHAR(3) PRIMARY KEY,
+  Name     VARCHAR(50) NOT NULL,
+  DeptID   CHAR(3),
+  Age      INT CHECK (Age &gt; 0),
+  CONSTRAINT fk_student_dept FOREIGN KEY (DeptID) REFERENCES DEPARTMENT(DeptID)
+);
+
+CREATE TABLE COURSE (
+  CourseCode  CHAR(3) PRIMARY KEY,
+  Title       VARCHAR(60) NOT NULL,
+  Credit      INT
+);
+
+CREATE TABLE ENROLLMENT (
+  RollNo      CHAR(3),
+  CourseCode  CHAR(3),
+  EnrollDate  DATE,
+  Grade       CHAR(1),
+  PRIMARY KEY (RollNo, CourseCode),
+  FOREIGN KEY (RollNo) REFERENCES STUDENT(RollNo),
+  FOREIGN KEY (CourseCode) REFERENCES COURSE(CourseCode)
+);</pre>
+<table>
+<tr><th>Constraint</th><th>Purpose</th></tr>
+<tr><td>PRIMARY KEY</td><td>Uniquely identifies each row; implicitly NOT NULL + UNIQUE.</td></tr>
+<tr><td>FOREIGN KEY</td><td>Enforces that a value must exist in the referenced table's primary key (referential integrity).</td></tr>
+<tr><td>NOT NULL</td><td>Disallows missing values for that column.</td></tr>
+<tr><td>UNIQUE</td><td>Prevents duplicate non-NULL values; NULL handling is DBMS-dependent. Unlike PRIMARY KEY, UNIQUE does not generally imply NOT NULL.</td></tr>
+<tr><td>CHECK</td><td>Enforces a custom condition on column values (e.g., Age &gt; 0).</td></tr>
+</table>
+
+<h2>6. Create Referential Keys (Referential Integrity)</h2>
+<div class="box def"><h4>Definition</h4>Referential integrity is the rule that a foreign key value in a child table must either match an existing primary key value in the parent table, or be NULL. This prevents "orphan" records that reference nonexistent parent rows.</div>
+<pre class="sql">-- This INSERT fails referential integrity because 'D9' does not exist in DEPARTMENT:
+INSERT INTO STUDENT VALUES ('S06','Rita Basnet','D9',20);
+-- ERROR: foreign key constraint fails
+
+-- Referential actions can be specified for updates/deletes:
+FOREIGN KEY (DeptID) REFERENCES DEPARTMENT(DeptID)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE;</pre>
+<table>
+<tr><th>Referential Action</th><th>Effect on Child Rows When Parent Row Is Deleted/Updated</th></tr>
+<tr><td>CASCADE</td><td>Automatically delete/update matching child rows.</td></tr>
+<tr><td>SET NULL</td><td>Set the foreign key in child rows to NULL.</td></tr>
+<tr><td>RESTRICT / NO ACTION</td><td>Prevent the delete/update if matching child rows exist.</td></tr>
+</table>
+
+<h2>7. Common Mistakes</h2>
+<ul>
+<li>Forgetting to declare foreign keys — this loses referential integrity enforcement even if data happens to be consistent initially.</li>
+<li>Placing the foreign key on the wrong side of a 1:N relationship (it always goes on the "many" side).</li>
+<li>Not defining a composite primary key for a resolved M:N junction table (e.g., ENROLLMENT), which then allows duplicate enrollment rows.</li>
+</ul>
+
+<h2>8. Exam Focus</h2>
+<p>High-yield: logical design process steps, CREATE TABLE with keys/constraints, referential integrity and ON DELETE/ON UPDATE actions.</p>
+
+<h2>9. VSQA — 2 Marks</h2>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">What is referential integrity?</span><br>The rule that a foreign key value must match an existing primary key value in the referenced table, or be NULL.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Where is the foreign key placed in a 1:N relationship?</span><br>On the "many" side of the relationship.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Name two SQL constraints used in logical design.</span><br>PRIMARY KEY and FOREIGN KEY (also acceptable: NOT NULL, UNIQUE, CHECK).</div>
+
+<h2>10. SQA — 7 Marks</h2>
+<div class="qa"><span class="badge sqa">7M</span><span class="q">Explain the logical design process and demonstrate how an ER diagram is translated into relational tables with constraints.</span>
+<p>Definition of logical design → process steps (Section 3) → mapping rules (entity→table, 1:N→FK on many side, M:N→junction table) → worked CREATE TABLE example (Section 5) → referential integrity note.</p></div>
+
+<h2>11. LQA — 15 Marks</h2>
+<div class="qa"><span class="badge lqa">15M</span><span class="q">Discuss the logical database design process in detail, including entity-relation-to-table mapping, key and constraint definition, and referential integrity, using a complete worked example.</span>
+<p><strong>Suggested structure:</strong> Introduction & role between conceptual and physical design → process steps → refined ER-with-keys diagram (Section 4) → full CREATE TABLE script with PK/FK/CHECK constraints (Section 5) → referential integrity concept + ON DELETE/ON UPDATE actions (Section 6) → common mistakes → conclusion.</p></div>
+
+<div class="revision" id="ch6-revision">
+<h3>Chapter 6 — Quick Revision Sheet</h3>
+<ul>
+<li>Logical design: ER model → tables + keys + constraints (DBMS-independent, but implementation-ready).</li>
+<li>Mapping rule: entity → table; 1:N → FK on many side; M:N → junction table with composite PK.</li>
+<li>Constraints: PRIMARY KEY, FOREIGN KEY, NOT NULL, UNIQUE, CHECK.</li>
+<li>Referential actions: CASCADE, SET NULL, RESTRICT/NO ACTION.</li>
+</ul>
+</div>
+<p><a class="backtop" href="#toc">↑ Back to Table of Contents</a></p>
+</section>
+
+<section class="chapter" id="ch7">
+<h1>Chapter 7 — Normalization</h1>
+
+<h2>1. Chapter Overview</h2>
+<p>Normalization is a step-by-step process of organizing relations to minimize data redundancy and avoid update/insertion/deletion anomalies, by progressively removing undesirable functional dependencies. This is one of the highest-yield board topics — expect both theory and worked-decomposition questions.</p>
+
+<h2>2. Syllabus Coverage Checklist</h2>
+<ul class="checklist">
+<li>Use of Normalization</li>
+<li>Different forms of Normalization (1NF, 2NF, 3NF)</li>
+<li>(Supporting) Functional dependencies, partial dependency, transitive dependency — introduced as needed to explain the normal forms</li>
+</ul>
+
+<h2>3. Use of Normalization (Why We Normalize)</h2>
+<div class="box def"><h4>Definition</h4>Normalization is the systematic process of decomposing relations to eliminate redundancy and the anomalies that redundancy causes, guided by functional dependencies among attributes.</div>
+<p><strong>Problems solved by normalization (anomalies in an unnormalized relation):</strong></p>
+<table>
+<tr><th>Anomaly</th><th>Description</th><th>Example</th></tr>
+<tr><td>Update Anomaly</td><td>The same fact is stored in multiple rows; updating it in only one place leaves the data inconsistent.</td><td>If a course's title is repeated in every enrollment row and you fix a typo in one row but not others, the title becomes inconsistent.</td></tr>
+<tr><td>Insertion Anomaly</td><td>Cannot insert a fact about one entity without also having data about another, unrelated entity.</td><td>Cannot add a new course unless at least one student has already enrolled in it, if course details are only stored inside the enrollment table.</td></tr>
+<tr><td>Deletion Anomaly</td><td>Deleting a row unintentionally removes other, still-needed information.</td><td>If the only student enrolled in a course is deleted, the course's details are lost too.</td></tr>
+</table>
+<p><strong>Functional Dependency (FD):</strong> An attribute B is functionally dependent on attribute A (written A → B) if each value of A is associated with exactly one value of B. FDs are the formal basis for identifying normalization violations.</p>
+
+<h2>4. Different Forms of Normalization — Worked Example</h2>
+<p><strong>Unnormalized Relation (UNF)</strong> — a college enrollment report, one row per student holding multiple courses in a single cell:</p>
+<table><tr><th>RollNo</th><th>StudentName</th><th>DeptID</th><th>DeptName</th><th>Courses (CourseCode, Title, Credit)</th></tr>
+<tr><td>S01</td><td>Aayush Sharma</td><td>D1</td><td>Computer Science</td><td>(C1, DB Mgmt, 3), (C2, Prog. Fund., 4)</td></tr>
+<tr><td>S02</td><td>Bibek Thapa</td><td>D2</td><td>Business</td><td>(C3, Marketing, 3)</td></tr>
+</table>
+<p>This is unnormalized because the "Courses" column holds a repeating group (multiple values per cell) — it violates the very definition of a relation, where each cell must hold a single atomic value.</p>
+
+<h3>Step 1 — First Normal Form (1NF)</h3>
+<div class="box def"><h4>Rule</h4>A relation is in 1NF if every attribute contains only atomic (indivisible) values, and there are no repeating groups.</div>
+<p><strong>Transformation:</strong> flatten the repeating "Courses" group into separate rows.</p>
+<table><tr><th>RollNo</th><th>StudentName</th><th>DeptID</th><th>DeptName</th><th>CourseCode</th><th>Title</th><th>Credit</th></tr>
+<tr><td>S01</td><td>Aayush Sharma</td><td>D1</td><td>Computer Science</td><td>C1</td><td>DB Mgmt</td><td>3</td></tr>
+<tr><td>S01</td><td>Aayush Sharma</td><td>D1</td><td>Computer Science</td><td>C2</td><td>Prog. Fund.</td><td>4</td></tr>
+<tr><td>S02</td><td>Bibek Thapa</td><td>D2</td><td>Business</td><td>C3</td><td>Marketing</td><td>3</td></tr>
+</table>
+<p>Call this relation <strong>ENROLL_REPORT</strong>(RollNo, StudentName, DeptID, DeptName, CourseCode, Title, Credit). Primary key: (RollNo, CourseCode) — composite, since neither alone is unique.</p>
+<p><strong>Functional dependencies present:</strong></p>
+<pre class="sql">RollNo → StudentName, DeptID, DeptName      (partial — depends only on RollNo, part of the key)
+DeptID → DeptName                            (transitive — DeptName depends on DeptID, not directly on the key)
+CourseCode → Title, Credit                   (partial — depends only on CourseCode, part of the key)
+(RollNo, CourseCode) → (all attributes)      (full functional dependency on the whole key)</pre>
+
+<h3>Step 2 — Second Normal Form (2NF)</h3>
+<div class="box def"><h4>Rule</h4>A relation is in 2NF if it is in 1NF <em>and</em> has no <strong>partial dependency</strong> — i.e., no non-key attribute depends on only part of a composite primary key. (2NF is only a concern when the primary key is composite.)</div>
+<p><strong>Problem in ENROLL_REPORT:</strong> StudentName, DeptID, DeptName depend only on RollNo (part of the key); Title, Credit depend only on CourseCode (the other part) — both are partial dependencies.</p>
+<p><strong>Decomposition to remove partial dependencies:</strong></p>
+<pre class="sql">STUDENT_2NF(<u>RollNo</u>, StudentName, DeptID, DeptName)
+COURSE_2NF(<u>CourseCode</u>, Title, Credit)
+ENROLLS_2NF(<u>RollNo</u>, <u>CourseCode</u>)</pre>
+<p>Now every non-key attribute in STUDENT_2NF and COURSE_2NF depends on the <em>whole</em> (single-attribute) key of its own table, and ENROLLS_2NF holds only the composite key linking them. 2NF is satisfied.</p>
+
+<h3>Step 3 — Third Normal Form (3NF)</h3>
+<div class="box def"><h4>Rule</h4>A relation is in 3NF if it is in 2NF <em>and</em> has no <strong>transitive dependency</strong> — i.e., no non-key attribute depends on another non-key attribute (rather than depending directly on the primary key).</div>
+<p><strong>Problem in STUDENT_2NF(RollNo, StudentName, DeptID, DeptName):</strong> DeptName depends on DeptID, and DeptID depends on RollNo — so DeptName depends on RollNo only <em>transitively</em>, through DeptID. This still causes an update anomaly (fixing a department's name requires updating it in every student row belonging to that department).</p>
+<p><strong>Decomposition to remove the transitive dependency:</strong></p>
+<pre class="sql">STUDENT_3NF(<u>RollNo</u>, StudentName, DeptID)
+DEPARTMENT_3NF(<u>DeptID</u>, DeptName)
+COURSE_3NF(<u>CourseCode</u>, Title, Credit)
+ENROLLS_3NF(<u>RollNo</u>, <u>CourseCode</u>)</pre>
+<p>Now every non-key attribute in every relation depends <em>directly and only</em> on its own table's primary key. All four relations are in 3NF.</p>
+
+<div class="diagram">
+<svg viewBox="0 0 680 160" xmlns="http://www.w3.org/2000/svg">
+<g font-family="Arial" font-size="11">
+<rect x="0" y="55" width="120" height="45" fill="#fbe9e7" stroke="#b3261e"/><text x="60" y="80" text-anchor="middle">UNF</text>
+<rect x="150" y="55" width="120" height="45" fill="#eaf2fb" stroke="#1f5fa8"/><text x="210" y="80" text-anchor="middle">1NF</text>
+<rect x="300" y="55" width="120" height="45" fill="#fdf3e0" stroke="#b8860b"/><text x="360" y="80" text-anchor="middle">2NF</text>
+<rect x="450" y="55" width="120" height="45" fill="#eaf7ee" stroke="#1e7145"/><text x="510" y="80" text-anchor="middle">3NF</text>
+<text x="120" y="45" font-size="10">remove</text><text x="120" y="115" font-size="10">repeating groups</text>
+<text x="270" y="45" font-size="10">remove</text><text x="270" y="115" font-size="10">partial dependency</text>
+<text x="420" y="45" font-size="10">remove</text><text x="420" y="115" font-size="10">transitive dependency</text>
+<line x1="120" y1="77" x2="150" y2="77" stroke="#333" marker-end="url(#a4)"/>
+<line x1="270" y1="77" x2="300" y2="77" stroke="#333" marker-end="url(#a4)"/>
+<line x1="420" y1="77" x2="450" y2="77" stroke="#333" marker-end="url(#a4)"/>
+</g>
+<defs><marker id="a4" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0L8,4L0,8z" fill="#333"/></marker></defs>
+</svg>
+</div>
+
+<h2>5. Summary Table of Normal Forms</h2>
+<table>
+<tr><th>Normal Form</th><th>Condition</th><th>Removes</th></tr>
+<tr><td>1NF</td><td>All attributes atomic; no repeating groups.</td><td>Multi-valued/composite cells.</td></tr>
+<tr><td>2NF</td><td>1NF + no partial dependency on a composite key.</td><td>Non-key attributes depending on only part of the key.</td></tr>
+<tr><td>3NF</td><td>2NF + no transitive dependency.</td><td>Non-key attributes depending on other non-key attributes.</td></tr>
+</table>
+<div class="box tip"><h4>Note on Scope</h4>The syllabus lists "different forms of normalization" without naming BCNF/4NF/5NF explicitly. 1NF, 2NF, and 3NF are covered in full worked detail above as the syllabus-required forms. If your instructor's slides also require Boyce-Codd Normal Form (BCNF), note it briefly as supplementary: <strong>BCNF</strong> strengthens 3NF by requiring that for every non-trivial FD X→Y, X must be a superkey (this matters mainly when a relation has multiple overlapping candidate keys — a case not present in the example above).</div>
+
+<h2>6. Common Mistakes</h2>
+<ul>
+<li>Trying to check for 2NF violations when the primary key is a single attribute (partial dependency is only possible with a composite key).</li>
+<li>Confusing partial dependency (depends on <em>part</em> of the key) with transitive dependency (depends on a <em>non-key attribute</em>).</li>
+<li>Decomposing a relation without checking that the decomposition is lossless (i.e., joining the decomposed relations back together via natural join must reproduce the original data exactly).</li>
+<li>Stopping at 1NF and assuming redundancy is gone — 1NF alone does not remove partial or transitive dependencies.</li>
+</ul>
+
+<h2>7. Exam Focus</h2>
+<p>High-yield: definitions of 1NF/2NF/3NF, anomalies normalization prevents, full step-by-step decomposition from UNF to 3NF (practice reproducing the worked example above with a different scenario, e.g. a hospital or library relation).</p>
+
+<h2>8. VSQA — 2 Marks</h2>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Define normalization.</span><br>The process of organizing relations to minimize redundancy and eliminate update/insertion/deletion anomalies, guided by functional dependencies.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">What is a partial dependency?</span><br>A non-key attribute depending on only part of a composite primary key.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">What is a transitive dependency?</span><br>A non-key attribute depending on another non-key attribute rather than directly on the primary key.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">State the condition for a relation to be in 1NF.</span><br>All attribute values must be atomic (indivisible), with no repeating groups.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Name one anomaly caused by unnormalized data.</span><br>Update anomaly (also acceptable: insertion anomaly, deletion anomaly).</div>
+
+<h2>9. SQA — 7 Marks</h2>
+<div class="qa"><span class="badge sqa">7M</span><span class="q">Explain 1NF, 2NF, and 3NF with definitions and a worked example.</span>
+<p>Definitions of all three forms (Section 5 table) → the ENROLL_REPORT unnormalized relation → step-by-step decomposition to 1NF → 2NF → 3NF (Section 4), showing the resulting relations at each stage → brief note on why each step is necessary (which anomaly it removes).</p></div>
+<div class="qa"><span class="badge sqa">7M</span><span class="q">Explain the anomalies that occur in an unnormalized database with examples.</span>
+<p>Definition of anomaly → Update, Insertion, Deletion anomalies each with a definition and a concrete example (Section 3 table) → brief conclusion that normalization is the systematic solution to all three.</p></div>
+
+<h2>10. LQA — 15 Marks</h2>
+<div class="qa"><span class="badge lqa">15M</span><span class="q">Discuss the use of normalization and demonstrate the complete normalization process (UNF → 1NF → 2NF → 3NF) for a given unnormalized relation, identifying all functional dependencies at each stage.</span>
+<p><strong>Suggested structure:</strong> Why normalize (redundancy + three anomalies with examples) → functional dependency definition → present the UNF relation → identify all FDs → decompose to 1NF (remove repeating groups) → identify partial dependencies → decompose to 2NF → identify transitive dependency → decompose to 3NF → final set of 3NF relations with keys → summary table of normal forms → common mistakes → conclusion.</p></div>
+
+<div class="revision" id="ch7-revision">
+<h3>Chapter 7 — Quick Revision Sheet</h3>
+<ul>
+<li>Anomalies: Update, Insertion, Deletion — all caused by redundancy.</li>
+<li>FD (A→B): each value of A maps to exactly one value of B.</li>
+<li>1NF: atomic values, no repeating groups.</li>
+<li>2NF: 1NF + no partial dependency (relevant only with composite keys).</li>
+<li>3NF: 2NF + no transitive dependency (non-key → non-key).</li>
+<li>Worked pipeline: ENROLL_REPORT(UNF) → flatten repeating group (1NF) → split off RollNo-only and CourseCode-only attributes (2NF) → split DeptName out of STUDENT since it depends on DeptID not RollNo (3NF).</li>
+</ul>
+</div>
+<p><a class="backtop" href="#toc">↑ Back to Table of Contents</a></p>
+</section>
+
+<section class="chapter" id="ch8">
+<h1>Chapter 8 — Database Technology</h1>
+
+<h2>1. Chapter Overview</h2>
+<p>This chapter surveys categories of database technology beyond the basic relational model, how client-server architecture structures database access over a network, and the distinction between transactional (OLTP) and analytical (OLAP) database processing.</p>
+
+<h2>2. Syllabus Coverage Checklist</h2>
+<ul class="checklist">
+<li>Different Database Technologies</li>
+<li>Database Client & Server Processing</li>
+<li>OLAP & OLTP Database Techniques</li>
+</ul>
+
+<h2>3. Different Database Technologies</h2>
+<table>
+<tr><th>Technology</th><th>Description</th><th>Example</th></tr>
+<tr><td>Relational DBMS (RDBMS)</td><td>Table-based, SQL-driven; commonly supports transactions and integrity constraints, including ACID behavior for transactional workloads.</td><td>MySQL, PostgreSQL, Oracle</td></tr>
+<tr><td>Object-Oriented DBMS</td><td>Stores data as objects with attributes and methods, suited to complex data types.</td><td>db4o</td></tr>
+<tr><td>NoSQL DBMS</td><td>Non-relational systems with flexible data models; many are designed for horizontal scaling and particular workload patterns. "NoSQL" does not mean "no schema."</td><td>MongoDB (document), Cassandra (wide-column), Redis (key-value)</td></tr>
+<tr><td>Distributed DBMS</td><td>Data spread across multiple physical sites, unified logically.</td><td>Google Spanner</td></tr>
+<tr><td>Cloud Database</td><td>Hosted and managed on cloud infrastructure, offering elastic scaling.</td><td>Amazon RDS, Azure SQL Database</td></tr>
+<tr><td>In-Memory Database</td><td>Stores data primarily in RAM for very high-speed access.</td><td>Redis, SAP HANA</td></tr>
+</table>
+
+<h2>4. Database Client & Server Processing</h2>
+<div class="box def"><h4>Definition</h4>Client-server database processing splits the workload between a <strong>client</strong> (application/user interface that requests data) and a <strong>server</strong> (DBMS engine that stores data and processes queries), communicating over a network.</div>
+<div class="diagram">
+<svg viewBox="0 0 560 160" xmlns="http://www.w3.org/2000/svg">
+<g font-family="Arial" font-size="12">
+<rect x="20" y="50" width="140" height="60" fill="#eaf2fb" stroke="#1f5fa8"/><text x="90" y="75" text-anchor="middle" font-weight="bold">Client</text><text x="90" y="92" text-anchor="middle" font-size="10">Sends SQL query</text>
+<rect x="400" y="50" width="140" height="60" fill="#eaf7ee" stroke="#1e7145"/><text x="470" y="75" text-anchor="middle" font-weight="bold">Database Server</text><text x="470" y="92" text-anchor="middle" font-size="10">Processes & stores data</text>
+<line x1="160" y1="70" x2="400" y2="70" stroke="#333" stroke-width="2" marker-end="url(#a5)"/>
+<text x="280" y="60" text-anchor="middle" font-size="10">Request (query)</text>
+<line x1="400" y1="95" x2="160" y2="95" stroke="#333" stroke-width="2" marker-end="url(#a5)"/>
+<text x="280" y="115" text-anchor="middle" font-size="10">Response (result set)</text>
+</g>
+<defs><marker id="a5" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0L8,4L0,8z" fill="#333"/></marker></defs>
+</svg>
+</div>
+<table>
+<tr><th>Component</th><th>Responsibility</th></tr>
+<tr><td>Client (front end)</td><td>User interface, input validation, sending SQL requests, displaying results — e.g., a college's admission web portal.</td></tr>
+<tr><td>Server (back end)</td><td>Query processing, storage management, concurrency control, security, transaction management.</td></tr>
+<tr><td>Network</td><td>Carries requests and responses between client and server (LAN/WAN/Internet).</td></tr>
+</table>
+<p><strong>Advantage:</strong> centralizing data on the server ensures all clients see consistent, up-to-date data, while heavy processing (query execution) is offloaded from lightweight client devices. <strong>Example:</strong> a mobile banking or e-wallet app (eSewa/Khalti-style) acts as the client, sending transaction requests to a centralized bank database server.</p>
+
+<h2>5. OLTP vs OLAP</h2>
+<div class="box def"><h4>Definitions</h4>
+<strong>OLTP (Online Transaction Processing):</strong> Database technique optimized for fast, frequent, small read/write transactions supporting day-to-day operations.<br>
+<strong>OLAP (Online Analytical Processing):</strong> Database technique optimized for complex analytical queries over large historical datasets, used for decision support and reporting.
+</div>
+<table>
+<tr><th>Basis</th><th>OLTP</th><th>OLAP</th></tr>
+<tr><td>Purpose</td><td>Day-to-day operational transactions.</td><td>Analysis, reporting, decision support.</td></tr>
+<tr><td>Query type</td><td>Simple, short (insert/update/select single records).</td><td>Complex, aggregate queries over large data (SUM, AVG, GROUP BY across millions of rows).</td></tr>
+<tr><td>Data volume per query</td><td>Small.</td><td>Large.</td></tr>
+<tr><td>Data currency</td><td>Current, real-time data.</td><td>Historical, often summarized data.</td></tr>
+<tr><td>Design</td><td>Normalized schema (minimizes redundancy for fast writes).</td><td>Denormalized/star-schema (optimized for fast read/aggregation).</td></tr>
+<tr><td>Users</td><td>Front-line staff, customers (e.g., bank tellers, ATM users).</td><td>Analysts, managers, executives.</td></tr>
+<tr><td>Example</td><td>Processing an eSewa payment transaction.</td><td>Generating a quarterly sales-trend report from a data warehouse.</td></tr>
+</table>
+<div class="box mistake"><h4>Common Mistake</h4>Assuming OLAP databases are simply "bigger OLTP databases." OLAP systems use fundamentally different schema design (denormalized, often star/snowflake schemas) because their goal is fast aggregation across history, not fast single-record transactions.</div>
+
+<h2>6. Common Mistakes (Chapter-wide)</h2>
+<ul>
+<li>Confusing NoSQL with "no schema at all" — many NoSQL systems still enforce structure at the application level.</li>
+<li>Assuming client-server architecture requires the client and server to be on different physical machines — they can also run on the same machine (e.g., a local MySQL server + a desktop admin tool).</li>
+</ul>
+
+<h2>7. Exam Focus</h2>
+<p>High-yield: OLTP vs OLAP comparison table, client-server processing model, categories of database technology with examples.</p>
+
+<h2>8. VSQA — 2 Marks</h2>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Define OLTP.</span><br>A database processing technique optimized for fast, frequent, small transactions supporting day-to-day operations.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Define OLAP.</span><br>A database processing technique optimized for complex analytical queries over large historical datasets for decision support.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">What is the role of the client in client-server database processing?</span><br>Provides the user interface and sends query requests to the server; displays returned results.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Give one example of a NoSQL database.</span><br>MongoDB (also acceptable: Cassandra, Redis).</div>
+
+<h2>9. SQA — 7 Marks</h2>
+<div class="qa"><span class="badge sqa">7M</span><span class="q">Compare OLTP and OLAP database techniques with examples.</span>
+<p>Definitions of OLTP and OLAP → comparison table (Section 5) → one OLTP example and one OLAP example → brief note on why their schema designs differ (normalized vs denormalized).</p></div>
+
+<h2>10. LQA — 15 Marks</h2>
+<div class="qa"><span class="badge lqa">15M</span><span class="q">Discuss different database technologies, explain client-server database processing, and compare OLTP with OLAP in detail.</span>
+<p><strong>Suggested structure:</strong> Overview of database technology categories (Section 3 table) → client-server architecture diagram and component responsibilities (Section 4) → OLTP definition and characteristics → OLAP definition and characteristics → full comparison table → real-world example spanning both (e.g., a bank's OLTP system for transactions feeding an OLAP data warehouse for reporting) → conclusion.</p></div>
+
+<div class="revision" id="ch8-revision">
+<h3>Chapter 8 — Quick Revision Sheet</h3>
+<ul>
+<li>Technologies: RDBMS, OODBMS, NoSQL, Distributed DBMS, Cloud DB, In-Memory DB.</li>
+<li>Client-server: client sends query → server processes/stores data → returns result set.</li>
+<li>OLTP = operational, small/fast transactions, normalized schema. OLAP = analytical, large aggregate queries, denormalized/star schema.</li>
+</ul>
+</div>
+<p><a class="backtop" href="#toc">↑ Back to Table of Contents</a></p>
+</section>
+
+<section class="chapter" id="ch9">
+<h1>Chapter 9 — Distributed Architecture</h1>
+
+<h2>1. Chapter Overview</h2>
+<p>A distributed database stores data across multiple physically separate sites connected by a network, but presents a single logical database to users. This chapter covers its architecture and weighs its advantages against its disadvantages.</p>
+
+<h2>2. Syllabus Coverage Checklist</h2>
+<ul class="checklist">
+<li>Distributed Database Architecture</li>
+<li>Advantages of Distributed Database</li>
+<li>Disadvantages of Distributed Database</li>
+</ul>
+
+<h2>3. Distributed Database Architecture</h2>
+<div class="box def"><h4>Definition</h4>A Distributed Database Management System (DDBMS) manages a database that is physically distributed across multiple sites (nodes) on a network, while making the distribution transparent to the end user — the user interacts with it as if it were a single database.</div>
+<div class="box mistake"><h4>Common Mistake</h4>A distributed database is <em>not</em> simply "having multiple database servers." It must present a single logical view to applications and coordinate operations (queries, transactions) across sites — merely running independent, unconnected databases on separate machines is not a distributed database.</div>
+<div class="diagram">
+<svg viewBox="0 0 620 250" xmlns="http://www.w3.org/2000/svg">
+<g font-family="Arial" font-size="11">
+<rect x="205" y="10" width="210" height="48" rx="6" fill="#eaf2fb" stroke="#1f5fa8"/>
+<text x="310" y="31" text-anchor="middle" font-weight="bold">Global Schema / DDBMS Coordination</text>
+<text x="310" y="47" text-anchor="middle" font-size="9">Logical global view; not a central data store</text>
+<rect x="30" y="120" width="150" height="58" rx="6" fill="#fdf3e0" stroke="#b8860b"/>
+<text x="105" y="143" text-anchor="middle" font-weight="bold">Site A</text><text x="105" y="160" text-anchor="middle" font-size="9">Local DBMS + Data</text>
+<rect x="235" y="120" width="150" height="58" rx="6" fill="#fdf3e0" stroke="#b8860b"/>
+<text x="310" y="143" text-anchor="middle" font-weight="bold">Site B</text><text x="310" y="160" text-anchor="middle" font-size="9">Local DBMS + Data</text>
+<rect x="440" y="120" width="150" height="58" rx="6" fill="#fdf3e0" stroke="#b8860b"/>
+<text x="515" y="143" text-anchor="middle" font-weight="bold">Site C</text><text x="515" y="160" text-anchor="middle" font-size="9">Local DBMS + Data</text>
+<line x1="270" y1="58" x2="105" y2="120" stroke="#333" stroke-width="2"/>
+<line x1="310" y1="58" x2="310" y2="120" stroke="#333" stroke-width="2"/>
+<line x1="350" y1="58" x2="515" y2="120" stroke="#333" stroke-width="2"/>
+<text x="105" y="205" text-anchor="middle" font-size="9">Kathmandu Branch</text>
+<text x="310" y="205" text-anchor="middle" font-size="9">Pokhara Branch</text>
+<text x="515" y="205" text-anchor="middle" font-size="9">Biratnagar Branch</text>
+<text x="310" y="235" text-anchor="middle" font-size="9">Sites communicate through a network; data may be fragmented and/or replicated.</text>
+</g>
+</svg>
+</div>
+<table>
+<tr><th>Component</th><th>Description</th></tr>
+<tr><td>Site / Node</td><td>A physical location running its own local DBMS and holding part of the overall data.</td></tr>
+<tr><td>Local Database</td><td>The portion of data stored and managed at a particular site.</td></tr>
+<tr><td>Communication Network</td><td>Connects sites, carrying queries, transactions, and replication traffic.</td></tr>
+<tr><td>Global Schema / Distributed Data Dictionary</td><td>Metadata describing where each piece of data resides, enabling transparent access.</td></tr>
+<tr><td>Fragmentation</td><td>Splitting a relation into fragments (horizontal: by rows; vertical: by columns) distributed across sites.</td></tr>
+<tr><td>Replication</td><td>Storing copies of the same data at multiple sites to improve availability and local read performance.</td></tr>
+</table>
+<p><strong>Example:</strong> A bank with branches in Kathmandu, Pokhara, and Biratnagar can keep each branch's customer/transaction data locally (fragmented by branch) while still allowing any branch to query a customer's overall account, transparently routing the request to the correct site.</p>
+
+<h2>4. Advantages of Distributed Database</h2>
+<table>
+<tr><th>Advantage</th><th>Explanation</th></tr>
+<tr><td>Improved reliability/availability</td><td>Failure of one site does not necessarily bring down the entire system — other sites continue operating.</td></tr>
+<tr><td>Local autonomy</td><td>Each site can manage its own local data and operations independently.</td></tr>
+<tr><td>Improved performance for local queries</td><td>Data placed near where it's most used reduces network latency for local access.</td></tr>
+<tr><td>Easier expansion (scalability)</td><td>New sites/nodes can be added incrementally without major redesign of the whole system.</td></tr>
+<tr><td>Reflects organizational structure</td><td>Naturally matches organizations that are themselves geographically distributed (branches, campuses).</td></tr>
+</table>
+
+<h2>5. Disadvantages of Distributed Database</h2>
+<table>
+<tr><th>Disadvantage</th><th>Explanation</th></tr>
+<tr><td>Increased complexity</td><td>Requires distributed query processing, distributed concurrency control, and distributed recovery — much harder to design and manage than a centralized database.</td></tr>
+<tr><td>Higher cost</td><td>Additional cost for network infrastructure, replication storage, and more complex software.</td></tr>
+<tr><td>Security challenges</td><td>Data traveling across networks between sites is more exposed to interception than data confined to one machine.</td></tr>
+<tr><td>Data consistency difficulty</td><td>Keeping replicated copies synchronized across sites (especially during concurrent updates) is technically challenging.</td></tr>
+<tr><td>Dependency on network</td><td>Network failure can isolate sites or prevent cross-site transactions from completing.</td></tr>
+</table>
+
+<h2>6. Common Mistakes</h2>
+<ul>
+<li>Assuming a distributed database is automatically more reliable — replication/failover must be explicitly designed; distribution alone can also introduce new failure points (network links).</li>
+<li>Confusing "distributed database" with "distributed computing" in general — the former specifically concerns data storage/management across sites.</li>
+</ul>
+
+<h2>7. Exam Focus</h2>
+<p>High-yield: architecture diagram + components (fragmentation, replication), full advantages/disadvantages tables, distinguishing distributed DB from simply having multiple servers.</p>
+
+<h2>8. VSQA — 2 Marks</h2>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Define a distributed database.</span><br>A database physically stored across multiple sites on a network, but presented to users as a single logical database.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">What is fragmentation in a distributed database?</span><br>Splitting a relation into parts (horizontal or vertical) distributed across different sites.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Give one advantage and one disadvantage of a distributed database.</span><br>Advantage: improved reliability (a single site failure doesn't take down the whole system). Disadvantage: increased complexity in managing distributed transactions/consistency.</div>
+
+<h2>9. SQA — 7 Marks</h2>
+<div class="qa"><span class="badge sqa">7M</span><span class="q">Explain distributed database architecture with a diagram.</span>
+<p>Definition → key components: site, local database, network, global schema, fragmentation, replication → architecture diagram (Section 3) → worked bank-branch example.</p></div>
+
+<h2>10. LQA — 15 Marks</h2>
+<div class="qa"><span class="badge lqa">15M</span><span class="q">Discuss distributed database architecture in detail, along with its advantages and disadvantages, supported by a real-world example.</span>
+<p><strong>Suggested structure:</strong> Definition and distinguishing from mere multi-server setups → architecture diagram and components → fragmentation vs replication → advantages table (Section 4) → disadvantages table (Section 5) → worked multi-branch bank example → conclusion on when distribution is worth its added complexity.</p></div>
+
+<div class="revision" id="ch9-revision">
+<h3>Chapter 9 — Quick Revision Sheet</h3>
+<ul>
+<li>DDBMS = data physically distributed across sites, logically unified.</li>
+<li>Key concepts: fragmentation (horizontal/vertical split), replication (copies at multiple sites), global schema.</li>
+<li>Advantages: reliability, local autonomy, local performance, scalability, matches org structure.</li>
+<li>Disadvantages: complexity, cost, security exposure, consistency difficulty, network dependency.</li>
+</ul>
+</div>
+<p><a class="backtop" href="#toc">↑ Back to Table of Contents</a></p>
+</section>
+
+<section class="chapter" id="ch10">
+<h1>Chapter 10 — Database Evaluation and Transaction</h1>
+
+<h2>1. Chapter Overview</h2>
+<p>A transaction is the fundamental unit of work in a DBMS. This chapter explains transaction management, the ACID properties that guarantee transaction correctness, and the process of database evaluation.</p>
+
+<h2>2. Syllabus Coverage Checklist</h2>
+<ul class="checklist">
+<li>Transaction Management</li>
+<li>ACID Properties</li>
+<li>Database Evaluation Process</li>
+</ul>
+
+<h2>3. Transaction and Transaction Management</h2>
+<div class="box def"><h4>Definition</h4>A transaction is a logical unit of work comprising one or more database operations (reads/writes) that must be executed as an indivisible whole — either all operations succeed and are permanently saved, or none of them take effect.</div>
+<p><strong>Example transaction — bank transfer of NPR 5000 from Account A to Account B:</strong></p>
+<pre class="sql">BEGIN TRANSACTION;
+  UPDATE ACCOUNT SET Balance = Balance - 5000 WHERE AccNo = 'A';
+  UPDATE ACCOUNT SET Balance = Balance + 5000 WHERE AccNo = 'B';
+COMMIT;</pre>
+<p>If the system crashes after the first UPDATE but before the second, transaction management ensures the entire transaction is rolled back — Account A's balance is restored — rather than leaving money "lost" between the two updates.</p>
+
+<h3>Transaction States</h3>
+<div class="diagram">
+<svg viewBox="0 0 640 140" xmlns="http://www.w3.org/2000/svg">
+<g font-family="Arial" font-size="10">
+<rect x="10" y="45" width="90" height="40" fill="#eaf2fb" stroke="#1f5fa8"/><text x="55" y="68" text-anchor="middle">Active</text>
+<rect x="150" y="45" width="110" height="40" fill="#fdf3e0" stroke="#b8860b"/><text x="205" y="68" text-anchor="middle">Partially Committed</text>
+<rect x="310" y="10" width="100" height="40" fill="#eaf7ee" stroke="#1e7145"/><text x="360" y="33" text-anchor="middle">Committed</text>
+<rect x="310" y="90" width="100" height="40" fill="#fbe9e7" stroke="#b3261e"/><text x="360" y="113" text-anchor="middle">Failed</text>
+<rect x="470" y="90" width="100" height="40" fill="#fbe9e7" stroke="#b3261e"/><text x="520" y="113" text-anchor="middle">Aborted</text>
+<line x1="100" y1="65" x2="150" y2="65" stroke="#333" marker-end="url(#a6)"/>
+<line x1="260" y1="55" x2="310" y2="35" stroke="#333" marker-end="url(#a6)"/>
+<line x1="205" y1="85" x2="330" y2="90" stroke="#333" marker-end="url(#a6)"/>
+<line x1="55" y1="85" x2="330" y2="98" stroke="#333" marker-end="url(#a6)"/>
+<line x1="410" y1="110" x2="470" y2="110" stroke="#333" marker-end="url(#a6)"/>
+</g>
+<defs><marker id="a6" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0L8,4L0,8z" fill="#333"/></marker></defs>
+</svg>
+</div>
+<table>
+<tr><th>State</th><th>Meaning</th></tr>
+<tr><td>Active</td><td>Transaction is currently executing its operations.</td></tr>
+<tr><td>Partially Committed</td><td>All operations executed; changes not yet made permanent.</td></tr>
+<tr><td>Committed</td><td>Transaction completed successfully; changes permanently saved.</td></tr>
+<tr><td>Failed</td><td>An error occurred and normal execution cannot continue.</td></tr>
+<tr><td>Aborted</td><td>Transaction rolled back; database restored to its state before the transaction began.</td></tr>
+</table>
+<p><strong>Transaction management</strong> is the DBMS's responsibility to coordinate concurrent transactions (via concurrency control, e.g., locking) and ensure crash recovery (via logging), so that the ACID properties below always hold.</p>
+
+<h2>4. ACID Properties</h2>
+<div class="box def"><h4>Definition</h4>ACID is the set of four properties that guarantee reliable processing of database transactions: <strong>A</strong>tomicity, <strong>C</strong>onsistency, <strong>I</strong>solation, <strong>D</strong>urability.</div>
+<table>
+<tr><th>Property</th><th>Meaning</th><th>Practical Example</th><th>Why It Matters</th></tr>
+<tr><td>Atomicity</td><td>A transaction executes completely or not at all — "all or nothing."</td><td>In the bank transfer, either both the debit and credit happen, or neither does.</td><td>Prevents partial updates that would leave data inconsistent (e.g., money deducted but never credited).</td></tr>
+<tr><td>Consistency</td><td>A transaction takes the database from one valid state to another, preserving all defined rules/constraints.</td><td>Total money in the bank (sum of all balances) is the same before and after the transfer.</td><td>Guarantees business rules and constraints (e.g., CHECK, referential integrity) are never violated by a transaction.</td></tr>
+<tr><td>Isolation</td><td>Concurrent transactions execute as if they ran one at a time (serially), even though they may actually interleave.</td><td>Two customers withdrawing from the same account simultaneously don't see each other's uncommitted changes and don't cause an incorrect final balance.</td><td>Prevents concurrency anomalies like dirty reads, lost updates.</td></tr>
+<tr><td>Durability</td><td>Once a transaction commits, its changes survive permanently, even in the event of a system crash.</td><td>After the transfer is committed, a power failure the next second does not undo the transfer.</td><td>Guarantees committed work is never lost.</td></tr>
+</table>
+<div class="box mistake"><h4>Common Mistake</h4>Confusing Consistency (a database-rule-preservation property) with Isolation (a concurrency-control property) — Consistency is about constraints being respected; Isolation is about concurrent transactions not interfering with each other.</div>
+
+<h2>5. Database Evaluation Process</h2>
+<div class="box def"><h4>Definition</h4>Database evaluation is the process of assessing an implemented database system against defined criteria — performance, correctness, security, usability — to verify it meets the organization's requirements before/after deployment.</div>
+<table>
+<tr><th>Step</th><th>Activity</th></tr>
+<tr><td>1. Define evaluation criteria</td><td>Establish what "success" means: query response time, data accuracy, security compliance, ease of use.</td></tr>
+<tr><td>2. Functional testing</td><td>Verify that the database correctly supports all required operations (CRUD, reports, constraints).</td></tr>
+<tr><td>3. Performance testing</td><td>Measure query response times, throughput under expected load, and indexing effectiveness.</td></tr>
+<tr><td>4. Data integrity/security review</td><td>Confirm constraints, referential integrity, and access-control rules work as intended.</td></tr>
+<tr><td>5. User acceptance</td><td>Confirm real users can complete required tasks correctly and efficiently.</td></tr>
+<tr><td>6. Report and refine</td><td>Document findings and refine schema, indexing, or queries as needed.</td></tr>
+</table>
+<p><strong>Example:</strong> Before going live, a college database is evaluated by checking whether enrollment queries return correct results, whether fee-payment transactions are processed within an acceptable time, and whether unauthorized users are correctly denied access to student grade records.</p>
+
+<h2>6. Common Mistakes</h2>
+<ul>
+<li>Treating "Consistency" in ACID as the same as "consistency" in the CAP theorem (a different, distributed-systems concept) — in ACID it specifically means preserving declared database constraints.</li>
+<li>Believing atomicity guarantees correctness of business logic — atomicity only guarantees all-or-nothing execution, not that the logic itself is correct.</li>
+<li>Skipping database evaluation after deployment, assuming a working demo means the system is production-ready under real load.</li>
+</ul>
+
+<h2>7. Exam Focus</h2>
+<p>High-yield: ACID properties with examples (extremely common LQA/SQA topic), transaction states diagram, steps of database evaluation.</p>
+
+<h2>8. VSQA — 2 Marks</h2>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Define a transaction.</span><br>A logical unit of work made of one or more operations that execute as an indivisible whole.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Expand ACID.</span><br>Atomicity, Consistency, Isolation, Durability.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Define Atomicity with an example.</span><br>A transaction executes completely or not at all; e.g., a bank transfer's debit and credit either both happen or neither does.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">What does Durability guarantee?</span><br>Once a transaction commits, its changes are permanently saved even if the system crashes afterward.</div>
+
+<h2>9. SQA — 7 Marks</h2>
+<div class="qa"><span class="badge sqa">7M</span><span class="q">Explain the ACID properties of a transaction with examples.</span>
+<p>Definition of ACID → each property defined with the bank-transfer example (Section 4 table) → brief note distinguishing Consistency from Isolation.</p></div>
+
+<h2>10. LQA — 15 Marks</h2>
+<div class="qa"><span class="badge lqa">15M</span><span class="q">Discuss transaction management in a DBMS, including transaction states and ACID properties, and explain the database evaluation process.</span>
+<p><strong>Suggested structure:</strong> Transaction definition and bank-transfer example → transaction state diagram (Section 3) → ACID properties in full detail with examples (Section 4) → database evaluation process steps (Section 5) → worked college-database evaluation example → conclusion tying transaction correctness to overall database quality.</p></div>
+
+<div class="revision" id="ch10-revision">
+<h3>Chapter 10 — Quick Revision Sheet</h3>
+<ul>
+<li>Transaction states: Active → Partially Committed → Committed, or → Failed → Aborted.</li>
+<li><strong>A</strong>tomicity: all-or-nothing. <strong>C</strong>onsistency: preserves constraints. <strong>I</strong>solation: concurrent transactions don't interfere. <strong>D</strong>urability: committed changes survive crashes.</li>
+<li>Database evaluation: define criteria → functional testing → performance testing → integrity/security review → user acceptance → report/refine.</li>
+</ul>
+</div>
+<p><a class="backtop" href="#toc">↑ Back to Table of Contents</a></p>
+</section>
+
+<section class="chapter" id="ch11">
+<h1>Chapter 11 — Data Analysis</h1>
+
+<h2>1. Chapter Overview</h2>
+<p>Data analysis is the process of inspecting, cleaning, transforming, and modeling data stored in a database to discover useful information, draw conclusions, and support decision-making. This chapter covers the process, types, and steps of data analysis in a database context.</p>
+
+<h2>2. Syllabus Coverage Checklist</h2>
+<ul class="checklist">
+<li>Data Analysis Process</li>
+<li>Types of Data Analysis</li>
+<li>Data Analysis Steps</li>
+</ul>
+
+<h2>3. Data Analysis Process</h2>
+<div class="box def"><h4>Definition</h4>Data analysis is the systematic application of statistical and logical techniques to describe, summarize, and evaluate data, in order to extract meaningful patterns and support decisions.</div>
+<div class="diagram">
+<svg viewBox="0 0 700 130" xmlns="http://www.w3.org/2000/svg">
+<g font-family="Arial" font-size="10">
+<rect x="0" y="40" width="110" height="50" fill="#eaf2fb" stroke="#1f5fa8"/><text x="55" y="70" text-anchor="middle">Data Collection</text>
+<rect x="140" y="40" width="110" height="50" fill="#fdf3e0" stroke="#b8860b"/><text x="195" y="70" text-anchor="middle">Data Cleaning</text>
+<rect x="280" y="40" width="110" height="50" fill="#eaf7ee" stroke="#1e7145"/><text x="335" y="70" text-anchor="middle">Data Transformation</text>
+<rect x="420" y="40" width="110" height="50" fill="#eaf2fb" stroke="#1f5fa8"/><text x="475" y="70" text-anchor="middle">Data Modeling/Analysis</text>
+<rect x="560" y="40" width="130" height="50" fill="#fdf3e0" stroke="#b8860b"/><text x="625" y="70" text-anchor="middle">Interpretation & Reporting</text>
+<line x1="110" y1="65" x2="140" y2="65" stroke="#333" marker-end="url(#a7)"/>
+<line x1="250" y1="65" x2="280" y2="65" stroke="#333" marker-end="url(#a7)"/>
+<line x1="390" y1="65" x2="420" y2="65" stroke="#333" marker-end="url(#a7)"/>
+<line x1="530" y1="65" x2="560" y2="65" stroke="#333" marker-end="url(#a7)"/>
+</g>
+<defs><marker id="a7" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0L8,4L0,8z" fill="#333"/></marker></defs>
+</svg>
+</div>
+
+<h2>4. Types of Data Analysis</h2>
+<table>
+<tr><th>Type</th><th>Question Answered</th><th>Example</th></tr>
+<tr><td>Descriptive Analysis</td><td>"What happened?"</td><td>Total number of students enrolled per department this semester.</td></tr>
+<tr><td>Diagnostic Analysis</td><td>"Why did it happen?"</td><td>Why did enrollment in the Civil department drop this year (compare against historical trends/causes).</td></tr>
+<tr><td>Predictive Analysis</td><td>"What is likely to happen?"</td><td>Predicting next semester's enrollment based on historical patterns.</td></tr>
+<tr><td>Prescriptive Analysis</td><td>"What should be done?"</td><td>Recommending which departments need additional faculty based on predicted enrollment growth.</td></tr>
+</table>
+
+<h2>5. Data Analysis Steps</h2>
+<table>
+<tr><th>Step</th><th>Activity</th></tr>
+<tr><td>1. Define objective</td><td>Clarify the question the analysis should answer (e.g., "Which courses have the highest failure rate?").</td></tr>
+<tr><td>2. Collect data</td><td>Extract relevant data from the database via SQL queries (SELECT, JOIN, GROUP BY, aggregate functions).</td></tr>
+<tr><td>3. Clean data</td><td>Handle missing values (NULLs), remove duplicate records, correct inconsistent entries.</td></tr>
+<tr><td>4. Transform data</td><td>Aggregate, normalize scale, or reshape data suitable for analysis (e.g., grouping grades into pass/fail buckets).</td></tr>
+<tr><td>5. Analyze/model</td><td>Apply statistical measures (mean, trend), or analytical queries (OLAP-style aggregation) to find patterns.</td></tr>
+<tr><td>6. Interpret & report</td><td>Translate findings into actionable conclusions, presented via reports/dashboards for decision-makers.</td></tr>
+</table>
+<p><strong>Worked example query for descriptive analysis</strong> — average grade points and pass count per course from the SQL chapter's ENROLLMENT table:</p>
+<pre class="sql">SELECT C.Title, COUNT(*) AS TotalEnrolled,
+       SUM(CASE WHEN E.Grade IN ('A','B','C') THEN 1 ELSE 0 END) AS Passed
+FROM ENROLLMENT E JOIN COURSE C ON E.CourseCode = C.CourseCode
+GROUP BY C.Title;</pre>
+<p>This kind of GROUP BY aggregation query is the typical SQL-level foundation on which higher-level descriptive/diagnostic data analysis is built.</p>
+
+<h2>6. Common Mistakes</h2>
+<ul>
+<li>Skipping the data-cleaning step, letting NULLs/duplicates silently skew aggregate results (e.g., AVG() ignoring NULLs can misrepresent the true average if NULL actually meant "0" in context).</li>
+<li>Confusing descriptive analysis (what happened) with diagnostic analysis (why it happened) — descriptive summarizes; diagnostic investigates causes.</li>
+</ul>
+
+<h2>7. Exam Focus</h2>
+<p>High-yield: four types of analysis with distinguishing questions, full 6-step process, one worked SQL-based analytical example.</p>
+
+<h2>8. VSQA — 2 Marks</h2>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Define data analysis.</span><br>The systematic application of statistical/logical techniques to describe, summarize, and evaluate data to support decisions.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Name the four types of data analysis.</span><br>Descriptive, Diagnostic, Predictive, Prescriptive.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">What is the first step in the data analysis process?</span><br>Define the objective/question the analysis should answer.</div>
+
+<h2>9. SQA — 7 Marks</h2>
+<div class="qa"><span class="badge sqa">7M</span><span class="q">Explain the types of data analysis with examples.</span>
+<p>Definition of data analysis → Descriptive, Diagnostic, Predictive, Prescriptive types each with the defining question and a college-context example (Section 4 table) → brief note on how they build on one another (descriptive first, then diagnostic, then predictive/prescriptive).</p></div>
+
+<h2>10. LQA — 15 Marks</h2>
+<div class="qa"><span class="badge lqa">15M</span><span class="q">Discuss the data analysis process in a database context, covering its steps and the different types of analysis, with a worked SQL example.</span>
+<p><strong>Suggested structure:</strong> Definition and purpose of data analysis → process diagram (Section 3) → detailed 6-step process (Section 5) → four types of analysis with examples (Section 4) → worked GROUP BY/aggregate SQL example (Section 5) → common mistakes → conclusion on data analysis as the bridge between raw database records and organizational decisions.</p></div>
+
+<div class="revision" id="ch11-revision">
+<h3>Chapter 11 — Quick Revision Sheet</h3>
+<ul>
+<li>Process: Collection → Cleaning → Transformation → Modeling/Analysis → Interpretation/Reporting.</li>
+<li>Types: Descriptive (what), Diagnostic (why), Predictive (what next), Prescriptive (what to do).</li>
+<li>Steps: define objective → collect → clean → transform → analyze → interpret/report.</li>
+</ul>
+</div>
+<p><a class="backtop" href="#toc">↑ Back to Table of Contents</a></p>
+</section>
+
+<section class="chapter" id="ch12">
+<h1>Chapter 12 — Database and the World Wide Web</h1>
+
+<h2>1. Chapter Overview</h2>
+<p>Modern databases are frequently accessed via the web. This chapter covers how databases are managed for web applications, and the mechanics of web search and web crawling, which themselves rely heavily on large-scale database/index structures.</p>
+
+<h2>2. Syllabus Coverage Checklist</h2>
+<ul class="checklist">
+<li>Web Data Management</li>
+<li>Web Search</li>
+<li>Web Crawling</li>
+</ul>
+
+<h2>3. Web Data Management</h2>
+<div class="box def"><h4>Definition</h4>Web data management refers to techniques and architectures for storing, retrieving, and serving data to/from web-based applications — connecting front-end web interfaces to back-end databases, often via an intermediate application/API layer.</div>
+<div class="diagram">
+<svg viewBox="0 0 640 130" xmlns="http://www.w3.org/2000/svg">
+<g font-family="Arial" font-size="11">
+<rect x="0" y="40" width="140" height="55" fill="#eaf2fb" stroke="#1f5fa8"/><text x="70" y="65" text-anchor="middle">Web Browser</text><text x="70" y="80" text-anchor="middle" font-size="9">(Client)</text>
+<rect x="240" y="40" width="150" height="55" fill="#fdf3e0" stroke="#b8860b"/><text x="315" y="65" text-anchor="middle">Web/App Server</text><text x="315" y="80" text-anchor="middle" font-size="9">(business logic, API)</text>
+<rect x="480" y="40" width="140" height="55" fill="#eaf7ee" stroke="#1e7145"/><text x="550" y="65" text-anchor="middle">Database Server</text><text x="550" y="80" text-anchor="middle" font-size="9">(data storage)</text>
+<line x1="140" y1="67" x2="240" y2="67" stroke="#333" stroke-width="2" marker-end="url(#a8)"/>
+<line x1="390" y1="67" x2="480" y2="67" stroke="#333" stroke-width="2" marker-end="url(#a8)"/>
+<text x="190" y="55" text-anchor="middle" font-size="9">HTTP</text>
+<text x="435" y="55" text-anchor="middle" font-size="9">SQL</text>
+</g>
+<defs><marker id="a8" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0L8,4L0,8z" fill="#333"/></marker></defs>
+</svg>
+</div>
+<table>
+<tr><th>Tier</th><th>Role</th><th>Example</th></tr>
+<tr><td>Presentation (Client)</td><td>Renders the UI in the browser/mobile app.</td><td>A student portal's HTML/JS front-end.</td></tr>
+<tr><td>Application (Middle)</td><td>Handles business logic, authentication, converts user actions into database queries.</td><td>Server-side code processing an enrollment form submission.</td></tr>
+<tr><td>Data (Back end)</td><td>Stores and manages the actual persistent data.</td><td>The relational database holding STUDENT/COURSE/ENROLLMENT tables.</td></tr>
+</table>
+<p>This is the classic <strong>three-tier web architecture</strong>, an extension of client-server processing (Chapter 8) for web contexts. <strong>Example:</strong> when a student submits a course-enrollment form on a college portal, the browser (tier 1) sends the request to the web server (tier 2), which validates it and issues an INSERT query to the database server (tier 3).</p>
+
+<h2>4. Web Search</h2>
+<div class="box def"><h4>Definition</h4>Web search is the process of retrieving relevant web pages/documents from a massive, previously indexed collection of web content, in response to a user's query.</div>
+<table>
+<tr><th>Component</th><th>Role</th></tr>
+<tr><td>Crawler</td><td>Discovers and downloads web pages (see Section 5).</td></tr>
+<tr><td>Indexer</td><td>Processes crawled pages, building an inverted index mapping keywords to the pages containing them.</td></tr>
+<tr><td>Query Processor</td><td>Interprets the user's search query and matches it against the index.</td></tr>
+<tr><td>Ranking Engine</td><td>Orders matching results by relevance (using factors like keyword frequency, link popularity, freshness).</td></tr>
+</table>
+<p><strong>Inverted index concept (simplified):</strong> instead of scanning every document for a keyword at search time, the index stores, for each keyword, the list of documents that contain it — enabling near-instant lookup.</p>
+<pre class="sql">"database"  →  Doc1, Doc4, Doc7
+"exam"      →  Doc2, Doc4, Doc9</pre>
+
+<h2>5. Web Crawling</h2>
+<div class="box def"><h4>Definition</h4>A web crawler (spider/bot) is a program that systematically browses the web, downloading pages and following hyperlinks to discover new pages, in order to build/update a search engine's index.</div>
+<div class="diagram">
+<svg viewBox="0 0 640 150" xmlns="http://www.w3.org/2000/svg">
+<g font-family="Arial" font-size="10">
+<rect x="0" y="55" width="110" height="45" fill="#eaf2fb" stroke="#1f5fa8"/><text x="55" y="80" text-anchor="middle">Seed URLs</text>
+<rect x="150" y="55" width="120" height="45" fill="#fdf3e0" stroke="#b8860b"/><text x="210" y="80" text-anchor="middle">Fetch Page</text>
+<rect x="310" y="55" width="130" height="45" fill="#eaf7ee" stroke="#1e7145"/><text x="375" y="80" text-anchor="middle">Extract Links</text>
+<rect x="480" y="55" width="140" height="45" fill="#eaf2fb" stroke="#1f5fa8"/><text x="550" y="73" text-anchor="middle">Store/Index Page</text><text x="550" y="88" text-anchor="middle" font-size="8">Add new links to queue</text>
+<line x1="110" y1="77" x2="150" y2="77" stroke="#333" marker-end="url(#a9)"/>
+<line x1="270" y1="77" x2="310" y2="77" stroke="#333" marker-end="url(#a9)"/>
+<line x1="440" y1="77" x2="480" y2="77" stroke="#333" marker-end="url(#a9)"/>
+<path d="M 550 100 Q 550 140 210 140 Q 100 140 100 100" fill="none" stroke="#b3261e" stroke-dasharray="4" marker-end="url(#a9r)"/>
+<text x="330" y="135" text-anchor="middle" font-size="9" fill="#b3261e">Loop: crawl newly discovered links</text>
+</g>
+<defs>
+<marker id="a9" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0L8,4L0,8z" fill="#333"/></marker>
+<marker id="a9r" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0L8,4L0,8z" fill="#b3261e"/></marker>
+</defs>
+</svg>
+</div>
+<table>
+<tr><th>Step</th><th>Description</th></tr>
+<tr><td>1. Start with seed URLs</td><td>Begin from a known set of starting web addresses.</td></tr>
+<tr><td>2. Fetch the page</td><td>Download the page's HTML content via HTTP request.</td></tr>
+<tr><td>3. Extract links</td><td>Parse the HTML to find all hyperlinks (&lt;a href&gt;) on the page.</td></tr>
+<tr><td>4. Store/index the page</td><td>Save the page content for indexing by the search engine.</td></tr>
+<tr><td>5. Queue new links</td><td>Add newly discovered, not-yet-visited URLs to a queue (respecting rules like robots.txt, avoiding duplicate visits).</td></tr>
+<tr><td>6. Repeat</td><td>Continue fetching from the queue until it is empty or a crawl budget/depth limit is reached.</td></tr>
+</table>
+<p><strong>Applications:</strong> search engines (Google, Bing), price-comparison sites, and academic citation databases all rely on crawling to keep their underlying data current.</p>
+
+<h2>6. Common Mistakes</h2>
+<ul>
+<li>Confusing "web search" (the end-user retrieval process backed by a pre-built index) with "web crawling" (the background process of discovering/downloading pages to build that index) — crawling happens before search, not during it.</li>
+<li>Assuming a crawler visits the entire web in one pass — in practice, crawling is continuous and prioritized/rate-limited.</li>
+</ul>
+
+<h2>7. Exam Focus</h2>
+<p>High-yield: three-tier web architecture diagram, inverted index concept for web search, step-by-step web crawling process.</p>
+
+<h2>8. VSQA — 2 Marks</h2>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">What is a web crawler?</span><br>A program that systematically browses the web, downloading pages and following links to build a search index.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Name the three tiers of typical web data management architecture.</span><br>Presentation (client), Application (middle/business logic), Data (database server).</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">What is an inverted index?</span><br>An index structure mapping each keyword to the list of documents/pages containing it, for fast search lookup.</div>
+
+<h2>9. SQA — 7 Marks</h2>
+<div class="qa"><span class="badge sqa">7M</span><span class="q">Explain the web crawling process step by step with a diagram.</span>
+<p>Definition of web crawler → step-by-step process (Section 5 table) → diagram → note on robots.txt/duplicate-avoidance → application (feeding a search engine's index).</p></div>
+
+<h2>10. LQA — 15 Marks</h2>
+<div class="qa"><span class="badge lqa">15M</span><span class="q">Discuss web data management architecture and explain how web search and web crawling work together to retrieve information from the web.</span>
+<p><strong>Suggested structure:</strong> Three-tier web architecture diagram and explanation (Section 3) → web search components (crawler, indexer, query processor, ranking engine) (Section 4) → inverted index concept → web crawling step-by-step process and diagram (Section 5) → how crawling feeds the index that search then queries → conclusion tying it back to database concepts (indexing parallels DBMS indexing from earlier chapters).</p></div>
+
+<div class="revision" id="ch12-revision">
+<h3>Chapter 12 — Quick Revision Sheet</h3>
+<ul>
+<li>Three-tier web architecture: Client (browser) → App/Web server → Database server.</li>
+<li>Web search components: Crawler → Indexer → Query Processor → Ranking Engine.</li>
+<li>Web crawling loop: seed URLs → fetch → extract links → store/index → queue new links → repeat.</li>
+<li>Crawling builds the index; search queries the already-built index (they are sequential, not simultaneous).</li>
+</ul>
+</div>
+<p><a class="backtop" href="#toc">↑ Back to Table of Contents</a></p>
+</section>
+
+<section class="chapter" id="sqlpractice">
+<h1>SQL Practice Section</h1>
+<p>Uses the STUDENT / DEPARTMENT / INSTRUCTOR / COURSE / ENROLLMENT sample database from Chapter 4.</p>
+
+<div class="qa"><span class="q">Q1. List all students older than 20, sorted by age descending.</span>
+<pre class="sql">SELECT Name, Age FROM STUDENT WHERE Age &gt; 20 ORDER BY Age DESC;</pre>
+<p><strong>Answer:</strong> Diya Gurung (23), Bibek Thapa (22), Aayush Sharma-S05 (21).</p></div>
+
+<div class="qa"><span class="q">Q2. List student names whose age is between 19 and 21 inclusive.</span>
+<pre class="sql">SELECT Name FROM STUDENT WHERE Age BETWEEN 19 AND 21;</pre>
+<p><strong>Answer:</strong> Aayush Sharma (20), Chitra Karki (19), Aayush Sharma-S05 (21).</p></div>
+
+<div class="qa"><span class="q">Q3. Find students belonging to Computer Science or Civil departments.</span>
+<pre class="sql">SELECT S.Name, D.DeptName FROM STUDENT S JOIN DEPARTMENT D ON S.DeptID = D.DeptID
+WHERE D.DeptName IN ('Computer Science','Civil');</pre>
+<p><strong>Answer:</strong> Aayush Sharma–CS, Chitra Karki–CS, Diya Gurung–Civil.</p></div>
+
+<div class="qa"><span class="q">Q4. Find students whose name starts with "A".</span>
+<pre class="sql">SELECT Name FROM STUDENT WHERE Name LIKE 'A%';</pre>
+<p><strong>Answer:</strong> Aayush Sharma, Aayush Sharma (two matching rows, S01 and S05).</p></div>
+
+<div class="qa"><span class="q">Q5. Find students who have not provided an email address.</span>
+<pre class="sql">SELECT Name FROM STUDENT WHERE Email IS NULL;</pre>
+<p><strong>Answer:</strong> Diya Gurung.</p></div>
+
+<div class="qa"><span class="q">Q6. List distinct student names (avoiding duplicates).</span>
+<pre class="sql">SELECT DISTINCT Name FROM STUDENT;</pre>
+<p><strong>Answer:</strong> Aayush Sharma, Bibek Thapa, Chitra Karki, Diya Gurung (4 distinct names from 5 rows).</p></div>
+
+<div class="qa"><span class="q">Q7. Find students in department D1 who are also younger than 20.</span>
+<pre class="sql">SELECT Name FROM STUDENT WHERE DeptID = 'D1' AND Age &lt; 20;</pre>
+<p><strong>Answer:</strong> Chitra Karki.</p></div>
+
+<div class="qa"><span class="q">Q8. List each course with its instructor's name (multi-table join); show courses even if unassigned.</span>
+<pre class="sql">SELECT C.Title, I.Name AS Instructor
+FROM COURSE C LEFT JOIN INSTRUCTOR I ON C.InstructorID = I.InstructorID;</pre>
+<p><strong>Answer:</strong> DB Mgmt–Ramesh Koirala, Prog. Fund.–Ramesh Koirala, Marketing Basics–Sunita Rai, Structural Analysis–NULL (LEFT JOIN keeps C4 even though it has no matching instructor).</p></div>
+
+<div class="qa"><span class="q">Q9. Find students who scored grade 'A' in any course (subquery).</span>
+<pre class="sql">SELECT Name FROM STUDENT
+WHERE RollNo IN (SELECT RollNo FROM ENROLLMENT WHERE Grade = 'A');</pre>
+<p><strong>Answer:</strong> Aayush Sharma, Chitra Karki.</p></div>
+
+<div class="qa"><span class="q">Q10. Find the course(s) with the highest number of enrolled students.</span>
+<pre class="sql">WITH CourseCounts AS (
+  SELECT CourseCode, COUNT(*) AS Total
+  FROM ENROLLMENT
+  GROUP BY CourseCode
+)
+SELECT CourseCode, Total
+FROM CourseCounts
+WHERE Total = (SELECT MAX(Total) FROM CourseCounts);</pre>
+<p><strong>Answer:</strong> C1 (Database Management) with 3 enrollments (S01, S03, S05). If another course also had 3 enrollments, the query would return that course too; this avoids the tie-loss problem of <code>LIMIT 1</code>.</p></div>
+<p><a class="backtop" href="#toc">↑ Back to Table of Contents</a></p>
+</section>
+
+<section class="chapter" id="rapractice">
+<h1>Relational Algebra Practice Section</h1>
+<p>Uses STUDENT, DEPARTMENT, ENROLLS relations from Chapter 3.</p>
+
+<div class="qa"><span class="q">Q1. Retrieve names of students older than 20.</span>
+<pre class="sql">π<sub>Name</sub>(σ<sub>Age&gt;20</sub>(STUDENT))</pre>
+<p><strong>Solution:</strong> σ first filters STUDENT to rows with Age&gt;20 → {S02(Bibek,21... wait use Ch3 data: S02 Bibek 21, S04 Diya 22}; π then projects Name → {Bibek, Diya}.</p></div>
+
+<div class="qa"><span class="q">Q2. List department IDs of students in the STUDENT relation, without duplicates.</span>
+<pre class="sql">π<sub>DeptID</sub>(STUDENT)</pre>
+<p><strong>Solution:</strong> Projection automatically removes duplicates → {D1, D2, D3}.</p></div>
+
+<div class="qa"><span class="q">Q3. Find students in department D1 who are NOT enrolled in course C2 (using Set Difference).</span>
+<pre class="sql">π<sub>RollNo</sub>(σ<sub>DeptID='D1'</sub>(STUDENT)) − π<sub>RollNo</sub>(σ<sub>CourseCode='C2'</sub>(ENROLLS))</pre>
+<p><strong>Solution:</strong> D1 students = {S01, S03}. Students enrolled in C2 = {S01, S03}. Difference = {} (both D1 students are enrolled in C2, so the result is empty).</p></div>
+
+<div class="qa"><span class="q">Q4. Combine (Cartesian Product) STUDENT and DEPARTMENT and state the resulting degree and cardinality.</span>
+<pre class="sql">STUDENT × DEPARTMENT</pre>
+<p><strong>Solution:</strong> STUDENT has degree 4, cardinality 4; DEPARTMENT has degree 2, cardinality 3. Result: degree = 4+2 = 6, cardinality = 4×3 = 12.</p></div>
+
+<div class="qa"><span class="q">Q5. Retrieve student names along with their department names (Natural Join).</span>
+<pre class="sql">π<sub>Name,DeptName</sub>(STUDENT ⋈ DEPARTMENT)</pre>
+<p><strong>Solution:</strong> Natural Join matches on DeptID (common attribute), then Project keeps Name and DeptName → {(Aayush,CS), (Bibek,Business), (Chitra,CS), (Diya,Civil)}.</p></div>
+
+<div class="qa"><span class="q">Q6. Find students enrolled in every course offered (Division), given courses offered = {C1, C2}.</span>
+<pre class="sql">ENROLLS ÷ π<sub>CourseCode</sub>(COURSE)</pre>
+<p><strong>Solution:</strong> From ENROLLS: S01→{C1,C2}, S02→{C1}, S03→{C1,C2}. Only S01 and S03 have both required courses → Result = {S01, S03}.</p></div>
+<div class="qa"><span class="q">Q7. Perform an equijoin of STUDENT and DEPARTMENT on DeptID, then project Name and DeptName.</span>
+<pre class="sql">π<Name,DeptName>(STUDENT ⋈<sub>STUDENT.DeptID = DEPARTMENT.DeptID</sub> DEPARTMENT)</pre>
+<p><strong>Solution:</strong> Match D1/D2/D3 rows by DeptID, then project the two requested attributes. Result: {(Aayush, Computer Science), (Bibek, Business), (Chitra, Computer Science), (Diya, Civil)}.</p></div>
+<div class="qa"><span class="q">Q8. Using A={S01,S03} and B={S02,S04}, find A ∪ B, A ∩ B, A − B, and B − A.</span>
+<p><strong>Solution:</strong> A ∪ B = {S01,S02,S03,S04}; A ∩ B = ∅; A − B = {S01,S03}; B − A = {S02,S04}. Note that set difference is not commutative.</p></div>
+<p><a class="backtop" href="#toc">↑ Back to Table of Contents</a></p>
+</section>
+
+<section class="chapter" id="normpractice">
+<h1>Normalization Practice Section</h1>
+
+<div class="qa"><span class="q">Q1. The following unnormalized relation records hospital patient visits. Normalize it to 3NF.</span>
+<p><strong>PATIENT_VISIT_UNF</strong>(PatientID, PatientName, DoctorID, DoctorName, DoctorSpecialty, VisitDate, Diagnosis) — Primary key attempt: (PatientID, VisitDate). Assume: PatientID → PatientName; DoctorID → DoctorName, DoctorSpecialty; (PatientID, VisitDate) → DoctorID, Diagnosis.</p>
+<p><strong>Step 1 (1NF):</strong> All attributes are already atomic (no repeating groups) — relation is in 1NF as given.</p>
+<p><strong>Step 2 (2NF):</strong> Primary key is composite: (PatientID, VisitDate). Check partial dependencies: PatientName depends only on PatientID (part of key) → partial dependency. DoctorID, DoctorName, DoctorSpecialty are functionally determined via DoctorID which itself is determined by the full key (PatientID,VisitDate) → DoctorID is fully dependent, but DoctorName/DoctorSpecialty depend on DoctorID (non-key), which is actually a transitive issue we'll resolve in 3NF. First remove the direct partial dependency:</p>
+<pre class="sql">PATIENT(<u>PatientID</u>, PatientName)
+VISIT_2NF(<u>PatientID</u>, <u>VisitDate</u>, DoctorID, DoctorName, DoctorSpecialty, Diagnosis)</pre>
+<p><strong>Step 3 (3NF):</strong> In VISIT_2NF, DoctorName and DoctorSpecialty depend on DoctorID, not directly on (PatientID, VisitDate) — a transitive dependency. Remove it:</p>
+<pre class="sql">PATIENT(<u>PatientID</u>, PatientName)
+DOCTOR(<u>DoctorID</u>, DoctorName, DoctorSpecialty)
+VISIT(<u>PatientID</u>, <u>VisitDate</u>, DoctorID, Diagnosis)</pre>
+<p><strong>Result:</strong> Three relations, each in 3NF — PATIENT and DOCTOR hold entity data; VISIT holds the fact/event data linking them.</p></div>
+
+<div class="qa"><span class="q">Q2. Given LIBRARY_UNF(BookID, BookTitle, MemberID, MemberName, MemberAddress, IssueDate), with BookID → BookTitle; MemberID → MemberName, MemberAddress; (BookID, MemberID) → IssueDate — identify the normal form violated and normalize to 3NF.</span>
+<p><strong>Analysis:</strong> Primary key = (BookID, MemberID) (composite, assuming a book can be issued to different members over time and this table tracks current issues). BookTitle depends only on BookID (partial); MemberName, MemberAddress depend only on MemberID (partial). This violates 2NF.</p>
+<p><strong>Decomposition:</strong></p>
+<pre class="sql">BOOK(<u>BookID</u>, BookTitle)
+MEMBER(<u>MemberID</u>, MemberName, MemberAddress)
+ISSUE(<u>BookID</u>, <u>MemberID</u>, IssueDate)</pre>
+<p>All three relations are now in 3NF — no partial or transitive dependencies remain.</p></div>
+<p><a class="backtop" href="#toc">↑ Back to Table of Contents</a></p>
+</section>
+
+<section class="chapter" id="revision">
+<h1>Final Master Revision — One-Day Revision</h1>
+
+<h2>Important Definitions (High-Value, All Chapters)</h2>
+<table>
+<tr><th>Term</th><th>Definition</th></tr>
+<tr><td>DBMS</td><td>Software enabling definition, creation, maintenance, and controlled access to a database.</td></tr>
+<tr><td>Data Independence</td><td>Ability to change schema at one level without affecting the next higher level (physical/logical).</td></tr>
+<tr><td>Entity / Attribute / Relationship</td><td>Real-world object / property describing it / association between entities.</td></tr>
+<tr><td>Primary Key / Foreign Key</td><td>Unique row identifier / attribute referencing another table's primary key.</td></tr>
+<tr><td>Relational Algebra</td><td>Procedural query language: operators (σ, π, ρ, ∪, ∩, −, ×, ⋈, ÷) transforming relations into relations.</td></tr>
+<tr><td>Relational Calculus</td><td>Declarative query language (TRC/DRC) describing desired results via logical predicates; equal in power to algebra.</td></tr>
+<tr><td>Normalization</td><td>Process of decomposing relations to remove redundancy/anomalies, guided by functional dependencies.</td></tr>
+<tr><td>Transaction</td><td>Indivisible logical unit of database work; governed by ACID properties.</td></tr>
+<tr><td>Distributed Database</td><td>Database physically spread across multiple sites, logically unified.</td></tr>
+<tr><td>OLTP / OLAP</td><td>Transactional processing (fast, small, current data) / Analytical processing (complex, aggregate, historical data).</td></tr>
+<tr><td>Web Crawler</td><td>Program that discovers and downloads web pages by following links, to build a search index.</td></tr>
+</table>
+
+<h2>Important Diagrams to Know How to Draw</h2>
+<ul>
+<li>Three-schema (ANSI-SPARC) architecture (Ch1)</li>
+<li>ER diagram notation with cardinality/participation (Ch2)</li>
+<li>ER-to-relational mapping example (Ch2/Ch6)</li>
+<li>SQL execution process (Ch4)</li>
+<li>Conceptual → Logical design pipeline (Ch5/Ch6)</li>
+<li>Normalization pipeline UNF→1NF→2NF→3NF (Ch7)</li>
+<li>Client-server processing (Ch8)</li>
+<li>Distributed database architecture with fragmentation/replication (Ch9)</li>
+<li>Transaction state diagram (Ch10)</li>
+<li>Data analysis process pipeline (Ch11)</li>
+<li>Three-tier web architecture and web crawling loop (Ch12)</li>
+</ul>
+
+<h2>Important SQL Syntax Reference</h2>
+<pre class="sql">-- DDL
+CREATE TABLE t (col TYPE CONSTRAINT, ..., PRIMARY KEY(...), FOREIGN KEY(...) REFERENCES t2(col));
+ALTER TABLE t ADD COLUMN col TYPE;
+DROP TABLE t;
+
+-- DML
+SELECT [DISTINCT] col1, col2 FROM t
+WHERE condition
+ORDER BY col [ASC|DESC];
+
+-- Search conditions
+col = / &lt; / &gt; / &lt;= / &gt;= value
+col BETWEEN v1 AND v2
+col IN (v1, v2, ...)
+col LIKE 'pattern%'
+col IS NULL / IS NOT NULL
+condition1 AND/OR condition2 ; NOT condition
+
+-- Multi-table (join)
+SELECT ... FROM t1 JOIN t2 ON t1.k = t2.k;
+SELECT ... FROM t1 LEFT JOIN t2 ON t1.k = t2.k;   -- keeps unmatched t1 rows
+
+-- Subquery
+SELECT ... FROM t1 WHERE col IN (SELECT col FROM t2 WHERE ...);
+
+-- DCL
+GRANT privilege ON object TO user;
+REVOKE privilege ON object FROM user;</pre>
+
+<h2>Important Relational Algebra Operators — Consolidated</h2>
+<table>
+<tr><th>Operator</th><th>Symbol</th><th>Type</th></tr>
+<tr><td>Select</td><td>σ</td><td>Unary</td></tr>
+<tr><td>Project</td><td>π</td><td>Unary</td></tr>
+<tr><td>Rename</td><td>ρ</td><td>Unary</td></tr>
+<tr><td>Union / Intersection / Difference</td><td>∪ / ∩ / −</td><td>Binary (union-compatible)</td></tr>
+<tr><td>Cartesian Product</td><td>×</td><td>Binary</td></tr>
+<tr><td>Theta / Equi / Natural Join</td><td>⋈<sub>θ</sub> / ⋈<sub>=</sub> / ⋈</td><td>Binary</td></tr>
+<tr><td>Division</td><td>÷</td><td>Binary</td></tr>
+</table>
+
+<h2>Important Comparisons — Consolidated</h2>
+<table>
+<tr><th>Comparison</th><th>Key Distinguishing Point</th></tr>
+<tr><td>Database vs DBMS</td><td>Database = data; DBMS = managing software.</td></tr>
+<tr><td>Physical vs Logical structure</td><td>Physical = disk storage; Logical = table/relationship view.</td></tr>
+<tr><td>Distributed vs Centralized-Relational DB</td><td>Location (multi-site vs single-site) — independent of the "relational" data-model classification.</td></tr>
+<tr><td>Equijoin vs Natural Join</td><td>Equijoin keeps both join columns; Natural Join removes the duplicate.</td></tr>
+<tr><td>UNION vs UNION ALL</td><td>UNION removes duplicates; UNION ALL keeps them.</td></tr>
+<tr><td>OLTP vs OLAP</td><td>Small/fast/current transactions vs large/complex/historical analysis.</td></tr>
+<tr><td>Partial vs Transitive dependency</td><td>Partial = depends on part of composite key; Transitive = non-key depends on non-key.</td></tr>
+<tr><td>Simple vs Correlated subquery</td><td>Simple executes once; Correlated re-executes per outer row.</td></tr>
+</table>
+
+<h2>Normalization Quick Reference</h2>
+<p>1NF: atomic values, no repeating groups → 2NF: 1NF + no partial dependency → 3NF: 2NF + no transitive dependency. Always verify decomposition is lossless (natural join of decomposed relations reproduces the original).</p>
+
+<h2>ACID Properties — Quick Revision</h2>
+<p><strong>A</strong>tomicity (all-or-nothing) · <strong>C</strong>onsistency (constraints preserved) · <strong>I</strong>solation (concurrent transactions don't interfere) · <strong>D</strong>urability (committed changes survive crashes).</p>
+
+<h2>Distributed Database Quick Reference</h2>
+<p>Advantages: reliability, local autonomy, local performance, scalability, matches org structure. Disadvantages: complexity, cost, security exposure, consistency difficulty, network dependency.</p>
+
+<h2>Web/Database Quick Reference</h2>
+<p>Three-tier: Client → App/Web Server → Database Server. Web search = Crawler → Indexer → Query Processor → Ranking Engine (inverted index). Web crawling = seed URLs → fetch → extract links → store/index → queue → repeat.</p>
+
+<h2>Common Examination Mistakes — Consolidated</h2>
+<ul>
+<li>Using "database" and "DBMS" interchangeably.</li>
+<li>Treating "relational" and "distributed" as mutually exclusive.</li>
+<li>Comparing NULL with <code>=</code> instead of <code>IS NULL</code>.</li>
+<li>Treating Equijoin and Natural Join as identical.</li>
+<li>Forgetting BETWEEN is inclusive on both ends.</li>
+<li>Skipping the referential-integrity foreign key when translating ER to tables.</li>
+<li>Confusing partial dependency with transitive dependency in normalization.</li>
+<li>Confusing ACID's Consistency with Isolation.</li>
+<li>Assuming a distributed database is just "multiple servers."</li>
+<li>Confusing web crawling (index building) with web search (index querying).</li>
+</ul>
+
+<h2>Last-Minute Revision Checklist</h2>
+<ul class="checklist">
+<li>Can define DBMS, database, and database system distinctly.</li>
+<li>Can draw the three-schema architecture and ER diagram notation from memory.</li>
+<li>Can list all relational algebra operators with symbols and classify unary/binary.</li>
+<li>Can write a SELECT query using each search-condition type (comparison, BETWEEN, IN, LIKE, IS NULL, AND/OR/NOT) and ORDER BY.</li>
+<li>Can write a multi-table JOIN query and a subquery, and verify every referenced table/column against the sample schema.</li>
+<li>Can explain why <code>DISTINCT</code> removes duplicate result rows and why a maximum-count query should preserve ties.</li>
+<li>Can perform a full UNF→1NF→2NF→3NF decomposition given a relation and its functional dependencies.</li>
+<li>Can state and exemplify all four ACID properties.</li>
+<li>Can compare OLTP vs OLAP, and distributed vs centralized-relational databases.</li>
+<li>Can explain the web crawling loop and the three-tier web architecture.</li>
+</ul>
+<p><a class="backtop" href="#toc">↑ Back to Table of Contents</a></p>
+</section>
+
+<section class="chapter" id="qbank">
+<h1>Final Question Bank — Chapter-wise (All 12 Chapters)</h1>
+<p>These are additional practice questions beyond each chapter's own VSQA/SQA/LQA sections, to widen exam-preparation coverage. Not leaked/guaranteed board questions — designed for comprehensive syllabus practice.</p>
+
+<h2>VSQA — 2 Marks</h2>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Ch1: What is the internal (physical) level of the three-schema architecture?</span><br>The level describing how data is actually stored on disk (files, blocks, indexes).</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Ch2: What is a weak entity?</span><br>An entity that cannot be uniquely identified by its own attributes alone and depends on a related "owner" entity for identification.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Ch3: What is union-compatibility?</span><br>Two relations have the same number of attributes with matching domains, allowing ∪, ∩, and − to be applied.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Ch4: What is the purpose of the ORDER BY clause?</span><br>To sort the result set of a query by one or more columns, ascending or descending.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Ch5: What is requirement analysis?</span><br>The systematic study of what data an organization needs and the business rules governing it, done before designing the database.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Ch6: What does "create referential keys" mean in logical design?</span><br>Defining foreign keys that enforce referential integrity between related tables.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Ch7: Why is 2NF only relevant when the primary key is composite?</span><br>Partial dependency (the violation 2NF removes) can only exist when a non-key attribute depends on part of the key — impossible with a single-attribute key.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Ch8: What is a cloud database?</span><br>A database hosted and managed on cloud infrastructure offering elastic scaling (e.g., Amazon RDS).</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Ch9: What is replication in a distributed database?</span><br>Storing copies of the same data at multiple sites to improve availability and local read performance.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Ch10: What is the "partially committed" transaction state?</span><br>The state where all transaction operations have executed, but changes are not yet made permanent.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Ch11: What question does predictive data analysis answer?</span><br>"What is likely to happen?" — based on historical patterns.</div>
+<div class="qa"><span class="badge vsqa">2M</span><span class="q">Ch12: What is the role of an indexer in web search?</span><br>It processes crawled pages and builds an inverted index mapping keywords to the pages containing them.</div>
+
+<h2>SQA — 7 Marks</h2>
+<div class="qa"><span class="badge sqa">7M</span><span class="q">Ch1/Ch9: Explain data independence and how it relates to the challenges of maintaining a distributed database.</span>
+<p>Physical/logical data independence definitions → three-schema architecture link → in a distributed database, physical data independence is harder to maintain because storage decisions (fragmentation, replication placement) can affect performance visibly to users, requiring careful global schema design.</p></div>
+<div class="qa"><span class="badge sqa">7M</span><span class="q">Ch2/Ch6: Trace a small ER diagram through to its final SQL table definitions.</span>
+<p>Draw a 2-entity, 1-relationship ER diagram (e.g., DOCTOR treats PATIENT, 1:N) → map to relations → write CREATE TABLE statements with PK/FK constraints, referencing the Chapter 6 method.</p></div>
+<div class="qa"><span class="badge sqa">7M</span><span class="q">Ch4: Write and explain SQL queries demonstrating DISTINCT, a subquery, and a JOIN using the sample database.</span>
+<p>One query each for DISTINCT (Section 9, Ch4), subquery (Section 12, Ch4), and JOIN (Section 11, Ch4), each with expected result and explanation.</p></div>
+<div class="qa"><span class="badge sqa">7M</span><span class="q">Ch7: Given a relation with stated functional dependencies, identify which normal form it violates and normalize it.</span>
+<p>Use the Normalization Practice Q1 or Q2 (hospital/library examples) as a model answer template.</p></div>
+<div class="qa"><span class="badge sqa">7M</span><span class="q">Ch10/Ch8: Explain why ACID is especially important for OLTP and how OLAP workloads differ.</span>
+<p>OLTP performs frequent concurrent business transactions, so correct transaction boundaries, isolation, recovery, and durable commits are critical. OLAP mainly performs large analytical reads and batch-oriented data loading; its workload and schema are optimized for analysis rather than high-volume row-by-row transaction processing. This does not mean OLAP databases are inherently non-ACID.</p></div>
+
+<h2>LQA — 15 Marks</h2>
+<div class="qa"><span class="badge lqa">15M</span><span class="q">Trace the complete database development lifecycle for a college enrollment system: conceptual design, logical design, normalization, and final SQL implementation.</span>
+<p><strong>Suggested structure:</strong> Requirement analysis (Ch5) → identify entities/relationships → ER diagram (Ch2/Ch5) → logical design: map to tables with keys (Ch6) → check schema against normalization rules, decompose if needed (Ch7) → final CREATE TABLE SQL script with constraints (Ch4/Ch6) → sample queries demonstrating the system in use (Ch4) → conclusion on how each phase depends on the previous one.</p></div>
+<div class="qa"><span class="badge lqa">15M</span><span class="q">Compare and contrast centralized relational databases, distributed databases, and OLTP/OLAP processing, explaining when each is appropriate for an organization.</span>
+<p><strong>Suggested structure:</strong> Centralized relational DB definition/traits (Ch1) → distributed DB architecture, advantages, disadvantages (Ch9) → OLTP vs OLAP comparison (Ch8) → scenario analysis: a growing multi-branch bank needs distribution for branch autonomy (Ch9) but also needs an OLAP data warehouse for head-office reporting (Ch8) built from OLTP transaction data (Ch10) → conclusion on choosing the right technology mix.</p></div>
+
+<div class="revision">
+<h3>Question Bank Coverage Note</h3>
+<p>Combined with each chapter's own VSQA/SQA/LQA sections (Chapters 1–12) and the cross-chapter questions above, this question bank provides comprehensive practice across the entire syllabus at all three board mark levels.</p>
+</div>
+<p><a class="backtop" href="#toc">↑ Back to Table of Contents</a></p>
+</section>
+
+<section class="chapter" id="matrix">
+<h1>Master Syllabus Coverage Matrix</h1>
+<table>
+<tr><th>Ch</th><th>Official Syllabus Topic</th><th>Covered?</th><th>Where</th><th>Example/Practice</th><th>Diagram</th><th>Exam Prep</th></tr>
+<tr><td>1</td><td>Importance of Data & Data Management</td><td>Yes</td><td>Ch1 §3</td><td>College data-mgmt example</td><td>N/A</td><td>VSQA/SQA/LQA</td></tr>
+<tr><td>1</td><td>How Data are Stored in Database</td><td>Yes</td><td>Ch1 §4</td><td>Storage hierarchy table</td><td>N/A</td><td>VSQA</td></tr>
+<tr><td>1</td><td>Different Database Systems</td><td>Yes</td><td>Ch1 §6</td><td>Types table w/ examples</td><td>N/A</td><td>VSQA</td></tr>
+<tr><td>1</td><td>Physical & Logical Structure of Database</td><td>Yes</td><td>Ch1 §5</td><td>Data independence table</td><td>Yes</td><td>VSQA/SQA</td></tr>
+<tr><td>1</td><td>DBMS and Database Systems</td><td>Yes</td><td>Ch1 §7</td><td>Comparison table</td><td>N/A</td><td>VSQA</td></tr>
+<tr><td>1</td><td>Database Architecture</td><td>Yes</td><td>Ch1 §8</td><td>3-level example</td><td>Yes</td><td>SQA/LQA</td></tr>
+<tr><td>1</td><td>Distributed vs Relational Database</td><td>Yes</td><td>Ch1 §9</td><td>Comparison table + classification note</td><td>N/A</td><td>VSQA/LQA</td></tr>
+<tr><td>1</td><td>History</td><td>Yes</td><td>Ch1 §10</td><td>Era table</td><td>N/A</td><td>VSQA/SQA</td></tr>
+<tr><td>2</td><td>Entity Relationship and Object</td><td>Yes</td><td>Ch2 §3</td><td>Attribute types table</td><td>N/A</td><td>VSQA</td></tr>
+<tr><td>2</td><td>ER Diagram</td><td>Yes</td><td>Ch2 §4</td><td>STUDENT-ENROLLS-COURSE diagram</td><td>Yes</td><td>SQA</td></tr>
+<tr><td>2</td><td>Importance of ER Diagram</td><td>Yes</td><td>Ch2 §5</td><td>List of importance points</td><td>N/A</td><td>VSQA</td></tr>
+<tr><td>2</td><td>Relational Model</td><td>Yes</td><td>Ch2 §6</td><td>Terms table + ER-to-relational mapping</td><td>N/A</td><td>VSQA/SQA</td></tr>
+<tr><td>2</td><td>Advantages/Disadvantages of E-R Model</td><td>Yes</td><td>Ch2 §7</td><td>Comparison table</td><td>N/A</td><td>LQA</td></tr>
+<tr><td>3</td><td>Fundamental Operations of RA</td><td>Yes</td><td>Ch3 §4</td><td>Unary/binary classification</td><td>N/A</td><td>VSQA</td></tr>
+<tr><td>3</td><td>Select</td><td>Yes</td><td>Ch3 §5</td><td>Worked table example</td><td>N/A</td><td>VSQA</td></tr>
+<tr><td>3</td><td>Project</td><td>Yes</td><td>Ch3 §6</td><td>Worked table example</td><td>N/A</td><td>VSQA</td></tr>
+<tr><td>3</td><td>Rename</td><td>Yes</td><td>Ch3 §7</td><td>Worked example</td><td>N/A</td><td>VSQA</td></tr>
+<tr><td>3</td><td>Union</td><td>Yes</td><td>Ch3 §8</td><td>Worked example</td><td>N/A</td><td>VSQA</td></tr>
+<tr><td>3</td><td>Intersection</td><td>Yes</td><td>Ch3 §9</td><td>Worked example</td><td>N/A</td><td>VSQA</td></tr>
+<tr><td>3</td><td>Minus/Set Difference</td><td>Yes</td><td>Ch3 §10</td><td>Worked example</td><td>N/A</td><td>VSQA</td></tr>
+<tr><td>3</td><td>Cartesian Product</td><td>Yes</td><td>Ch3 §11</td><td>Worked example (RA Practice Q4)</td><td>N/A</td><td>VSQA</td></tr>
+<tr><td>3</td><td>Theta Join</td><td>Yes</td><td>Ch3 §12</td><td>Worked example</td><td>N/A</td><td>SQA</td></tr>
+<tr><td>3</td><td>Equijoin</td><td>Yes</td><td>Ch3 §13</td><td>Worked table example</td><td>N/A</td><td>SQA</td></tr>
+<tr><td>3</td><td>Natural Join</td><td>Yes</td><td>Ch3 §14</td><td>Worked table example (RA Practice Q5)</td><td>N/A</td><td>SQA</td></tr>
+<tr><td>3</td><td>Division</td><td>Yes</td><td>Ch3 §15</td><td>Worked example (RA Practice Q6)</td><td>N/A</td><td>SQA/LQA</td></tr>
+<tr><td>3</td><td>Unary Operators</td><td>Yes</td><td>Ch3 §4</td><td>Classification table</td><td>N/A</td><td>VSQA</td></tr>
+<tr><td>3</td><td>Binary Operators</td><td>Yes</td><td>Ch3 §4</td><td>Classification table</td><td>N/A</td><td>VSQA</td></tr>
+<tr><td>3</td><td>Union All / Intersect (SQL-adjacent)</td><td>Yes</td><td>Ch3 §17 (Supplementary)</td><td>Comparison table</td><td>N/A</td><td>VSQA</td></tr>
+<tr><td>3</td><td>Relational Calculus fundamentals</td><td>Yes</td><td>Ch3 §16 (Supplementary, flagged)</td><td>TRC/DRC examples</td><td>N/A</td><td>LQA</td></tr>
+<tr><td>4</td><td>SQL Introduction</td><td>Yes</td><td>Ch4 §3</td><td>N/A</td><td>N/A</td><td>VSQA</td></tr>
+<tr><td>4</td><td>Types of SQL (DDL/DML/DCL)</td><td>Yes</td><td>Ch4 §4</td><td>Example commands table</td><td>N/A</td><td>VSQA</td></tr>
+<tr><td>4</td><td>SQL Execution Process</td><td>Yes</td><td>Ch4 §5</td><td>Stage table</td><td>Yes</td><td>SQA</td></tr>
+<tr><td>4</td><td>SQL Fundamentals</td><td>Yes</td><td>Ch4 §6–7</td><td>Sample DB + basic SELECT</td><td>N/A</td><td>VSQA</td></tr>
+<tr><td>4</td><td>Multi-table Queries</td><td>Yes</td><td>Ch4 §11</td><td>2-table and 3-table JOINs</td><td>N/A</td><td>SQA/LQA</td></tr>
+<tr><td>4</td><td>Duplicate Rows</td><td>Yes</td><td>Ch4 §9</td><td>DISTINCT example</td><td>N/A</td><td>VSQA</td></tr>
+<tr><td>4</td><td>Row Selection</td><td>Yes</td><td>Ch4 §8</td><td>WHERE clause examples</td><td>N/A</td><td>SQA</td></tr>
+<tr><td>4</td><td>Comparison Test</td><td>Yes</td><td>Ch4 §8.1</td><td>Worked query</td><td>N/A</td><td>SQA</td></tr>
+<tr><td>4</td><td>Range Test (BETWEEN)</td><td>Yes</td><td>Ch4 §8.2</td><td>Worked query</td><td>N/A</td><td>SQA</td></tr>
+<tr><td>4</td><td>Set Membership (IN)</td><td>Yes</td><td>Ch4 §8.3</td><td>Worked query</td><td>N/A</td><td>SQA</td></tr>
+<tr><td>4</td><td>Pattern Matching (LIKE)</td><td>Yes</td><td>Ch4 §8.4</td><td>Worked query</td><td>N/A</td><td>SQA</td></tr>
+<tr><td>4</td><td>NULL Value Test (IS NULL)</td><td>Yes</td><td>Ch4 §8.5</td><td>Worked query</td><td>N/A</td><td>SQA</td></tr>
+<tr><td>4</td><td>Compound Conditions (AND/OR/NOT)</td><td>Yes</td><td>Ch4 §8.6</td><td>Worked query</td><td>N/A</td><td>SQA</td></tr>
+<tr><td>4</td><td>Sorting/ORDER BY</td><td>Yes</td><td>Ch4 §10</td><td>Worked query</td><td>N/A</td><td>VSQA</td></tr>
+<tr><td>4</td><td>Developing Subqueries</td><td>Yes</td><td>Ch4 §12</td><td>Simple + correlated subquery</td><td>N/A</td><td>SQA/LQA</td></tr>
+<tr><td>5</td><td>Conceptual Design Process</td><td>Yes</td><td>Ch5 §3</td><td>Process diagram + steps</td><td>Yes</td><td>SQA</td></tr>
+<tr><td>5</td><td>Requirement Analysis</td><td>Yes</td><td>Ch5 §4</td><td>College example</td><td>N/A</td><td>VSQA</td></tr>
+<tr><td>5</td><td>Identify the Relation</td><td>Yes</td><td>Ch5 §5</td><td>Worked example</td><td>N/A</td><td>VSQA/LQA</td></tr>
+<tr><td>6</td><td>Logical Design Process</td><td>Yes</td><td>Ch6 §3</td><td>Steps table</td><td>N/A</td><td>SQA</td></tr>
+<tr><td>6</td><td>Design Entity Relation Diagram</td><td>Yes</td><td>Ch6 §4</td><td>Refined ER-with-keys diagram</td><td>Yes</td><td>SQA</td></tr>
+<tr><td>6</td><td>Create Tables and Constraint</td><td>Yes</td><td>Ch6 §5</td><td>Full CREATE TABLE script</td><td>N/A</td><td>SQA/LQA</td></tr>
+<tr><td>6</td><td>Create Referential Keys</td><td>Yes</td><td>Ch6 §6</td><td>ON DELETE/UPDATE example</td><td>N/A</td><td>VSQA</td></tr>
+<tr><td>7</td><td>Use of Normalization</td><td>Yes</td><td>Ch7 §3</td><td>Anomalies table</td><td>N/A</td><td>SQA</td></tr>
+<tr><td>7</td><td>Different Forms of Normalization</td><td>Yes</td><td>Ch7 §4–5</td><td>Full UNF→3NF worked example + 2 practice problems</td><td>Yes</td><td>SQA/LQA</td></tr>
+<tr><td>8</td><td>Different Database Technologies</td><td>Yes</td><td>Ch8 §3</td><td>Technology table w/ examples</td><td>N/A</td><td>VSQA</td></tr>
+<tr><td>8</td><td>Database Client & Server Processing</td><td>Yes</td><td>Ch8 §4</td><td>eSewa/Khalti-style client example</td><td>Yes</td><td>VSQA</td></tr>
+<tr><td>8</td><td>OLAP & OLTP Techniques</td><td>Yes</td><td>Ch8 §5</td><td>Full comparison table</td><td>N/A</td><td>SQA/LQA</td></tr>
+<tr><td>9</td><td>Distributed Database Architecture</td><td>Yes</td><td>Ch9 §3</td><td>Bank-branch example</td><td>Yes</td><td>SQA</td></tr>
+<tr><td>9</td><td>Advantages of Distributed Database</td><td>Yes</td><td>Ch9 §4</td><td>Table</td><td>N/A</td><td>VSQA/LQA</td></tr>
+<tr><td>9</td><td>Disadvantages of Distributed Database</td><td>Yes</td><td>Ch9 §5</td><td>Table</td><td>N/A</td><td>VSQA/LQA</td></tr>
+<tr><td>10</td><td>Transaction Management</td><td>Yes</td><td>Ch10 §3</td><td>Bank transfer example</td><td>Yes</td><td>VSQA</td></tr>
+<tr><td>10</td><td>ACID Properties</td><td>Yes</td><td>Ch10 §4</td><td>Full table w/ examples</td><td>N/A</td><td>SQA/LQA</td></tr>
+<tr><td>10</td><td>Database Evaluation Process</td><td>Yes</td><td>Ch10 §5</td><td>College DB evaluation example</td><td>N/A</td><td>LQA</td></tr>
+<tr><td>11</td><td>Data Analysis Process</td><td>Yes</td><td>Ch11 §3</td><td>Process diagram</td><td>Yes</td><td>LQA</td></tr>
+<tr><td>11</td><td>Types of Data Analysis</td><td>Yes</td><td>Ch11 §4</td><td>4-type table w/ examples</td><td>N/A</td><td>SQA</td></tr>
+<tr><td>11</td><td>Data Analysis Steps</td><td>Yes</td><td>Ch11 §5</td><td>6-step table + SQL example</td><td>N/A</td><td>VSQA/LQA</td></tr>
+<tr><td>12</td><td>Web Data Management</td><td>Yes</td><td>Ch12 §3</td><td>3-tier example</td><td>Yes</td><td>VSQA</td></tr>
+<tr><td>12</td><td>Web Search</td><td>Yes</td><td>Ch12 §4</td><td>Inverted index example</td><td>N/A</td><td>VSQA/LQA</td></tr>
+<tr><td>12</td><td>Web Crawling</td><td>Yes</td><td>Ch12 §5</td><td>Step table</td><td>Yes</td><td>SQA</td></tr>
+</table>
+<p><a class="backtop" href="#toc">↑ Back to Table of Contents</a></p>
+</section>
+
+<section class="chapter" id="finalreport">
+<h1>Final Quality & Coverage Report</h1>
+<table>
+<tr><th>Metric</th><th>Result</th></tr>
+<tr><td>Chapters covered</td><td>12 / 12</td></tr>
+<tr><td>Official syllabus bullets in matrix</td><td>62</td></tr>
+<tr><td>Syllabus bullets marked Covered</td><td>62 / 62</td></tr>
+<tr><td>Chapters with a dedicated diagram</td><td>10 / 12 (Ch3 uses worked tables instead of a diagram; Ch7 has one process diagram plus fully worked tables)</td></tr>
+<tr><td>VSQA sections</td><td>12 / 12 chapters + cross-chapter question bank</td></tr>
+<tr><td>SQA sections</td><td>12 / 12 chapters + cross-chapter question bank</td></tr>
+<tr><td>LQA sections</td><td>12 / 12 chapters + cross-chapter question bank</td></tr>
+<tr><td>SQL practice</td><td>Included (10 questions with answers)</td></tr>
+<tr><td>Relational algebra practice</td><td>Included (6 questions with solutions)</td></tr>
+<tr><td>Normalization practice</td><td>Included (2 full worked UNF→3NF problems)</td></tr>
+<tr><td>Final revision section</td><td>Included</td></tr>
+<tr><td>Final question bank</td><td>Included</td></tr>
+<tr><td>Known limitation</td><td>Relational Calculus (Ch3) is treated at fundamentals level and BCNF is supplementary because the official syllabus does not explicitly list deeper TRC/DRC or BCNF problem-solving. The core 12-chapter syllabus is otherwise taught and cross-checked in this single file.</td></tr>
+</table>
+<p><a class="backtop" href="#toc">↑ Back to Table of Contents</a></p>
+</section>
+
+</div>
+
+    </div>
+  </main>
+  </div>
+</div>
+<script src="../site-data.js"></script>
+<script src="../search-data.js"></script>
+<script src="../script.js"></script>
+</body>
+</html>

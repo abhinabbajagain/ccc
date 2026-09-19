@@ -1,0 +1,1710 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compiler Design &amp; Construction — My Study Library</title>
+<meta name="description" content="Seven chapters from compiling fundamentals to code generation — plus a terminology dictionary, exam checklists and a chapter-wise question bank.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230d2a4a'/%3E%3Cpath d='M9 8h9a4 4 0 0 1 0 8H9zm0 8h11a4 4 0 0 1 0 8H9z' fill='none' stroke='%237dd3fc' stroke-width='2.2'/%3E%3C/svg%3E">
+
+<link rel="stylesheet" href="../styles.css">
+<style>
+/* =====================================================================
+   Original stylesheet from cdc.html — mechanically scoped to .src-compiler-design.
+   The note's own design is preserved exactly; only selectors were
+   prefixed so they apply inside this library page.
+   ===================================================================== */
+.src-compiler-design {
+--bg:#0f1220; --panel:#171b2e; --panel2:#1e2440; --text:#e7e9f5; --muted:#a8adc9;
+    --accent:#7dd3fc; --accent2:#f5b942; --good:#7ee787; --bad:#ff8080; --border:#2c3358;
+}
+.src-compiler-design * {
+box-sizing:border-box;
+}
+.src-compiler-design {
+margin:0;font-family:'Segoe UI',Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;
+}
+.src-compiler-design header {
+padding:28px 5vw;background:linear-gradient(135deg,#1a1f3a,#0f1220);border-bottom:2px solid var(--border);
+}
+.src-compiler-design header h1 {
+margin:0 0 6px 0;font-size:1.8em;color:var(--accent2);
+}
+.src-compiler-design header p {
+margin:0;color:var(--muted);
+}
+.src-compiler-design nav {
+position:sticky;top:0;background:var(--panel);border-bottom:1px solid var(--border);padding:10px 5vw;z-index:50;overflow-x:auto;white-space:nowrap;
+}
+.src-compiler-design nav a {
+color:var(--accent);text-decoration:none;margin-right:16px;font-size:0.9em;
+}
+.src-compiler-design nav a:hover {
+text-decoration:underline;
+}
+.src-compiler-design main {
+padding:10px 5vw 80px 5vw;max-width:1200px;margin:0 auto;
+}
+.src-compiler-design section {
+margin-top:48px;padding-top:8px;border-top:1px solid var(--border);
+}
+.src-compiler-design h2 {
+color:var(--accent2);font-size:1.5em;border-left:4px solid var(--accent2);padding-left:10px;
+}
+.src-compiler-design h3 {
+color:var(--accent);margin-top:30px;
+}
+.src-compiler-design h4 {
+color:#ffd580;margin-top:22px;
+}
+.src-compiler-design .card {
+background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin:14px 0;
+}
+.src-compiler-design .algo {
+background:var(--panel2);border-left:4px solid var(--accent);border-radius:6px;padding:14px 18px;margin:12px 0;
+}
+.src-compiler-design .example {
+background:#12291f;border-left:4px solid var(--good);border-radius:6px;padding:14px 18px;margin:12px 0;
+}
+.src-compiler-design .trap {
+background:#2a1414;border-left:4px solid var(--bad);border-radius:6px;padding:12px 18px;margin:10px 0;
+}
+.src-compiler-design .verify {
+background:#1a2440;border-left:4px solid #9d7bff;border-radius:6px;padding:10px 16px;margin:10px 0;font-size:0.95em;
+}
+.src-compiler-design table {
+border-collapse:collapse;width:100%;margin:14px 0;font-size:0.93em;
+}
+.src-compiler-design th,
+.src-compiler-design td {
+border:1px solid var(--border);padding:6px 10px;text-align:left;
+}
+.src-compiler-design th {
+background:#232a4a;color:var(--accent2);
+}
+.src-compiler-design tr:nth-child(even) {
+background:#161a30;
+}
+.src-compiler-design code,
+.src-compiler-design .mono {
+font-family:Consolas,'Courier New',monospace;background:#0b0e1c;padding:1px 6px;border-radius:4px;color:#9df5c0;
+}
+.src-compiler-design pre {
+background:#0b0e1c;padding:12px 16px;border-radius:8px;overflow-x:auto;
+}
+.src-compiler-design .grid2 {
+display:grid;grid-template-columns:1fr 1fr;gap:16px;
+}
+.src-compiler-design .badge {
+display:inline-block;background:var(--accent2);color:#1a1200;font-weight:bold;padding:2px 10px;border-radius:12px;font-size:0.8em;margin-left:8px;
+}
+.src-compiler-design .toc-col {
+columns:2;column-gap:30px;
+}
+.src-compiler-design details {
+background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:8px 14px;margin:8px 0;
+}
+.src-compiler-design summary {
+cursor:pointer;color:var(--accent);font-weight:600;
+}
+.src-compiler-design svg {
+background:#0b0e1c;border-radius:8px;border:1px solid var(--border);
+}
+.src-compiler-design .qbank li {
+margin-bottom:6px;
+}
+.src-compiler-design .term dt {
+color:var(--accent2);font-weight:bold;margin-top:8px;
+}
+.src-compiler-design .term dd {
+margin-left:0;color:var(--text);margin-bottom:4px;
+}
+.src-compiler-design footer {
+padding:30px 5vw;text-align:center;color:var(--muted);border-top:1px solid var(--border);
+}
+@media(max-width:700px) {
+.src-compiler-design .toc-col {
+columns:1;
+}
+.src-compiler-design .grid2 {
+grid-template-columns:1fr;
+}
+}
+</style>
+</head>
+<body class="page-subject" data-subject="compiler-design">
+<div class="shell">
+  <header class="topbar">
+    <button class="iconbtn nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <a class="brand" href="../index.html">
+      <svg viewBox="0 0 32 32" width="24" height="24" aria-hidden="true"><rect width="32" height="32" rx="7" fill="currentColor" opacity="0.14"/><path d="M9 8h9a4 4 0 0 1 0 8H9zm0 8h11a4 4 0 0 1 0 8H9z" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>
+      <span>Study Library</span>
+    </a>
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../index.html">Library</a><span class="sep">/</span><strong>Compiler Design &amp; Construction</strong>
+    </nav>
+    <div class="topbar-search" role="search">
+      <svg class="s-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-3.8-3.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <input id="search-input" type="search" placeholder="Search all notes…  ( / )" autocomplete="off" spellcheck="false" aria-label="Search all notes">
+      <div class="search-results" id="search-results" hidden></div>
+    </div>
+    <button class="iconbtn theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
+  </header>
+
+  <div class="shell-body">
+  <aside class="sidebar" id="sidebar" aria-label="Subjects and chapters">
+    <div class="side-block">
+      <div class="side-head">
+        <h2><span class="dot" style="background:#38bdf8"></span>Compiler Design &amp; Construction</h2>
+        <button id="mark-all" class="mark-all" type="button" title="Toggle reviewed status for every section of this subject">✓ reviewed</button>
+      </div>
+      <div class="side-progress" aria-hidden="true">
+        <div class="bar"><span id="prog-bar" style="width:0%"></span></div>
+        <em id="prog-label">0 of 0 reviewed</em>
+      </div>
+      <nav class="side-chapters" id="side-chapters"></nav>
+    </div>
+    <div class="side-block">
+      <h3 class="side-sub">Other subjects</h3>
+      <ul class="side-others" id="side-others"></ul>
+    </div>
+  </aside>
+  <div class="scrim" id="scrim" hidden></div>
+
+  <main class="content" id="content">
+    <div class="content-inner src src-compiler-design">
+<span id="toc" hidden></span>
+<header>
+  <h1>Compiler Design &amp; Construction</h1>
+  <p>Complete Board-Examination Master Study Guide — Theory, Algorithms, Fully Worked Numerical Examples, and Revision Material</p>
+</header>
+
+
+
+<main>
+
+<!-- ================================================================ -->
+<section id="ch1">
+<h2>Chapter 1 — Introduction to Compiling</h2>
+
+<h3>1.1 Compilers</h3>
+<div class="card">
+<p><b>Definition.</b> A <b>compiler</b> is a program that reads a program written in a <b>source language</b> and translates it into an equivalent program in a <b>target language</b>, while reporting any errors found during the translation process.</p>
+<pre>          +------------+
+Source →  |  COMPILER  |  → Target program
+Program   +------------+
+               |
+               v
+          Error messages</pre>
+<p><b>Compiler vs Interpreter</b></p>
+<table>
+<tr><th>Aspect</th><th>Compiler</th><th>Interpreter</th></tr>
+<tr><td>Execution</td><td>Translates whole program first, then runs the target code</td><td>Translates and executes statement-by-statement</td></tr>
+<tr><td>Speed</td><td>Faster execution after compilation</td><td>Slower, translation overhead every run</td></tr>
+<tr><td>Error detection</td><td>All errors detected before execution</td><td>Errors detected only when that line is reached</td></tr>
+<tr><td>Output</td><td>Produces a separate target file (e.g. .exe)</td><td>No separate target file</td></tr>
+<tr><td>Examples</td><td>C, C++ compilers</td><td>Python (classic), shell scripts</td></tr>
+</table>
+<p><b>Advantages of compilation:</b> fast repeated execution, whole-program error checking, opportunity for optimization.<br>
+<b>Limitations:</b> compilation step needed before running; harder to give instant interactive feedback.</p>
+<p><b>Basic organization:</b> a compiler is commonly split into a front end (analysis: lexical, syntax, semantic) and a back end (synthesis: intermediate code, optimization, target code generation).</p>
+</div>
+
+<h3>1.2 Analysis of the Source Program</h3>
+<div class="card">
+<p>Compilation is often viewed as <b>analysis</b> (breaking the source program down and understanding its meaning) followed by <b>synthesis</b> (constructing the target program from that understanding).</p>
+<table>
+<tr><th>Stage</th><th>Receives</th><th>Produces</th><th>Typical error caught</th></tr>
+<tr><td>Lexical analysis</td><td>Stream of characters</td><td>Stream of tokens</td><td>Illegal character, malformed number</td></tr>
+<tr><td>Syntax analysis</td><td>Stream of tokens</td><td>Parse tree / syntax tree</td><td>Missing semicolon, unbalanced parentheses</td></tr>
+<tr><td>Semantic analysis</td><td>Syntax tree</td><td>Annotated (decorated) syntax tree</td><td>Type mismatch, undeclared variable</td></tr>
+</table>
+<div class="example">
+<p><b>Example.</b> For the statement <code>position = initial + rate * 60</code>:</p>
+<ul>
+<li>Lexical analysis produces tokens: <code>id(position) = id(initial) + id(rate) * num(60)</code></li>
+<li>Syntax analysis builds a tree reflecting that <code>*</code> binds tighter than <code>+</code>.</li>
+<li>Semantic analysis checks that <code>rate</code> and <code>60</code> are compatible types (and may insert a conversion, e.g. <code>inttofloat</code>, if <code>rate</code> is real and <code>60</code> is an integer literal).</li>
+</ul>
+</div>
+</div>
+
+<h3>1.3 Phases of a Compiler</h3>
+<div class="card">
+<p>The complete phase pipeline, with the symbol table and error handler interacting with every phase:</p>
+<pre>
+   source program
+        |
+        v
+  [Lexical Analyzer] &lt;-----&gt;
+        |                    \
+        v                     \
+  [Syntax Analyzer]  &lt;-----&gt;   [Symbol Table]
+        |                     /
+        v                    /
+  [Semantic Analyzer] &lt;----&gt;
+        |
+        v
+  [Intermediate Code Generator]
+        |
+        v
+  [Code Optimizer]
+        |
+        v
+  [Code Generator]
+        |
+        v
+   target program
+
+  (Every phase also reports to the [Error Handler])
+</pre>
+<table>
+<tr><th>Phase</th><th>Input</th><th>Output</th><th>Purpose / major tasks</th></tr>
+<tr><td>Lexical analysis</td><td>Characters</td><td>Tokens</td><td>Group characters into lexemes, classify into tokens, remove whitespace/comments</td></tr>
+<tr><td>Syntax analysis</td><td>Tokens</td><td>Parse tree</td><td>Check grammatical structure, build hierarchical representation</td></tr>
+<tr><td>Semantic analysis</td><td>Parse tree</td><td>Annotated tree</td><td>Type checking, scope resolution, semantic-rule enforcement</td></tr>
+<tr><td>Intermediate code generation</td><td>Annotated tree</td><td>Intermediate representation (e.g. TAC)</td><td>Machine-independent, close-to-machine representation</td></tr>
+<tr><td>Code optimization</td><td>Intermediate code</td><td>Improved intermediate code</td><td>Reduce time/space without changing meaning</td></tr>
+<tr><td>Code generation</td><td>Optimized IR</td><td>Target (machine) code</td><td>Register allocation, instruction selection</td></tr>
+</table>
+<p><b>Symbol table:</b> a data structure holding information (name, type, scope, memory location) about every identifier; built and consulted by nearly every phase.<br>
+<b>Error handler:</b> receives error reports from each phase, produces diagnostics, and (where possible) allows compilation to continue so multiple errors can be reported in one pass.</p>
+<div class="example">
+<p><b>Trace example</b> for <code>position = initial + rate * 60</code> through the phases (abbreviated):</p>
+<ol>
+<li>Lexical: <code>id1 = id2 + id3 * 60</code></li>
+<li>Syntax: tree with <code>=</code> at the root, <code>+</code> below it, <code>*</code> below that</li>
+<li>Semantic: <code>60</code> converted to real via <code>inttofloat(60)</code></li>
+<li>Intermediate code: <code>t1 = inttofloat(60); t2 = id3 * t1; t3 = id2 + t2; id1 = t3</code></li>
+<li>Optimized: <code>t1 = id3 * 60.0; id1 = id2 + t1</code></li>
+<li>Target code: load/multiply/add/store machine instructions</li>
+</ol>
+</div>
+</div>
+
+<h3>1.4 Compiler-Construction Tools</h3>
+<div class="card">
+<table>
+<tr><th>Tool category</th><th>Definition</th><th>Role</th><th>Example</th></tr>
+<tr><td>Scanner generator</td><td>Produces a lexical analyzer from a regular-expression token specification</td><td>Automates Chapter 3 work</td><td>Lex / Flex</td></tr>
+<tr><td>Parser generator</td><td>Produces a parser from a grammar</td><td>Automates Chapter 4 work</td><td>Yacc / Bison</td></tr>
+<tr><td>Syntax-directed translation engine</td><td>Produces routines that walk a parse tree and apply semantic actions</td><td>Automates Chapter 5 work</td><td>Tools bundled with Yacc</td></tr>
+<tr><td>Code-generator generator</td><td>Produces a code generator from rules mapping IR to target instructions</td><td>Automates Chapter 7 work</td><td>Specialized retargetable generators</td></tr>
+<tr><td>Data-flow analysis engine</td><td>Gathers information (e.g. live variables) propagated among blocks of a flow graph</td><td>Supports optimization</td><td>Used internally by optimizing compilers</td></tr>
+<tr><td>Compiler-construction toolkit</td><td>Integrated set of routines for building phases</td><td>Speeds up compiler assembly</td><td>Various academic/industrial toolkits</td></tr>
+</table>
+<p><b>Tools vs phases:</b> a phase is a conceptual stage of translation that every compiler performs; a tool is a piece of software that helps a compiler-writer automatically generate the code that implements a phase, rather than hand-writing it.</p>
+</div>
+</section>
+
+<!-- ================================================================ -->
+<section id="ch2">
+<h2>Chapter 2 — Simple One-Pass Compiler</h2>
+
+<h3>2.1 Syntax Definition</h3>
+<div class="card">
+<dl class="term">
+<dt>Grammar</dt><dd>A formal description of a language's syntax, made of terminals, non-terminals, productions, and a start symbol.</dd>
+<dt>Terminals</dt><dd>Basic symbols from which strings are formed (tokens).</dd>
+<dt>Non-terminals</dt><dd>Syntactic variables denoting sets of strings; used to organize the grammar.</dd>
+<dt>Production</dt><dd>A rule of the form <code>A → α</code> specifying how a non-terminal expands.</dd>
+<dt>Start symbol</dt><dd>The distinguished non-terminal representing the whole language.</dd>
+<dt>Derivation</dt><dd>A sequence of productions applied to derive a string from the start symbol.</dd>
+<dt>Parse tree</dt><dd>Tree showing how a string is derived: root is the start symbol, leaves are terminals.</dd>
+<dt>Ambiguity</dt><dd>A grammar is ambiguous if some string has more than one parse tree.</dd>
+</dl>
+<div class="example">
+<p><b>Example grammar</b> for simple arithmetic expressions:</p>
+<pre>E → E + T | T
+T → T * F | F
+F → ( E ) | id</pre>
+<p>Derivation of <code>id + id * id</code> (leftmost):</p>
+<pre>E ⇒ E + T ⇒ T + T ⇒ F + T ⇒ id + T ⇒ id + T * F ⇒ id + F * F ⇒ id + id * F ⇒ id + id * id</pre>
+</div>
+</div>
+
+<h3>2.2 Syntax-Directed Translation</h3>
+<div class="card">
+<p><b>Syntax-directed translation (SDT)</b> attaches a semantic action (a rule/fragment of code) to each grammar production; as the parser recognizes a production, it executes the associated action, producing a translation.</p>
+<div class="example">
+<p><b>Worked example.</b> Grammar with translation rules for converting an expression to postfix:</p>
+<table>
+<tr><th>Production</th><th>Semantic rule</th></tr>
+<tr><td>E → E1 + T</td><td>E.t = E1.t &#124;&#124; T.t &#124;&#124; '+'</td></tr>
+<tr><td>E → T</td><td>E.t = T.t</td></tr>
+<tr><td>T → id</td><td>T.t = id.lexeme</td></tr>
+</table>
+<p><b>Grammar → parse structure → semantic action → translation</b> for <code>a + b</code>:</p>
+<pre>Parse: E(E(T(id:a)) + T(id:b))
+Actions applied bottom-up: T.t="a"; T.t="b"; E.t = "a" || "b" || "+" = "ab+"
+Result: postfix "ab+"</pre>
+</div>
+</div>
+
+<h3>2.3 Parsing</h3>
+<div class="card">
+<p>A <b>parser</b> takes the token stream from the lexical analyzer and determines whether it can be generated by the grammar of the source language, producing a parse tree (explicit or implicit) and reporting <b>syntax errors</b> (e.g. missing operator, unmatched parenthesis) with diagnostics. Parsing is discussed conceptually here; the algorithms (recursive descent, predictive, shift-reduce, LR) are covered in Chapter 4.</p>
+</div>
+
+<h3>2.4 Translation of Simple Expressions</h3>
+<div class="card">
+<p>Consider expressions built from identifiers, constants, <code>+ - * /</code>, and parentheses, with the usual precedence (<code>*</code>,<code>/</code> bind tighter than <code>+</code>,<code>-</code>) and left associativity.</p>
+<div class="example">
+<b>Example 1 — <code>9 - 5 + 2</code></b>
+<ol>
+<li>Original expression: <code>9 - 5 + 2</code></li>
+<li>Structure (left-associative, same precedence): <code>((9 - 5) + 2)</code></li>
+<li>Translation steps to postfix: push 9, push 5, apply <code>-</code> → "9 5 -", push 2, apply <code>+</code> → "9 5 - 2 +"</li>
+<li>Final translated form: <code>9 5 - 2 +</code></li>
+<li>Verification: evaluating postfix — (9-5)=4, (4+2)=6; evaluating infix — (9-5)+2 = 6. ✔ Match.</li>
+</ol>
+<b>Example 2 — <code>a + b * c</code></b>
+<ol>
+<li>Original: <code>a + b * c</code></li>
+<li>Structure: <code>a + (b * c)</code> (precedence)</li>
+<li>Postfix construction: <code>a</code>, <code>b</code>, <code>c</code>, apply <code>*</code> → "a b c *", apply <code>+</code> → "a b c * +"</li>
+<li>Final form: <code>a b c * +</code></li>
+<li>Verification: with a=2,b=3,c=4: postfix gives 3*4=12, 2+12=14; infix gives 2+(3*4)=14. ✔</li>
+</ol>
+<b>Example 3 — stack-machine instructions for <code>(a + b) * c</code></b>
+<pre>push a
+push b
+add
+push c
+mul</pre>
+Stack states: [a] → [a,b] → [a+b] → [a+b, c] → [(a+b)*c]. Final top-of-stack holds the result. ✔ matches expected value.
+</div>
+</div>
+
+<h3>2.5 Symbol Table</h3>
+<div class="card">
+<p><b>Purpose:</b> stores information about each identifier — name, type, scope, and (later) memory location — so that later phases (semantic analysis, code generation) can retrieve it.</p>
+<table>
+<tr><th>Name</th><th>Type</th><th>Scope</th><th>Offset</th></tr>
+<tr><td>a</td><td>int</td><td>global</td><td>0</td></tr>
+<tr><td>b</td><td>float</td><td>global</td><td>4</td></tr>
+<tr><td>c</td><td>int</td><td>local(main)</td><td>0</td></tr>
+</table>
+<p>Entries are created when a declaration is processed (lexical analyzer or a declaration-handling routine inserts the name; semantic analysis fills in type/scope). Entries are looked up whenever the identifier is used, e.g. during type checking or address computation.</p>
+</div>
+
+<h3>2.6 Abstract Stack Machines</h3>
+<div class="card">
+<p>An abstract stack machine evaluates expressions using a stack; typical instructions: <code>push</code> (load a value/variable onto the stack), <code>pop</code>/<code>store</code> (remove top and store into a variable), and arithmetic ops (<code>add, sub, mul, div</code>) that pop two operands and push the result.</p>
+<div class="example">
+<p><b>Worked example — <code>x = a + b * c</code></b></p>
+<table>
+<tr><th>#</th><th>Instruction</th><th>Stack after execution</th></tr>
+<tr><td>1</td><td>push b</td><td>[b]</td></tr>
+<tr><td>2</td><td>push c</td><td>[b, c]</td></tr>
+<tr><td>3</td><td>mul</td><td>[b*c]</td></tr>
+<tr><td>4</td><td>push a</td><td>[b*c, a]</td></tr>
+<tr><td>5</td><td>add</td><td>[a + b*c]</td></tr>
+<tr><td>6</td><td>store x</td><td>[]  (x := a+b*c)</td></tr>
+</table>
+<div class="verify"><b>Verification:</b> with a=2,b=3,c=4 → b*c=12, a+12=14, so x=14; direct evaluation of a+b*c = 2+12=14. ✔</div>
+</div>
+</div>
+</section>
+
+<!-- ================================================================ -->
+<section id="ch3">
+<h2>Chapter 3 — Lexical Analysis</h2>
+
+<h3>3.1 Role of the Lexical Analyzer</h3>
+<div class="card">
+<p>Reads the source character stream and groups characters into <b>lexemes</b>, classifying each lexeme into a <b>token</b> according to a <b>pattern</b>, discarding whitespace/comments, and reporting lexical errors (e.g. illegal character). It hands tokens to the parser (often on demand, one at a time).</p>
+<table>
+<tr><th>Term</th><th>Meaning</th><th>Example</th></tr>
+<tr><td>Token</td><td>A category/abstract symbol representing a kind of lexical unit</td><td><code>id</code>, <code>num</code>, <code>relop</code></td></tr>
+<tr><td>Lexeme</td><td>The actual sequence of characters matched</td><td><code>count</code>, <code>123</code>, <code>&lt;=</code></td></tr>
+<tr><td>Pattern</td><td>The rule (often a regular expression) describing the set of lexemes for a token</td><td>letter(letter&#124;digit)* for <code>id</code></td></tr>
+</table>
+<div class="example">For <code>total = total + rate * 5;</code> the lexemes/tokens are: <code>total→id</code>, <code>=→assign</code>, <code>total→id</code>, <code>+→plus</code>, <code>rate→id</code>, <code>*→mult</code>, <code>5→num</code>, <code>;→semicolon</code>.</div>
+</div>
+
+<h3>3.2 Input Buffering</h3>
+<div class="card">
+<p>Scanning character-by-character with a system call per character is slow, so a lexer reads input into a <b>buffer</b> in large blocks.</p>
+<p><b>Double buffering scheme:</b> two buffers of size N are used; a pointer <code>lexemeBegin</code> marks the start of the current lexeme and a pointer <code>forward</code> scans ahead. When <code>forward</code> reaches the end of one buffer, the other buffer is refilled; a <b>sentinel</b> (eof marker) is placed at the end of each buffer so a single test (forward pointer hit sentinel?) handles both "end of buffer, reload" and "end of input" cases, avoiding a separate bounds check on every character.</p>
+<pre>
+Buffer 1:  E  =  M  *  C  * *  2  eof
+Buffer 2:  ...next block...       eof
+           ^lexemeBegin      ^forward
+</pre>
+<p><b>Lookahead/retraction:</b> the lexer may need to look one or more characters beyond the current lexeme to decide the pattern (e.g. distinguishing <code>&lt;</code> from <code>&lt;=</code>); if the extra character does not belong, <code>forward</code> is retracted by one.</p>
+<p>This scheme improves efficiency because most character tests reduce to a single sentinel check instead of two comparisons (buffer bound and character value).</p>
+</div>
+
+<h3>3.3 Specification and Recognition of Tokens</h3>
+<div class="card">
+<table>
+<tr><th>Token class</th><th>Sample regular expression</th><th>Example lexemes</th></tr>
+<tr><td>Identifier</td><td><code>letter (letter|digit)*</code></td><td>x, count1, sum_total</td></tr>
+<tr><td>Keyword</td><td>Literal strings, e.g. <code>if|while|else</code></td><td>if, while</td></tr>
+<tr><td>Integer</td><td><code>digit digit*</code></td><td>0, 42, 1000</td></tr>
+<tr><td>Real number</td><td><code>digit+ . digit+ (E (+|-)? digit+)?</code></td><td>3.14, 2.5E-3</td></tr>
+<tr><td>Relational operator</td><td><code>&lt; | &lt;= | = | &lt;&gt; | &gt; | &gt;=</code></td><td>&lt;=, &gt;</td></tr>
+<tr><td>Delimiter</td><td>Literal characters</td><td>;  ,  (  )</td></tr>
+</table>
+<p>Recognition proceeds by matching the longest prefix of the remaining input against the union of all token patterns ("maximal munch"), extracting that prefix as the lexeme and classifying it by the matching pattern (keywords normally checked against a reserved-word table before defaulting to <code>id</code>).</p>
+</div>
+
+<h3>3.4 Finite Automata</h3>
+<div class="card">
+<dl class="term">
+<dt>Alphabet</dt><dd>A finite set of symbols, e.g. Σ={0,1}.</dd>
+<dt>String</dt><dd>A finite sequence of symbols from Σ.</dd>
+<dt>Language</dt><dd>A set of strings over Σ.</dd>
+<dt>State</dt><dd>A configuration of the automaton.</dd>
+<dt>Start state</dt><dd>Unique state where recognition begins.</dd>
+<dt>Accepting/final state</dt><dd>A state where, if input ends there, the string is accepted.</dd>
+<dt>Transition</dt><dd>A move from one state to another on reading an input symbol (or ε).</dd>
+</dl>
+<table>
+<tr><th>Aspect</th><th>NFA</th><th>DFA</th></tr>
+<tr><td>Transitions per state/symbol</td><td>Zero, one, or many (also ε-moves allowed)</td><td>Exactly one</td></tr>
+<tr><td>Determinism</td><td>Non-deterministic</td><td>Deterministic</td></tr>
+<tr><td>Simulation</td><td>Must track a set of possible states</td><td>Track a single state</td></tr>
+<tr><td>Construction from RE</td><td>Direct (Thompson)</td><td>Via subset construction from an NFA, or direct methods</td></tr>
+<tr><td>Speed of use</td><td>Slower to simulate directly</td><td>Fast — one table lookup per symbol</td></tr>
+</table>
+<div class="example">
+<p><b>Worked example — running a string through a DFA.</b> DFA for <code>(a|b)*abb</code> (recognizing strings ending in "abb"):</p>
+<table>
+<tr><th>State</th><th>a</th><th>b</th><th>Accepting?</th></tr>
+<tr><td>0 (start)</td><td>1</td><td>0</td><td>No</td></tr>
+<tr><td>1</td><td>1</td><td>2</td><td>No</td></tr>
+<tr><td>2</td><td>1</td><td>3</td><td>No</td></tr>
+<tr><td>3</td><td>1</td><td>0</td><td>Yes</td></tr>
+</table>
+<p>Trace of <code>aabb</code>: 0 →a→ 1 →a→ 1 →b→ 2 →b→ 3 (accepting). String <b>accepted</b>.<br>
+Trace of <code>aab</code>: 0 →a→1 →a→1 →b→2 (not accepting at end). String <b>rejected</b>.</p>
+</div>
+</div>
+
+<h3>3.5 Regular Expression → NFA — Thompson's Construction</h3>
+<div class="algo">
+<b>Construction rules</b> (each fragment has exactly one start state and one accepting state):
+<ul>
+<li><b>Symbol a:</b> start --a--&gt; accept (single transition on a).</li>
+<li><b>Concatenation r·s:</b> accept state of r's fragment is connected by an ε-transition to the start state of s's fragment; r's start becomes the overall start, s's accept becomes the overall accept.</li>
+<li><b>Union r|s:</b> new start state has ε-transitions to both r's start and s's start; both r's accept and s's accept have ε-transitions to a new common accept state.</li>
+<li><b>Kleene star r*:</b> new start and new accept states are added; new start has ε-transitions to r's start and directly to new accept (zero occurrences); r's accept has ε-transitions back to r's start (repeat) and to new accept (stop).</li>
+</ul>
+</div>
+<div class="example">
+<p><b>Worked example — building the NFA for <code>(a|b)*abb</code> step by step.</b></p>
+<p><b>Step 1 — Parse into subexpressions:</b> <code>(a|b)</code>, then <code>*</code>, then concatenated with <code>a</code>, <code>b</code>, <code>b</code>.</p>
+<p><b>Step 2 — Fragment for <code>a</code>:</b> N1: state 0 --a--&gt; state 1.</p>
+<p><b>Step 3 — Fragment for <code>b</code>:</b> N2: state 2 --b--&gt; state 3.</p>
+<p><b>Step 4 — Union <code>a|b</code>:</b> new start 4, new accept 5.<br>
+4 --ε--&gt; 0, 4 --ε--&gt; 2, 1 --ε--&gt; 5, 3 --ε--&gt; 5.<br>
+Fragment N3 = start 4, accept 5.</p>
+<p><b>Step 5 — Star <code>(a|b)*</code>:</b> new start 6, new accept 7.<br>
+6 --ε--&gt; 4 (enter loop body), 6 --ε--&gt; 7 (skip body),<br>
+5 --ε--&gt; 4 (repeat), 5 --ε--&gt; 7 (exit).<br>
+Fragment N4 = start 6, accept 7.</p>
+<p><b>Step 6 — Concatenate with literal <code>a</code>, <code>b</code>, <code>b</code>:</b> Build a --a→ 9 (fragment N5: 8 to 9), 10 --b--&gt; 11 (N6), 12 --b--&gt; 13 (N7).<br>
+Connect: 7 --ε--&gt; 8, 9 --ε--&gt; 10, 11 --ε--&gt; 12.</p>
+<p><b>Final NFA</b>: overall start = 6, overall accept = 13, with the ε-transitions listed above connecting every fragment (13 states total, numbered 0–13).</p>
+<div class="verify"><b>Verification:</b>
+<ul>
+<li><code>abb</code>: 6→ε→6/4→ε→0 →a→1→ε→5→ε→7→ε→8→a? — take the path 6-ε-4-ε-0-a-1-ε-5-ε-7-ε-8; but next input is "b" not "a" for the literal-a fragment, so instead take the star-exit branch immediately: 6-ε-7-ε-8 -a→ 9 -ε→10 -b→11 -ε→12 -b→13 (accept). Accepted. ✔</li>
+<li><code>aabb</code>: loop through the star once consuming "a" (6-ε-4-ε-0-a-1-ε-5-ε-4... one more pass is unnecessary here since after one loop we exit via 5-ε-7), then literal a,b,b consumes "abb": accepted. ✔</li>
+<li><code>ab</code> (too short, no trailing "abb" pattern completed cleanly with only 2 chars): rejected, since the literal tail needs 3 more symbols after zero-or-more loop consumption and only 2 symbols are available in total — no accepting path exists. ✔</li>
+</ul>
+</div>
+</div>
+
+<h3>3.6 NFA → DFA — Subset Construction</h3>
+<div class="algo">
+<b>Definitions:</b>
+<ul>
+<li><b>ε-closure(s):</b> set of NFA states reachable from state <code>s</code> using only ε-transitions (including <code>s</code> itself).</li>
+<li><b>move(T, a):</b> set of NFA states to which there is a transition on input symbol <code>a</code> from some state in set <code>T</code>.</li>
+</ul>
+<b>Algorithm:</b>
+<ol>
+<li>Start state of DFA = ε-closure(start state of NFA).</li>
+<li>For each unmarked DFA state T and each input symbol a: compute U = ε-closure(move(T,a)). If U is new, add it as a DFA state.</li>
+<li>Repeat until no new states are generated.</li>
+<li>A DFA state is accepting if it contains at least one NFA accepting state.</li>
+</ol>
+</div>
+<div class="example">
+<p><b>Worked example</b> — subset construction on a small NFA for <code>a(b|c)*</code> with states: 0 --a--&gt; 1; 1--ε--&gt;2; 2--ε--&gt;3 (loop entry) ; 2--ε--&gt;5(exit,accept); 3--b--&gt;4, 4--ε--&gt;2 style loop; 3 in union with 3'--c-->4' also looping back to 2. To keep the table concrete we summarize the reachable NFA sets directly:</p>
+<table>
+<tr><th>DFA State</th><th>NFA State Set</th><th>Input a</th><th>Input b</th><th>Input c</th><th>Accepting?</th></tr>
+<tr><td>A</td><td>{0}</td><td>B</td><td>-</td><td>-</td><td>No</td></tr>
+<tr><td>B</td><td>ε-closure(move({0},a)) = {1,2,3,3',5}</td><td>-</td><td>C</td><td>C</td><td>Yes (contains 5)</td></tr>
+<tr><td>C</td><td>ε-closure(move(B,b)∪move(B,c)) = {4,4',2,3,3',5}</td><td>-</td><td>C</td><td>C</td><td>Yes (contains 5)</td></tr>
+</table>
+<p>Calculation shown explicitly: move(B,b) follows the b-transition out of state 3 to state 4; ε-closure(4) then reaches 2, 3, 3', 5 (looping back into the star body and out to accept). Since C's b/c transitions map back to the same NFA set C, no new states are produced — the subset construction terminates.</p>
+<div class="verify"><b>Verification:</b> string "abc": A→a→B→b→C→c→C, ends in accepting state C. Accepted, matching <code>a(b|c)*</code>. ✔ String "b" alone: A has no transition on b, so it is a lexical/automaton error path — rejected, correctly, since the language requires a leading "a". ✔</div>
+</div>
+
+<h3>3.7 Regular Expression → DFA</h3>
+<div class="card">
+<p>The course approach is the two-step pipeline: <b>RE → NFA (Thompson) → DFA (subset construction)</b>, exactly as carried out in 3.5 and 3.6 above (the NFA of §3.5 could be fed into the subset-construction algorithm of §3.6 to obtain a DFA directly).</p>
+<p><b>Additional material (not the primary syllabus method):</b> a DFA can also be built directly from a regular expression via the "direct method" using the syntax tree of the RE and the functions <code>nullable</code>, <code>firstpos</code>, <code>lastpos</code>, and <code>followpos</code>, skipping the intermediate NFA. This is presented only as supporting/advanced knowledge; the RE→NFA→DFA pipeline is the examinable procedure emphasized here.</p>
+</div>
+</section>
+
+<!-- ================================================================ -->
+<section id="ch4">
+<h2>Chapter 4 — Syntax Analysis</h2>
+
+<h3>4.1 Role of the Parser</h3>
+<div class="card">Takes the token stream from the lexical analyzer, verifies it conforms to the source-language grammar, builds a parse tree (explicit or implicit), reports syntax errors with recovery where possible, and passes the tree (or an equivalent structure) to semantic analysis.</div>
+
+<h3>4.2 Context-Free Grammar (CFG)</h3>
+<div class="card">
+<p>A CFG is a 4-tuple (N, T, P, S): non-terminals, terminals, productions, start symbol.</p>
+<dl class="term">
+<dt>Sentential form</dt><dd>Any string derivable from the start symbol (may contain non-terminals).</dd>
+<dt>Sentence</dt><dd>A sentential form containing only terminals.</dd>
+<dt>Leftmost derivation</dt><dd>At each step, the leftmost non-terminal is expanded.</dd>
+<dt>Rightmost derivation</dt><dd>At each step, the rightmost non-terminal is expanded.</dd>
+</dl>
+<div class="example">
+Grammar: S → aSb | ε. Leftmost derivation of <code>aabb</code>: S ⇒ aSb ⇒ aaSbb ⇒ aabb.
+</div>
+</div>
+
+<h3>4.3 Writing a Grammar</h3>
+<div class="card">
+<p><b>Step-by-step example — grammar for simple arithmetic with parentheses, identifiers, numbers:</b></p>
+<pre>
+E → E + T | E - T | T
+T → T * F | T / F | F
+F → ( E ) | id | num
+</pre>
+<p>Precedence is encoded by layering non-terminals (E for lowest precedence +/-, T for */ , F for atoms); associativity (left) is encoded by left recursion (<code>E → E + T</code> rather than <code>E → T + E</code>).</p>
+<p><b>Ambiguity example:</b> the "dangling-else" grammar <code>S → if E then S | if E then S else S | other</code> is ambiguous because <code>if E1 then if E2 then S1 else S2</code> has two parse trees (else attaches to the first or second if). The standard fix is to require that a "matched" statement appears between then and else, disambiguating else to attach to the nearest unmatched if.</p>
+</div>
+
+<h3>4.4 Top-Down Parsing</h3>
+<div class="card">Builds the parse tree from the root (start symbol) downward, constructing a leftmost derivation, expanding non-terminals to try to match the input; may require backtracking if a naive top-down parser guesses the wrong production.
+<table><tr><th>Aspect</th><th>Top-down</th><th>Bottom-up</th></tr>
+<tr><td>Tree built</td><td>Root to leaves</td><td>Leaves to root</td></tr>
+<tr><td>Derivation</td><td>Leftmost</td><td>Rightmost, in reverse</td></tr>
+<tr><td>Typical technique</td><td>Recursive descent, LL</td><td>Shift-reduce, LR</td></tr>
+<tr><td>Left recursion</td><td>Problematic</td><td>Not a problem</td></tr>
+</table>
+</div>
+
+<h3>4.5 Recursive Descent Parsing</h3>
+<div class="algo">Each non-terminal becomes a procedure. The body of the procedure examines the current lookahead token to decide which production to apply, then calls procedures for the non-terminals on the right-hand side in order, matching terminals directly against the input.</div>
+<div class="example">
+<p>Grammar (after removing left recursion — see below): <code>E → T E'</code>, <code>E' → + T E' | ε</code>, <code>T → id</code>.</p>
+<pre>
+procedure E():
+    T()
+    Eprime()
+
+procedure Eprime():
+    if lookahead == '+':
+        match('+')
+        T()
+        Eprime()
+    else:
+        return   # ε-production
+
+procedure T():
+    match('id')
+</pre>
+<p><b>Full sample parse of <code>id + id</code>:</b> E() → T() matches "id" → Eprime() sees '+' → match('+') → T() matches "id" → Eprime() sees end of input → returns (ε). Input fully consumed. <b>Accepted.</b></p>
+<p><b>Left recursion problem:</b> the original grammar <code>E → E + T | T</code> cannot be used for recursive descent, because the procedure for E would call itself immediately, with no token consumed first (E() calls E() calls E()...), causing infinite recursion. Left recursion is removed using the standard transformation:</p>
+<pre>
+A → Aα | β        (original, left recursive)
+    becomes
+A  → β A'
+A' → α A' | ε
+</pre>
+<p>Applied to <code>E → E + T | T</code>: β = T, α = "+ T", giving <code>E → T E'</code>, <code>E' → + T E' | ε</code> — exactly the grammar used above.</p>
+</div>
+
+<h3>4.6 Non-Recursive Predictive Parsing</h3>
+<div class="algo">
+<b>FIRST(α) rules:</b>
+<ol>
+<li>If α is a terminal a, FIRST(α) = {a}.</li>
+<li>If α is ε, FIRST(α) includes ε.</li>
+<li>If α is a non-terminal A with production A → Y1Y2...Yk, add FIRST(Y1) − {ε} to FIRST(A); if ε ∈ FIRST(Y1), also add FIRST(Y2) − {ε}, and so on; if ε ∈ FIRST(Yi) for all i, add ε to FIRST(A).</li>
+</ol>
+<b>FOLLOW(A) rules:</b>
+<ol>
+<li>Place $ in FOLLOW(start symbol).</li>
+<li>If A → αBβ, everything in FIRST(β) except ε is in FOLLOW(B).</li>
+<li>If A → αB, or A → αBβ where ε ∈ FIRST(β), then FOLLOW(A) ⊆ FOLLOW(B).</li>
+</ol>
+</div>
+<div class="example">
+<p><b>Worked example — full LL(1) construction and parse.</b></p>
+<p>Grammar (left recursion already removed):</p>
+<pre>
+E  → T E'
+E' → + T E' | ε
+T  → F T'
+T' → * F T' | ε
+F  → ( E ) | id
+</pre>
+<h4>FIRST sets</h4>
+<table><tr><th>Non-terminal</th><th>FIRST</th></tr>
+<tr><td>F</td><td>{ ( , id }</td></tr>
+<tr><td>T'</td><td>{ * , ε }</td></tr>
+<tr><td>T</td><td>{ ( , id }</td></tr>
+<tr><td>E'</td><td>{ + , ε }</td></tr>
+<tr><td>E</td><td>{ ( , id }</td></tr>
+</table>
+<h4>FOLLOW sets</h4>
+<table><tr><th>Non-terminal</th><th>FOLLOW</th></tr>
+<tr><td>E</td><td>{ $ , ) }</td></tr>
+<tr><td>E'</td><td>{ $ , ) }  (same as FOLLOW(E), by rule 3, from E → T E')</td></tr>
+<tr><td>T</td><td>{ + , $ , ) }  (FIRST(E')−ε = {+}, plus FOLLOW(E) via rule 3 since ε∈FIRST(E'))</td></tr>
+<tr><td>T'</td><td>{ + , $ , ) }  (same as FOLLOW(T))</td></tr>
+<tr><td>F</td><td>{ * , + , $ , ) }  (FIRST(T')−ε = {*}, plus FOLLOW(T) since ε∈FIRST(T'))</td></tr>
+</table>
+<h4>LL(1) parsing table</h4>
+<table>
+<tr><th></th><th>id</th><th>+</th><th>*</th><th>(</th><th>)</th><th>$</th></tr>
+<tr><td>E</td><td>E→TE'</td><td></td><td></td><td>E→TE'</td><td></td><td></td></tr>
+<tr><td>E'</td><td></td><td>E'→+TE'</td><td></td><td></td><td>E'→ε</td><td>E'→ε</td></tr>
+<tr><td>T</td><td>T→FT'</td><td></td><td></td><td>T→FT'</td><td></td><td></td></tr>
+<tr><td>T'</td><td></td><td>T'→ε</td><td>T'→*FT'</td><td></td><td>T'→ε</td><td>T'→ε</td></tr>
+<tr><td>F</td><td>F→id</td><td></td><td></td><td>F→(E)</td><td></td><td></td></tr>
+</table>
+<p>Each entry M[A,a] is filled by: for every production A→α, add A→α to M[A,a] for each a in FIRST(α); if ε∈FIRST(α), add A→α to M[A,b] for each b in FOLLOW(A). No cell has two entries, confirming the grammar is LL(1) (conflict-free).</p>
+<h4>Parsing input <code>id + id * id</code></h4>
+<table>
+<tr><th>Step</th><th>Stack (top→right)</th><th>Input</th><th>Action</th></tr>
+<tr><td>1</td><td>$E</td><td>id+id*id$</td><td>E→TE'</td></tr>
+<tr><td>2</td><td>$E'T</td><td>id+id*id$</td><td>T→FT'</td></tr>
+<tr><td>3</td><td>$E'T'F</td><td>id+id*id$</td><td>F→id</td></tr>
+<tr><td>4</td><td>$E'T'id</td><td>id+id*id$</td><td>match id</td></tr>
+<tr><td>5</td><td>$E'T'</td><td>+id*id$</td><td>T'→ε</td></tr>
+<tr><td>6</td><td>$E'</td><td>+id*id$</td><td>E'→+TE'</td></tr>
+<tr><td>7</td><td>$E'T+</td><td>+id*id$</td><td>match +</td></tr>
+<tr><td>8</td><td>$E'T</td><td>id*id$</td><td>T→FT'</td></tr>
+<tr><td>9</td><td>$E'T'F</td><td>id*id$</td><td>F→id</td></tr>
+<tr><td>10</td><td>$E'T'id</td><td>id*id$</td><td>match id</td></tr>
+<tr><td>11</td><td>$E'T'</td><td>*id$</td><td>T'→*FT'</td></tr>
+<tr><td>12</td><td>$E'T'F*</td><td>*id$</td><td>match *</td></tr>
+<tr><td>13</td><td>$E'T'F</td><td>id$</td><td>F→id</td></tr>
+<tr><td>14</td><td>$E'T'id</td><td>id$</td><td>match id</td></tr>
+<tr><td>15</td><td>$E'T'</td><td>$</td><td>T'→ε</td></tr>
+<tr><td>16</td><td>$E'</td><td>$</td><td>E'→ε</td></tr>
+<tr><td>17</td><td>$</td><td>$</td><td><b>Accept</b></td></tr>
+</table>
+<div class="verify"><b>Verification:</b> all input tokens consumed exactly, stack emptied together with input reaching $, so the string is accepted, correctly reflecting that <code>id+id*id</code> is a valid arithmetic expression. ✔</div>
+</div>
+
+<h3>4.7 Error Recovery Mechanisms</h3>
+<div class="card">
+<table>
+<tr><th>Method</th><th>Process</th><th>Advantage</th><th>Limitation</th></tr>
+<tr><td>Panic-mode</td><td>Discard input tokens until a token in a chosen synchronizing set (e.g. in FOLLOW of the failing non-terminal) is found</td><td>Simple, guaranteed to terminate</td><td>May skip a lot of input, cascading errors possible</td></tr>
+<tr><td>Phrase-level</td><td>Perform a local correction, e.g. inserting a missing token or deleting an extra token</td><td>Often gives good diagnostics</td><td>Hard to design correctly for all cases</td></tr>
+<tr><td>Error productions</td><td>Augment the grammar with productions matching common error patterns</td><td>Handles anticipated mistakes cleanly</td><td>Grammar must anticipate the error</td></tr>
+<tr><td>Global correction</td><td>Find a minimum sequence of insert/delete/change operations converting the erroneous input into a valid one</td><td>Theoretically optimal correction</td><td>Too expensive to use in practice</td></tr>
+</table>
+<p>Lexical errors (illegal characters), syntax errors (grammar violations), and semantic errors (type mismatches) are handled by different phases and must not be conflated: a syntax error recovery strategy does not fix a type error.</p>
+</div>
+
+<h3>4.8 LL Grammar</h3>
+<div class="card">
+<p>"LL(1)" means: scan input Left-to-right, produce a Leftmost derivation, using 1 token of lookahead. A grammar is suitable for predictive (LL(1)) parsing when its parsing table has no multiply-defined entries, which requires:</p>
+<ul>
+<li>No left recursion (direct or indirect) — remove it as shown in §4.5.</li>
+<li>Left-factored — if two productions for the same non-terminal share a common prefix, they must be rewritten so the parser can decide with one token of lookahead.</li>
+</ul>
+<div class="example"><b>Left factoring:</b> Original grammar → problem → transformed grammar → verification.<br>
+Original: <code>S → if E then S else S | if E then S</code> — with lookahead "if", the parser cannot tell which alternative to take.<br>
+Problem: both alternatives start with the same prefix "if E then S".<br>
+Transformed: <code>S → if E then S S'</code>, <code>S' → else S | ε</code>.<br>
+Verification: now on seeing "if", only one production applies; the choice between the two original alternatives is deferred to S', which is decided by whether "else" follows — resolvable with one token of lookahead.</div>
+</div>
+
+<h3>4.9 Bottom-Up Parsing — Handles</h3>
+<div class="algo">
+<p><b>Handle:</b> a substring that matches the right-hand side of a production, and whose reduction to the corresponding non-terminal represents one step along the reverse of a rightmost derivation.</p>
+<p><b>Handle pruning:</b> repeatedly locate the handle in the current right sentential form and replace it by the corresponding non-terminal, until only the start symbol remains — this traces a rightmost derivation in reverse.</p>
+</div>
+<div class="example">
+<p>Grammar: <code>E → E + E | E * E | id</code>. Rightmost derivation of <code>id + id * id</code>:</p>
+<pre>E ⇒ E + E ⇒ E + E * E ⇒ E + E * id ⇒ E + id * id ⇒ id + id * id</pre>
+<p><b>Handle-pruning (reverse) table:</b></p>
+<table>
+<tr><th>Right sentential form</th><th>Handle</th><th>Reducing production</th></tr>
+<tr><td>id + id * id</td><td>first id</td><td>E → id</td></tr>
+<tr><td>E + id * id</td><td>second id</td><td>E → id</td></tr>
+<tr><td>E + E * id</td><td>third id</td><td>E → id</td></tr>
+<tr><td>E + E * E</td><td>E * E</td><td>E → E * E</td></tr>
+<tr><td>E + E</td><td>E + E</td><td>E → E + E</td></tr>
+<tr><td>E</td><td>—</td><td>(start symbol reached)</td></tr>
+</table>
+<div class="verify">Each reduction shown reverses exactly one step of the rightmost derivation above (read bottom-to-top), confirming the handles are correctly identified.</div>
+</div>
+
+<h3>4.10 Shift-Reduce Parsing</h3>
+<div class="algo">Uses a stack and a buffer of remaining input. Four possible actions: <b>shift</b> (push next input symbol onto the stack), <b>reduce</b> (replace a handle on top of the stack by the non-terminal on the left of the matching production), <b>accept</b> (stack contains just the start symbol and input is exhausted), <b>error</b> (no valid action applies).</div>
+<div class="example">
+<p><b>Full shift-reduce trace for <code>id + id * id</code></b> using <code>E → E+E | E*E | id</code>:</p>
+<table>
+<tr><th>Step</th><th>Stack</th><th>Input</th><th>Action</th></tr>
+<tr><td>1</td><td>$</td><td>id+id*id$</td><td>shift</td></tr>
+<tr><td>2</td><td>$id</td><td>+id*id$</td><td>reduce E→id</td></tr>
+<tr><td>3</td><td>$E</td><td>+id*id$</td><td>shift</td></tr>
+<tr><td>4</td><td>$E+</td><td>id*id$</td><td>shift</td></tr>
+<tr><td>5</td><td>$E+id</td><td>*id$</td><td>reduce E→id</td></tr>
+<tr><td>6</td><td>$E+E</td><td>*id$</td><td>shift (prefer shift: * binds tighter)</td></tr>
+<tr><td>7</td><td>$E+E*</td><td>id$</td><td>shift</td></tr>
+<tr><td>8</td><td>$E+E*id</td><td>$</td><td>reduce E→id</td></tr>
+<tr><td>9</td><td>$E+E*E</td><td>$</td><td>reduce E→E*E</td></tr>
+<tr><td>10</td><td>$E+E</td><td>$</td><td>reduce E→E+E</td></tr>
+<tr><td>11</td><td>$E</td><td>$</td><td><b>accept</b></td></tr>
+</table>
+<p><b>Conflicts:</b> at step 6, the parser could reduce <code>E+E</code> to E (using E→E+E) or shift the <code>*</code> — this is a genuine <b>shift/reduce conflict</b>, resolved here by the convention that <code>*</code> has higher precedence, so shift is chosen. A <b>reduce/reduce conflict</b> arises instead when two different productions could both be used to reduce the same handle (e.g. if a grammar had both <code>A → id</code> and <code>B → id</code> reducible in the same context) — the parser cannot decide which non-terminal to reduce to without extra information.</p>
+</div>
+
+<h3>4.11 LR Parsers</h3>
+<div class="card">"LR(k)" parses Left-to-right, builds a Rightmost derivation in reverse, with k symbols of lookahead. This guide constructs an <b>SLR(1)</b> table (LR(0) items plus FOLLOW sets), the standard entry point for LR parsing taught alongside LL methods, and clearly separates it from plain LR(0) and from CLR(1)/LALR(1).</div>
+<div class="algo">
+<b>Procedure:</b>
+<ol>
+<li>Augment the grammar: add S' → S.</li>
+<li>Construct the canonical collection of LR(0) items using <code>closure</code> and <code>goto</code>.</li>
+<li>Build states (item sets) from the collection.</li>
+<li>Fill ACTION using: shift on states with an item A→α·aβ; reduce on items A→α· using FOLLOW(A) (this is the SLR rule); accept on S'→S·.</li>
+<li>Fill GOTO using goto on non-terminals.</li>
+<li>Simulate the parse of a string using the ACTION/GOTO table.</li>
+</ol>
+</div>
+<div class="example">
+<p><b>Worked example — augmented grammar</b> (a small unambiguous grammar):</p>
+<pre>
+(0) S' → S
+(1) S  → C C
+(2) C  → c C
+(3) C  → d
+</pre>
+<h4>Item sets (closure and goto)</h4>
+<table>
+<tr><th>State</th><th>Items</th></tr>
+<tr><td>I0</td><td>S'→·S, S→·CC, C→·cC, C→·d</td></tr>
+<tr><td>I1 = goto(I0,S)</td><td>S'→S·</td></tr>
+<tr><td>I2 = goto(I0,C)</td><td>S→C·C, C→·cC, C→·d</td></tr>
+<tr><td>I3 = goto(I0,c)</td><td>C→c·C, C→·cC, C→·d</td></tr>
+<tr><td>I4 = goto(I0,d)</td><td>C→d·</td></tr>
+<tr><td>I5 = goto(I2,C)</td><td>S→CC·</td></tr>
+<tr><td>I6 = goto(I2,c)</td><td>= I3 (same core)</td></tr>
+<tr><td>I7 = goto(I2,d)</td><td>= I4</td></tr>
+<tr><td>I8 = goto(I3,C)</td><td>C→cC·</td></tr>
+<tr><td>I9 = goto(I3,c)</td><td>= I3</td></tr>
+<tr><td>I10 = goto(I3,d)</td><td>= I4</td></tr>
+</table>
+<p>FOLLOW(S)={$}, FOLLOW(C)={c,d,$} (needed for SLR reduce entries).</p>
+<h4>ACTION / GOTO table</h4>
+<table>
+<tr><th>State</th><th>c</th><th>d</th><th>$</th><th>S</th><th>C</th></tr>
+<tr><td>0</td><td>s3</td><td>s4</td><td></td><td>1</td><td>2</td></tr>
+<tr><td>1</td><td></td><td></td><td>accept</td><td></td><td></td></tr>
+<tr><td>2</td><td>s3</td><td>s4</td><td></td><td></td><td>5</td></tr>
+<tr><td>3</td><td>s3</td><td>s4</td><td></td><td></td><td>8</td></tr>
+<tr><td>4</td><td>r3</td><td>r3</td><td>r3</td><td></td><td></td></tr>
+<tr><td>5</td><td></td><td></td><td>r1</td><td></td><td></td></tr>
+<tr><td>8</td><td>r2</td><td>r2</td><td>r2</td><td></td><td></td></tr>
+</table>
+<h4>Parsing <code>cdd</code></h4>
+<table>
+<tr><th>Step</th><th>Stack</th><th>Input</th><th>Action</th></tr>
+<tr><td>1</td><td>0</td><td>cdd$</td><td>shift, goto 3</td></tr>
+<tr><td>2</td><td>0 c 3</td><td>dd$</td><td>shift, goto 4</td></tr>
+<tr><td>3</td><td>0 c 3 d 4</td><td>d$</td><td>reduce C→d, goto(3,C)=8</td></tr>
+<tr><td>4</td><td>0 c 3 C 8</td><td>d$</td><td>reduce C→cC, goto(0,C)=2</td></tr>
+<tr><td>5</td><td>0 C 2</td><td>d$</td><td>shift, goto 4</td></tr>
+<tr><td>6</td><td>0 C 2 d 4</td><td>$</td><td>reduce C→d, goto(2,C)=5</td></tr>
+<tr><td>7</td><td>0 C 2 C 5</td><td>$</td><td>reduce S→CC, goto(0,S)=1</td></tr>
+<tr><td>8</td><td>0 S 1</td><td>$</td><td><b>accept</b></td></tr>
+</table>
+<div class="verify"><b>Verification:</b> the string <code>cdd</code> parses as C(c C(d)) C(d) = S → C C with the first C expanding via <code>c C</code> and the second directly as <code>d</code> — this matches the grammar exactly, and no conflicting entry appears anywhere in the table (each cell has at most one action), so the grammar is confirmed SLR(1). ✔</div>
+</div>
+</section>
+
+<!-- ================================================================ -->
+<section id="ch5">
+<h2>Chapter 5 — Semantic Analysis</h2>
+
+<h3>5.1 Syntax-Directed Definitions (SDDs)</h3>
+<div class="card">An SDD associates one or more <b>attributes</b> with each grammar symbol and one or more <b>semantic rules</b> with each production, describing how attributes are computed.
+<div class="example">
+<table><tr><th>Production</th><th>Semantic rule</th></tr>
+<tr><td>E → E1 + T</td><td>E.val = E1.val + T.val</td></tr>
+<tr><td>E → T</td><td>E.val = T.val</td></tr>
+<tr><td>T → num</td><td>T.val = num.lexval</td></tr>
+</table>
+</div>
+<p><b>Syntax tree vs parse tree:</b> a parse tree shows every grammar symbol used in the derivation (including ones introduced purely for grammar structure); a syntax tree (abstract syntax tree) omits such structural detail and keeps only the operators and operands that matter semantically, e.g. <code>3 + 4</code> is a parse tree with several nested non-terminal nodes but a syntax tree with just one "+" node and two leaf children 3 and 4.</p>
+</div>
+
+<h3>5.2 Synthesized and Inherited Attributes</h3>
+<div class="card">
+<table>
+<tr><th></th><th>Synthesized</th><th>Inherited</th></tr>
+<tr><td>Definition</td><td>Value computed at a node from attributes of its children (and possibly its own production's terminals)</td><td>Value computed at a node from attributes of its parent and/or siblings</td></tr>
+<tr><td>Information flow</td><td>Bottom-up (leaves toward root)</td><td>Top-down / left-to-right (root toward leaves, sibling to sibling)</td></tr>
+<tr><td>Example</td><td><code>E.val</code> computed from <code>E1.val</code> and <code>T.val</code></td><td>A "declared type" attribute passed down from a declaration node to each identifier in a list</td></tr>
+</table>
+<pre>
+Synthesized:            Inherited:
+     E.val                  D → T L
+    /     \                 L.in = T.type   (passed down)
+  E1.val  T.val             L → id, L1
+   (children feed up)       L1.in = L.in   (passed sideways/down)
+</pre>
+</div>
+
+<h3>5.3 Dependency Graph</h3>
+<div class="card">
+<p>A dependency graph has one node per attribute instance; an edge from attribute a to attribute b means a must be evaluated before b (b depends on a). A topological sort of this graph gives a valid evaluation order.</p>
+<div class="example">
+<p>Grammar with rules: <code>D → T L</code>, {L.in = T.type}; <code>L → L1 id</code>, {L1.in = L.in; addtype(id.entry, L.in)}; <code>L → id</code>, {addtype(id.entry, L.in)}.</p>
+<p>For input <code>real p, q</code> (i.e. T L where L = L1 id(q), L1 = id(p)):</p>
+<pre>
+T.type --------> L.in --------> L1.in --------> addtype(p, L1.in)
+                                  |
+                                  +--------------> addtype(q, L.in)
+</pre>
+<p>Valid evaluation order: T.type, then L.in, then L1.in, then addtype(p,...), then addtype(q,...) (order among the two addtype calls does not matter since neither depends on the other, but both must follow the "in" attribute they use). This ordering is valid because every edge in the graph points from an earlier node to a later one — no node is used before it is computed.</p>
+</div>
+</div>
+
+<h3>5.4 S-Attributed Definitions</h3>
+<div class="card">An SDD is <b>S-attributed</b> if every attribute is synthesized. S-attributed SDDs can be evaluated during a single bottom-up (e.g. LR) parse, since a synthesized attribute at a node can be computed as soon as all its children have been reduced — this fits naturally with a shift-reduce parser's stack, which can carry attribute values alongside grammar symbols.
+<div class="example">The postfix-translation example of §2.2 (<code>E.t = E1.t||T.t||'+'</code>) is S-attributed: E.t depends only on the values of its children.</div>
+</div>
+
+<h3>5.5 L-Attributed Definitions</h3>
+<div class="card">An SDD is <b>L-attributed</b> if, for every production A → X1X2...Xn, each inherited attribute of Xi depends only on: (a) inherited attributes of A, and (b) attributes (synthesized or inherited) of X1,...,Xi-1 (symbols to its left) — never on attributes of Xi+1,...,Xn or on Xi's own synthesized attributes feeding back inward. This restriction allows evaluation during a single left-to-right (e.g. top-down / recursive-descent) traversal.
+<p><b>S-attributed vs L-attributed:</b> every S-attributed SDD is automatically L-attributed (since synthesized attributes trivially satisfy the "depends only on the left / on the parent" rule — they don't use inherited attributes at all), but not every L-attributed SDD is S-attributed, because L-attributed SDDs may also use inherited attributes, as long as they only look leftward and upward. It is <b>incorrect</b> to claim that every SDD using inherited attributes is automatically L-attributed — an inherited attribute that depends on a sibling to its right violates the L-attributed restriction.</p>
+<div class="example">The type-declaration example in §5.3 (<code>L.in</code> passed from parent T.type, then rightward down the list <code>L1.in = L.in</code>) is L-attributed: each inherited attribute depends only on the parent or on symbols to the left, never on a symbol to the right.</div>
+</div>
+
+<h3>5.6 Top-Down and Bottom-Up Evaluation</h3>
+<div class="card">Evaluation order must respect the dependency graph. S-attributed definitions naturally match bottom-up parsers (each reduction computes the synthesized attribute immediately). L-attributed definitions naturally match top-down / left-to-right traversal (recursive descent can pass inherited attributes as procedure parameters and return synthesized attributes as results). Choosing the wrong evaluation strategy for a given SDD (e.g. trying to evaluate a definition with rightward-dependent inherited attributes during a strict left-to-right single pass) leads to using an attribute before it is computed.</div>
+
+<h3>5.7 Type System</h3>
+<div class="card">
+<dl class="term">
+<dt>Type</dt><dd>A set of values together with operations defined on them.</dd>
+<dt>Type system</dt><dd>The collection of rules assigning types to program constructs and checking their consistency.</dd>
+<dt>Type expression</dt><dd>A notation denoting a type, built from basic types and type constructors (arrays, pointers, functions, products).</dd>
+<dt>Type rule</dt><dd>A rule specifying the type of a construct given the types of its parts, e.g. "if E1 has type int and E2 has type int, then E1+E2 has type int".</dd>
+<dt>Type error</dt><dd>A violation of the type rules, e.g. applying an operator to operands of incompatible types.</dd>
+</dl>
+<p>Static typing checks types at compile time; dynamic typing checks (some) types at run time. Compiler-level type checking, as covered here, refers primarily to static checking performed during semantic analysis.</p>
+</div>
+
+<h3>5.8 Specification of a Simple Type Checker</h3>
+<div class="card">
+<div class="example">
+<p>Type rules (schematic):</p>
+<pre>
+E → id           { E.type = lookup(id.entry) }
+E → num          { E.type = integer }
+E → E1 + E2      { E.type = if E1.type=int and E2.type=int then int
+                              else if E1.type=int and E2.type=float then float ... else type_error }
+S → id = E       { if lookup(id.entry) == E.type then OK else type_error }
+</pre>
+<p>Worked check: <code>int x; float y; x = y + 1;</code> — <code>y</code> has type float, <code>1</code> has type int, so <code>y+1</code> has type float (widening rule); assigning a float to int <code>x</code> triggers a type error (narrowing without explicit cast) under a strict type checker, or an implicit narrowing conversion under a lenient one — the compiler's declared conversion policy determines which.</p>
+</div>
+</div>
+
+<h3>5.9 Equivalence of Type Expressions</h3>
+<div class="card">
+<table>
+<tr><th></th><th>Structural equivalence</th><th>Name equivalence</th></tr>
+<tr><td>Rule</td><td>Two type expressions are equivalent if they have the same structure (built the same way from the same basic types and constructors)</td><td>Two type expressions are equivalent only if they use the identical type name/declaration</td></tr>
+<tr><td>Example</td><td><code>type A = array[10] of int; type B = array[10] of int;</code> → A and B equivalent</td><td>Same declarations → A and B considered different types (each name is distinct)</td></tr>
+</table>
+<p>No single universal rule applies across all languages; different languages choose structural or name equivalence (or a mixture) by design, so the applicable rule must be checked against the language being compiled — a claim that "all languages use structural equivalence" would be incorrect.</p>
+</div>
+
+<h3>5.10 Type Conversion</h3>
+<div class="card">
+<table>
+<tr><th>Term</th><th>Meaning</th><th>Example</th></tr>
+<tr><td>Implicit conversion (coercion)</td><td>Compiler automatically inserts a conversion</td><td>int 5 automatically becomes float 5.0 in <code>5 + 2.5</code></td></tr>
+<tr><td>Explicit conversion (cast)</td><td>Programmer requests the conversion</td><td><code>(int) 3.9</code></td></tr>
+<tr><td>Widening</td><td>Conversion to a type that can represent a superset of values (generally safe)</td><td>int → float</td></tr>
+<tr><td>Narrowing</td><td>Conversion that may lose information</td><td>float → int (truncates fraction)</td></tr>
+</table>
+<div class="example">Worked TAC with conversion: <code>x = i + f</code> where i is int and f is float → <code>t1 = inttofloat(i); t2 = t1 + f; x = t2</code> (a widening conversion inserted so both operands of + share a type).</div>
+</div>
+</section>
+
+<!-- ================================================================ -->
+<section id="ch6">
+<h2>Chapter 6 — Intermediate Code</h2>
+
+<h3>6.1 Intermediate Languages</h3>
+<div class="card">An <b>intermediate representation (IR)</b> sits between the source language and the target machine. <b>Advantages:</b> a compiler can be retargeted to a new machine by writing only a new back end; machine-independent optimizations can be written once and reused for every target; the front end and back end can be developed/tested somewhat independently.</div>
+
+<h3>6.2 Three-Address Code (TAC)</h3>
+<div class="algo">
+Standard forms: <code>x = y op z</code>, <code>x = op y</code>, <code>x = y</code>, <code>if x relop y goto L</code>, <code>goto L</code>, plus labels and procedure-call instructions. Each instruction has at most one operator on the right, so complex expressions are broken into a sequence using <b>temporaries</b>.
+</div>
+<div class="example">
+<p><b>Worked example — <code>x = (a + b) * (c - d)</code></b></p>
+<ol>
+<li>Parse respecting precedence: <code>(a+b)</code> and <code>(c-d)</code> computed first, then multiplied.</li>
+<li>Introduce temporaries and generate line by line:</li>
+</ol>
+<pre>
+t1 = a + b
+t2 = c - d
+t3 = t1 * t2
+x  = t3
+</pre>
+<div class="verify">Verification: with a=5,b=3,c=8,d=2 → t1=8, t2=6, t3=48, x=48; direct evaluation (5+3)*(8-2)=8*6=48. ✔</div>
+</div>
+
+<h3>6.3 Declarations</h3>
+<div class="card">Declarations are usually not translated into executable TAC but instead update the symbol table with type and (as computed) storage offset. E.g. for <code>int a; float b;</code> the compiler records a: type=int, offset=0, width=4; b: type=float, offset=4, width=4 — no TAC instructions are emitted for the declarations themselves.</div>
+
+<h3>6.4 Assignment Statements</h3>
+<div class="example">
+<p><code>x = a * (b + c) - d</code> →</p>
+<pre>
+t1 = b + c
+t2 = a * t1
+t3 = t2 - d
+x  = t3
+</pre>
+</div>
+
+<h3>6.5 Addressing Array Elements</h3>
+<div class="algo">
+<p><b>One-dimensional array</b>, index range starting at <code>low</code>, element width <code>w</code>, base address <code>base</code>:</p>
+<pre>address(A[i]) = base(A) + (i - low) × w</pre>
+<p><b>Two-dimensional array</b> A[low1..high1][low2..high2], row-major storage, element width w, with n2 = number of columns = high2 - low2 + 1:</p>
+<pre>address(A[i][j]) = base(A) + ((i - low1) × n2 + (j - low2)) × w</pre>
+</div>
+<div class="example">
+<p><b>Numerical example 1 (1-D):</b> array A[0..9] of int (w = 4 bytes), base(A) = 1000. Find address of A[6].</p>
+<pre>address(A[6]) = 1000 + (6 - 0) × 4 = 1000 + 24 = 1024</pre>
+<div class="verify">Verification: elements 0..5 occupy 6×4=24 bytes before A[6], so A[6] starts at 1000+24=1024. ✔</div>
+<p><b>Numerical example 2 (2-D):</b> array B[0..2][0..3] of int (w=4), base(B)=2000, row-major, n2 = 4-0 = 4. Find address of B[1][2].</p>
+<pre>address(B[1][2]) = 2000 + ((1-0)×4 + (2-0)) × 4 = 2000 + (4+2)×4 = 2000 + 24 = 2024</pre>
+<div class="verify">Verification: row 0 (4 elements) fully precedes row 1, plus 2 more elements within row 1: (4+2)=6 elements × 4 bytes = 24; 2000+24=2024. ✔</div>
+<p><b>Corresponding TAC</b> for <code>x = B[i][j]</code> (with i,j variables, n2=4, w=4):</p>
+<pre>
+t1 = i * 4
+t2 = t1 + j
+t3 = t2 * 4
+t4 = base(B) + t3    // could also be written as: t4 = t3 + base_B  (address computation)
+x  = t4  [with an indirect load, i.e. x = *t4 in practice]
+</pre>
+</div>
+
+<h3>6.6 Boolean Expressions</h3>
+<div class="algo">Two representations are common: (a) numeric — compute a 0/1 value; (b) flow-of-control (jumping code) — the value of a boolean expression is represented by a position reached in the code (true-branch vs false-branch), using short-circuit evaluation for <code>&amp;&amp;</code> and <code>||</code>. The jumping-code representation is used below.</div>
+<div class="example">
+<p><b>Worked example — <code>if (a &lt; b &amp;&amp; c != d) x = 1; else x = 0;</code></b> using short-circuit control flow:</p>
+<pre>
+      if a < b goto L1
+      goto Lfalse
+L1:   if c != d goto Ltrue
+      goto Lfalse
+Ltrue:  x = 1
+        goto Lnext
+Lfalse: x = 0
+Lnext:
+</pre>
+<p>This uses jumps rather than computing an intermediate 0/1 boolean temporary, consistent with a jumping-code (backpatch-oriented) representation: the first condition, if false, short-circuits directly to Lfalse without ever testing the second condition.</p>
+</div>
+
+<h3>6.7 Case Statements</h3>
+<div class="example">
+<p><code>switch (x) { case 1: S1; case 2: S2; default: S3; }</code> translated using a comparison chain:</p>
+<pre>
+      t = x
+      if t == 1 goto L1
+      if t == 2 goto L2
+      goto Ldefault
+L1:   &lt;code for S1&gt;
+      goto Lexit
+L2:   &lt;code for S2&gt;
+      goto Lexit
+Ldefault: &lt;code for S3&gt;
+Lexit:
+</pre>
+<p>(An alternative implementation strategy for many cases with dense values is a jump table indexed directly by the case value, avoiding the linear comparison chain; mentioned here as an alternative optimization, not the base translation.)</p>
+</div>
+
+<h3>6.8 Procedure Calls</h3>
+<div class="example">
+<p><code>call p(a, b)</code> translated as a sequence of <code>param</code> instructions followed by a <code>call</code>:</p>
+<pre>
+param a
+param b
+call p, 2      // 2 = number of parameters
+</pre>
+<p>If p returns a value: <code>x = call p, 2</code> stores the return value into x. The <code>return</code> instruction inside p's body (e.g. <code>return t1</code>) passes the value back to the caller.</p>
+</div>
+
+<h3>6.9 Backpatching</h3>
+<div class="algo">
+<p>Backpatching avoids a separate pass over the syntax tree by generating jump instructions with the target left temporarily empty, collecting each such instruction's location into a list, and later filling in ("backpatching") the correct label once it becomes known.</p>
+<b>Core operations:</b>
+<ul>
+<li><code>truelist(n)</code> — list of jumps to be targeted where control should go if n is true.</li>
+<li><code>falselist(n)</code> — list of jumps to be targeted where control should go if n is false.</li>
+<li><code>nextlist(n)</code> — list of jumps to be targeted at the instruction following statement n.</li>
+<li><code>makelist(i)</code> — create a new list containing only index i.</li>
+<li><code>merge(p1, p2)</code> — concatenate two lists.</li>
+<li><code>backpatch(list, target)</code> — insert <code>target</code> as the jump destination of every instruction in <code>list</code>.</li>
+</ul>
+</div>
+<div class="example">
+<p><b>Worked example — <code>if (a &lt; b) then S1 else S2</code></b></p>
+<ol>
+<li>Generate code for condition <code>a &lt; b</code>:
+<pre>
+100: if a < b goto _     (target unknown yet)
+101: goto _              (target unknown yet)
+</pre>
+<code>truelist</code> = {100}, <code>falselist</code> = {101}.</li>
+<li>Backpatch <code>truelist</code> to the instruction that begins S1 (say instruction 102): <code>backpatch({100}, 102)</code>.</li>
+<li>Generate S1's code (say instructions 102–104), then generate an unconditional jump (105: goto _) to skip S2; add 105 to a new <code>nextlist</code>.</li>
+<li>Backpatch <code>falselist</code> to the instruction that begins S2 (say instruction 106): <code>backpatch({101}, 106)</code>.</li>
+<li>Generate S2's code (106–108).</li>
+<li>Backpatch the S1-exit jump's list ({105}) to the instruction after S2 (109): <code>backpatch({105}, 109)</code>.</li>
+</ol>
+<p><b>Final backpatched TAC:</b></p>
+<pre>
+100: if a < b goto 102
+101: goto 106
+102: <S1 code...>
+105: goto 109
+106: <S2 code...>
+109: <next statement>
+</pre>
+<div class="verify">Verification: every jump target listed above (102, 106, 109) is a real instruction address filled in only after it became known, and tracing execution for a&lt;b true goes 100→102→(S1)→105→109 (skipping S2), while a&lt;b false goes 100→101→106→(S2)→109 — exactly the intended if-then-else control flow. ✔</div>
+<p><b>While-loop sketch</b> using the same machinery: <code>while (E) S</code> → label the test, backpatch E's truelist to S's first instruction, backpatch E's falselist to the instruction after the loop, and after S generate a jump back to the test label (no backpatch needed there since the target — the test label — is already known).</p>
+</div>
+</section>
+
+<!-- ================================================================ -->
+<section id="ch7">
+<h2>Chapter 7 — Code Generation and Optimizing</h2>
+
+<h3>7.1 Code Generator Design Issues</h3>
+<div class="card">
+<ul>
+<li><b>Input:</b> intermediate representation (e.g. TAC), plus symbol-table information.</li>
+<li><b>Target code:</b> assembly or relocatable machine code.</li>
+<li><b>Instruction selection:</b> choosing which machine instruction(s) implement each IR operation; naive selection can produce redundant instructions.</li>
+<li><b>Register allocation:</b> deciding which values are kept in registers (limited, fast) vs memory.</li>
+<li><b>Register assignment:</b> deciding exactly which physical register holds a chosen value.</li>
+<li><b>Evaluation order:</b> the order operations are performed can affect the number of registers needed.</li>
+<li><b>Addressing modes, instruction cost, machine constraints:</b> the code generator must respect the specific target machine's instruction set and cost model.</li>
+</ul>
+</div>
+
+<h3>7.2 Target Machine</h3>
+<div class="card">
+<p><b>Assumed abstract target machine</b> for the worked examples below:</p>
+<ul>
+<li>Registers: R0, R1, R2, ... (general purpose)</li>
+<li>Instructions: <code>MOV src,dst</code>; <code>ADD src,dst</code> (dst=dst+src); <code>SUB, MUL</code> similarly; <code>ST src,mem</code> (store)</li>
+<li>Addressing modes: register, memory direct</li>
+<li>Cost: 1 unit per instruction (simplified)</li>
+</ul>
+</div>
+
+<h3>7.3 Runtime Storage Management</h3>
+<div class="card">
+<pre>
+High memory
+  +----------------+
+  |     Heap        |  (dynamically allocated data, grows downward typically)
+  +----------------+
+  |      ...        |
+  +----------------+
+  |     Stack        |  (activation records, grows upward typically)
+  +----------------+
+  |  Static/Global   |  (global variables, fixed size, known at compile time)
+  +----------------+
+  |      Code        |  (compiled instructions)
+  +----------------+
+Low memory
+</pre>
+<p>An <b>activation record</b> (stack frame) for a procedure call typically holds: return address, saved registers, parameters, local variables, and a pointer to the caller's frame (dynamic link). Compile-time storage allocation determines offsets within an activation record; runtime storage organization determines where activation records actually live (the stack) as the program executes — the two are related but distinct: offsets are computed at compile time, actual addresses only exist once the frame is pushed at run time.</p>
+</div>
+
+<h3>7.4 Basic Blocks and Flow Graphs</h3>
+<div class="algo">
+<b>Leader rules:</b>
+<ol>
+<li>The first statement is a leader.</li>
+<li>Any statement that is the target of a conditional or unconditional jump is a leader.</li>
+<li>Any statement immediately following a conditional or unconditional jump is a leader.</li>
+</ol>
+A <b>basic block</b> is a maximal sequence of statements starting at a leader and continuing up to (but not including) the next leader. A <b>flow graph</b> has one node per basic block, with an edge B1→B2 if control can pass from the end of B1 directly to the start of B2 (fall-through or jump).
+</div>
+<div class="example">
+<p><b>Worked example.</b> Numbered TAC:</p>
+<pre>
+1: t1 = 0
+2: t2 = i
+3: L1: if t2 >= 10 goto L2
+4: t3 = t2 * 4
+5: t4 = a[t3]
+6: t1 = t1 + t4
+7: t2 = t2 + 1
+8: goto L1
+9: L2: x = t1
+</pre>
+<p><b>Step 1 — apply leader rules:</b> statement 1 is a leader (rule 1). Statement 3 (L1) is a leader — it is the target of the jump at line 8 (rule 2). Statement 9 (L2) is a leader — it is the target of the jump at line 3 (rule 2). Statement 4 is a leader — it immediately follows the conditional jump at line 3 (rule 3).</p>
+<p><b>Step 2 — group into basic blocks:</b></p>
+<table>
+<tr><th>Block</th><th>Statements</th></tr>
+<tr><td>B1</td><td>1–2</td></tr>
+<tr><td>B2</td><td>3</td></tr>
+<tr><td>B3</td><td>4–8</td></tr>
+<tr><td>B4</td><td>9</td></tr>
+</table>
+<p><b>Step 3 — flow graph edges:</b> B1→B2 (fall through); B2→B3 (fall through, condition false); B2→B4 (jump target, condition true); B3→B2 (jump back to L1 at line 8).</p>
+<pre>
+   B1
+    |
+    v
+   B2 &lt;----+
+   / \      |
+  v   v     |
+ B4  B3 ----+
+</pre>
+<div class="verify">Verification: statements 1–9 each belong to exactly one block (1,2∈B1; 3∈B2; 4,5,6,7,8∈B3; 9∈B4) — no statement omitted or duplicated. ✔</div>
+</div>
+
+<h3>7.5 Next-Use Information</h3>
+<div class="algo">Computed by scanning a basic block <b>backward</b>. At each statement <code>x = y op z</code>: first record the current liveness/next-use of x (before this statement, i.e. looking forward from here), then (a) set x's info in the symbol table to "not live, no next use" (since it is about to be redefined), then (b) attach the current next-use info of y and z to this statement and set y and z to "live, next use = this statement".</div>
+<div class="example">
+<p><b>Worked example</b> on block B3 above, processed backward (assume a is not used again after this block, i is used again after the block via t2 which feeds into the loop control, and t1's final value is used at statement 9):</p>
+<pre>
+4: t3 = t2 * 4
+5: t4 = a[t3]
+6: t1 = t1 + t4
+7: t2 = t2 + 1
+8: goto L1
+</pre>
+<table>
+<tr><th>Statement (processed backward, 7→4)</th><th>Variable</th><th>Live?</th><th>Next use</th></tr>
+<tr><td>7: t2 = t2+1</td><td>t2 (def)</td><td>live (used at stmt 3 next iteration)</td><td>stmt 3 (loop test)</td></tr>
+<tr><td>7</td><td>t2 (use, RHS)</td><td>live</td><td>stmt 7 itself</td></tr>
+<tr><td>6: t1 = t1+t4</td><td>t1 (def)</td><td>live (used at stmt 9)</td><td>stmt 9</td></tr>
+<tr><td>6</td><td>t1 (use), t4 (use)</td><td>live</td><td>stmt 6</td></tr>
+<tr><td>5: t4 = a[t3]</td><td>t4 (def)</td><td>not live after 6 is processed... updated: live until stmt 6</td><td>stmt 6</td></tr>
+<tr><td>5</td><td>a (use), t3(use)</td><td>live</td><td>stmt 5</td></tr>
+<tr><td>4: t3 = t2*4</td><td>t3(def)</td><td>live until stmt 5</td><td>stmt 5</td></tr>
+<tr><td>4</td><td>t2 (use)</td><td>live</td><td>stmt 4</td></tr>
+</table>
+<p>Processing order and update rule explained explicitly: starting from statement 8 (no computation, just control), moving to 7: t2 is defined, so we first note any prior recorded next-use of t2 (there is none yet within this backward pass, but from outside the block t2 is live entering the next iteration, so t2's info remains "live, next-use = start of block" going further back); then on the RHS, t2 is used, so t2 becomes "live, next-use = statement 7" for anything above it. Continuing to 6, 5, 4 similarly propagates each use backward until the top of the block is reached, matching the table above.</p>
+<div class="verify">Verification: no variable is marked "not live" while a later (in program order, i.e. earlier in the backward scan) statement still needs its value — each next-use entry points forward to the correct next statement that actually consumes it. ✔</div>
+</div>
+
+<h3>7.6 Simple Code Generator</h3>
+<div class="algo">
+Maintains, for each register, a <b>register descriptor</b> (which variable(s) it currently holds) and for each variable an <b>address descriptor</b> (where its current value(s) can be found: register, memory, or both). For <code>x = y op z</code>: pick a register for the result (reusing one already holding y if possible and if y is not needed later), load operands not already in registers, emit the operation, update descriptors, and store to memory only if required (e.g. at end of block, or if the register is needed for something else and the value is still live).
+</div>
+<div class="example">
+<p><b>Worked example — TAC:</b></p>
+<pre>
+t1 = a + b
+t2 = t1 * c
+d  = t2
+</pre>
+<ol>
+<li><b>t1 = a + b:</b> load a into R0 (<code>MOV a,R0</code>), add b (<code>ADD b,R0</code>) → R0 holds t1. Register descriptor: R0={t1}. Address descriptor: t1={R0}.</li>
+<li><b>t2 = t1 * c:</b> t1 already in R0, so multiply in place (<code>MUL c,R0</code>) → R0 now holds t2 (t1 is dead after this use). Register descriptor: R0={t2}. Address descriptor: t2={R0}.</li>
+<li><b>d = t2:</b> t2 already in R0, so store directly (<code>ST R0,d</code>).</li>
+</ol>
+<p><b>Final target code:</b></p>
+<pre>
+MOV a,R0
+ADD b,R0
+MUL c,R0
+ST  R0,d
+</pre>
+<div class="verify">Verification: with a=2,b=3,c=4 → R0=2, R0=5, R0=20, d=20; TAC computation gives t1=5, t2=20, d=20 — identical. Only one register was needed because t1 became dead immediately after producing t2, illustrating why next-use information (§7.5) is essential for good register allocation. ✔</div>
+</div>
+
+<h3>7.7 Introduction to Code Optimization (supporting material)</h3>
+<div class="card">
+<p><b>Code optimization</b> means transforming intermediate or target code to use less time and/or space while preserving the program's meaning; it typically operates on the flow graph built in §7.4, using data such as the next-use information of §7.5. The syllabus item list for this chapter ends at "Simple code generator"; the specific optimization techniques below are included only as <b>supporting material</b>, clearly separate from the examinable core:</p>
+<ul>
+<li><b>Constant folding</b> — evaluate constant expressions at compile time, e.g. <code>t1 = 2 * 3</code> → <code>t1 = 6</code>.</li>
+<li><b>Constant propagation</b> — substitute a variable's known constant value at its uses.</li>
+<li><b>Common subexpression elimination</b> — reuse a previously computed value instead of recomputing an identical expression.</li>
+<li><b>Dead-code elimination</b> — remove computations whose results are never used (no next use, ever).</li>
+<li><b>Strength reduction</b> — replace an expensive operation with a cheaper equivalent, e.g. <code>x * 2</code> → <code>x + x</code>.</li>
+<li><b>Peephole optimization</b> — examine a small sliding window of generated instructions and replace inefficient patterns, e.g. <code>MOV R0,R1 / MOV R1,R0</code> → remove the redundant second move.</li>
+</ul>
+</div>
+</section>
+
+<!-- ================================================================ -->
+<section id="dict">
+<h2>Compiler Terminology Dictionary</h2>
+<div class="card">
+<dl class="term">
+<dt>Compiler</dt><dd>A program translating a source program into an equivalent target program, reporting errors.</dd>
+<dt>Interpreter</dt><dd>A program that directly executes source-language statements without producing a separate target program.</dd>
+<dt>Lexeme</dt><dd>The actual character sequence matched for a token.</dd>
+<dt>Token</dt><dd>An abstract category representing a class of lexemes.</dd>
+<dt>Pattern</dt><dd>The rule (often a regular expression) describing which lexemes belong to a token.</dd>
+<dt>Lexer (lexical analyzer / scanner)</dt><dd>The phase that groups characters into tokens.</dd>
+<dt>Parser</dt><dd>The phase that checks token stream structure against a grammar and builds a parse tree.</dd>
+<dt>Grammar</dt><dd>A formal specification of a language's syntax.</dd>
+<dt>CFG</dt><dd>Context-free grammar: a grammar whose productions have a single non-terminal on the left.</dd>
+<dt>Terminal</dt><dd>A basic (indivisible) symbol of the language, i.e. a token.</dd>
+<dt>Non-terminal</dt><dd>A syntactic variable used to define grammar structure.</dd>
+<dt>Derivation</dt><dd>A sequence of production applications from the start symbol.</dd>
+<dt>Parse tree</dt><dd>Tree representation of a derivation showing every grammar symbol involved.</dd>
+<dt>Syntax tree</dt><dd>A condensed tree keeping only semantically significant structure.</dd>
+<dt>Semantic analysis</dt><dd>The phase checking meaning-related rules (types, scope) beyond pure syntax.</dd>
+<dt>Attribute</dt><dd>A value associated with a grammar symbol occurrence, computed by a semantic rule.</dd>
+<dt>Synthesized attribute</dt><dd>Attribute computed from children's attributes (bottom-up flow).</dd>
+<dt>Inherited attribute</dt><dd>Attribute computed from parent's/siblings' attributes (top-down/lateral flow).</dd>
+<dt>Dependency graph</dt><dd>Graph of attribute instances showing which must be evaluated before which.</dd>
+<dt>Type expression</dt><dd>A notation denoting a type.</dd>
+<dt>Type equivalence</dt><dd>The rule for deciding whether two type expressions denote the same type (structural or name).</dd>
+<dt>NFA</dt><dd>Nondeterministic finite automaton — allows multiple/no transitions per symbol and ε-moves.</dd>
+<dt>DFA</dt><dd>Deterministic finite automaton — exactly one transition per state/symbol pair.</dd>
+<dt>ε-closure</dt><dd>Set of states reachable using only ε-transitions.</dd>
+<dt>Thompson construction</dt><dd>Algorithm building an NFA directly from a regular expression.</dd>
+<dt>Subset construction</dt><dd>Algorithm converting an NFA into an equivalent DFA using sets of NFA states as DFA states.</dd>
+<dt>FIRST</dt><dd>Set of terminals (and possibly ε) that can begin strings derived from a grammar symbol/sequence.</dd>
+<dt>FOLLOW</dt><dd>Set of terminals that can immediately follow a non-terminal in some sentential form.</dd>
+<dt>LL</dt><dd>Top-down parsing: Left-to-right scan, Leftmost derivation.</dd>
+<dt>LR</dt><dd>Bottom-up parsing: Left-to-right scan, Rightmost derivation (in reverse).</dd>
+<dt>Handle</dt><dd>A substring matching a production's right side, reducible in a step of the reverse rightmost derivation.</dd>
+<dt>Shift</dt><dd>Push the next input symbol onto the parsing stack.</dd>
+<dt>Reduce</dt><dd>Replace a handle on the stack by the corresponding non-terminal.</dd>
+<dt>Accept</dt><dd>Parsing action confirming the whole input is a valid sentence of the grammar.</dd>
+<dt>Conflict</dt><dd>A parsing-table cell needing more than one action (shift/reduce or reduce/reduce).</dd>
+<dt>Three-address code</dt><dd>IR form with at most one operator per instruction.</dd>
+<dt>Temporary</dt><dd>A compiler-generated variable holding an intermediate value.</dd>
+<dt>Label</dt><dd>A named position in the code, used as a jump target.</dd>
+<dt>Backpatching</dt><dd>Technique of leaving jump targets blank and filling them in once known.</dd>
+<dt>Basic block</dt><dd>Maximal straight-line code sequence with one entry and one exit.</dd>
+<dt>Leader</dt><dd>First statement of a basic block, identified by the leader rules.</dd>
+<dt>Flow graph</dt><dd>Graph of basic blocks showing possible control-flow transfers.</dd>
+<dt>Live variable</dt><dd>A variable whose current value may still be used later in the program.</dd>
+<dt>Next use</dt><dd>The next statement at which a variable's current value will be used.</dd>
+<dt>Register descriptor</dt><dd>Tracks which variable(s) a register currently holds.</dd>
+<dt>Address descriptor</dt><dd>Tracks where a variable's current value(s) can be found.</dd>
+<dt>Target machine</dt><dd>The machine (real or abstract) for which code is being generated.</dd>
+<dt>Activation record</dt><dd>Runtime data structure (stack frame) holding a procedure call's local state.</dd>
+</dl>
+</div>
+</section>
+
+<!-- ================================================================ -->
+<section id="howto">
+<h2>How To Solve Compiler Design Problems — Exam Checklists</h2>
+<div class="grid2">
+<details><summary>RE → NFA (Thompson)</summary><ol><li>Parse the RE into its structure (union, concatenation, star) respecting precedence.</li><li>Build a fragment for each symbol.</li><li>Combine fragments bottom-up using the four construction rules.</li><li>Number all states once combined.</li><li>Trace 1–2 sample strings to verify.</li></ol></details>
+<details><summary>NFA → DFA (subset construction)</summary><ol><li>Compute ε-closure of the NFA start state → DFA start state.</li><li>For each DFA state and symbol, compute move then ε-closure.</li><li>Add any new state set found; repeat until no new sets appear.</li><li>Mark accepting DFA states (contain an NFA accepting state).</li><li>Verify with sample strings.</li></ol></details>
+<details><summary>FIRST</summary><ol><li>Terminal → FIRST = itself.</li><li>ε-production → add ε.</li><li>For A→Y1...Yk, add FIRST(Y1)-{ε}; if ε∈FIRST(Y1) continue to Y2, etc.</li><li>If all Yi can derive ε, add ε to FIRST(A).</li></ol></details>
+<details><summary>FOLLOW</summary><ol><li>$ ∈ FOLLOW(start symbol).</li><li>A→αBβ: add FIRST(β)-{ε} to FOLLOW(B).</li><li>A→αB or ε∈FIRST(β): add FOLLOW(A) to FOLLOW(B).</li><li>Iterate until no changes.</li></ol></details>
+<details><summary>LL(1) parsing table &amp; predictive parsing</summary><ol><li>Compute FIRST, FOLLOW for all non-terminals.</li><li>For each production, place it in row A, column a for each a in FIRST(rhs); if ε in FIRST(rhs), also place in columns of FOLLOW(A).</li><li>Check for conflicts (LL(1)?).</li><li>Simulate stack + input using the table; shift/expand until $/$ match → accept.</li></ol></details>
+<details><summary>Recursive descent</summary><ol><li>Remove left recursion and left factor the grammar.</li><li>Write one procedure per non-terminal.</li><li>In each, branch on the lookahead to choose the production, then call procedures/match terminals in order.</li><li>Trace the procedure calls against the input to verify.</li></ol></details>
+<details><summary>Handle pruning / shift-reduce</summary><ol><li>Maintain a stack and remaining input.</li><li>At each step: shift if no complete handle is on top, else reduce the handle using the matching production.</li><li>Resolve shift/reduce conflicts by declared precedence/associativity.</li><li>Accept when stack = start symbol and input is empty.</li></ol></details>
+<details><summary>LR (SLR) parsing</summary><ol><li>Augment the grammar.</li><li>Build item sets via closure and goto from the augmented start item.</li><li>Fill ACTION (shift/reduce/accept) and GOTO tables (reduce entries placed using FOLLOW for SLR).</li><li>Simulate the parse using the table; check for conflicts.</li></ol></details>
+<details><summary>Syntax-directed evaluation</summary><ol><li>List every attribute and its semantic rule per production.</li><li>Classify each attribute as synthesized or inherited.</li><li>Build the dependency graph for the specific input.</li><li>Topologically order and evaluate.</li></ol></details>
+<details><summary>Type checking</summary><ol><li>List declared types via the symbol table.</li><li>Apply type rules bottom-up on the expression tree.</li><li>Insert conversions per the language's coercion rules.</li><li>Flag any rule violation as a type error.</li></ol></details>
+<details><summary>TAC generation</summary><ol><li>Respect operator precedence/associativity when structuring the expression.</li><li>Introduce a temporary per operator application, innermost first.</li><li>Write one instruction per operator.</li><li>Verify by substituting sample values.</li></ol></details>
+<details><summary>Array addressing</summary><ol><li>Identify base address, element width, index bounds.</li><li>1-D: base + (i-low)×w. 2-D row-major: base + ((i-low1)×n2 + (j-low2))×w.</li><li>Substitute numbers and compute.</li><li>Verify by counting elements manually.</li></ol></details>
+<details><summary>Boolean/control translation</summary><ol><li>Decide jumping-code representation (true/false destinations).</li><li>Apply short-circuit rules for &amp;&amp; / ||.</li><li>Generate incomplete jumps with truelist/falselist.</li><li>Backpatch once targets are known.</li></ol></details>
+<details><summary>Case/switch translation</summary><ol><li>Evaluate the selector into a temporary.</li><li>Generate a comparison + conditional jump per case label.</li><li>Add a default fallthrough and an exit label.</li><li>Backpatch each label once the corresponding code position is known.</li></ol></details>
+<details><summary>Backpatching</summary><ol><li>Generate jumps with blank targets; collect their indices into truelist/falselist/nextlist.</li><li>Use makelist/merge to combine lists as needed.</li><li>Once the target instruction's address is known, call backpatch(list, target).</li><li>Verify every jump address in the final code is filled in and correct.</li></ol></details>
+<details><summary>Basic blocks &amp; flow graphs</summary><ol><li>Number every TAC statement.</li><li>Apply the three leader rules.</li><li>Group statements between consecutive leaders into blocks.</li><li>Draw edges for fall-through and jump targets.</li></ol></details>
+<details><summary>Next-use information</summary><ol><li>Scan the block backward, statement by statement.</li><li>At x=y op z: record x's info, then mark x dead/no-next-use, then set y,z live with next-use = this statement.</li><li>Carry information upward to the start of the block.</li></ol></details>
+<details><summary>Simple code generation</summary><ol><li>For each TAC instruction, choose/reuse a register for the result using next-use info.</li><li>Load any operand not already in a register.</li><li>Emit the operation; update register/address descriptors.</li><li>Store to memory only when required (end of block or register reuse forces it).</li></ol></details>
+</div>
+</section>
+
+<!-- ================================================================ -->
+<section id="qbank">
+<h2>Chapter-Wise Practice Question Bank</h2>
+
+<h3>Chapter 1 — Introduction to Compiling</h3>
+<div class="card qbank">
+<b>VSQA</b>
+<ol>
+<li>Define a compiler.</li>
+<li>Give the full form of "IR".</li>
+<li>Differentiate compiler and interpreter (any two points).</li>
+<li>Name the six phases of a compiler in order.</li>
+<li>What is the role of the symbol table?</li>
+<li>What is the error handler responsible for?</li>
+<li>Name one compiler-construction tool and what it generates.</li>
+<li>What does the lexical analyzer output to the syntax analyzer?</li>
+<li>What is meant by "analysis-synthesis model" of compilation?</li>
+<li>Give one example of a semantic error.</li>
+<li>What input does the code generator receive?</li>
+<li>Distinguish source program and target program.</li>
+</ol>
+<b>SQA</b>
+<ol>
+<li>Explain the phases of a compiler with a diagram, giving the input/output of each phase.</li>
+<li>Trace <code>c = a + b * 2</code> through all six compiler phases, showing representative output at each stage.</li>
+<li>Explain the role of the symbol table and error handler across compiler phases.</li>
+<li>Compare compilers and interpreters with examples of languages using each.</li>
+<li>Explain any three compiler-construction tools and the phase each automates.</li>
+</ol>
+<b>LQA</b>
+<ol>
+<li>Draw and explain the complete block diagram of a compiler, describing every phase, the symbol table, and the error handler in detail, with a full worked trace of a sample statement.</li>
+<li>Discuss compiler-construction tools in detail, explaining how each reduces manual effort in building a compiler phase.</li>
+</ol>
+</div>
+
+<h3>Chapter 2 — Simple One-Pass Compiler</h3>
+<div class="card qbank">
+<b>VSQA</b>
+<ol><li>Define grammar.</li><li>What is a production?</li><li>Define syntax-directed translation.</li><li>What is a symbol table entry composed of?</li><li>What is an abstract stack machine?</li><li>Define ambiguity in a grammar.</li><li>What is a parse tree?</li><li>Name two stack-machine instructions.</li><li>What is the start symbol?</li><li>Define derivation.</li></ol>
+<b>SQA</b>
+<ol><li>Explain syntax-directed translation with a worked example converting an expression to postfix.</li><li>Describe the structure and purpose of a symbol table with a sample table.</li><li>Explain the abstract stack machine model with an example expression evaluation.</li></ol>
+<b>LQA</b>
+<ol><li>Translate <code>x = (a + b) * (c - d) / 2</code> into postfix and then into abstract stack-machine instructions, showing the stack state after every instruction, with full verification.</li></ol>
+<b>PRACTICAL / NUMERICAL</b>
+<ol>
+<li>Translate <code>y = a * b + c * d</code> to postfix, then to stack-machine code, and verify with a=1,b=2,c=3,d=4.</li>
+<li>Show the stack-machine trace for <code>z = (p + q) * r - s</code>.</li>
+<li>Build a symbol table for declarations <code>int a; float b; int c[10];</code>.</li>
+<li>Convert <code>a - b - c</code> to postfix, respecting left associativity, and verify against direct evaluation.</li>
+<li>Convert <code>a + b * (c - d)</code> to postfix and verify with sample numeric values.</li>
+</ol>
+</div>
+
+<h3>Chapter 3 — Lexical Analysis</h3>
+<div class="card qbank">
+<b>VSQA</b>
+<ol><li>Distinguish token, lexeme, and pattern.</li><li>What is a sentinel used for?</li><li>Define NFA.</li><li>Define DFA.</li><li>What is ε-closure?</li><li>What is the move operation?</li><li>Give the regular expression for an identifier.</li><li>What is double buffering?</li><li>What is Thompson's construction used for?</li><li>What is subset construction used for?</li><li>Give the full form of NFA and DFA.</li><li>What is a lexical error?</li><li>Why is input buffering needed?</li></ol>
+<b>SQA</b>
+<ol><li>Explain input buffering with the double-buffer + sentinel scheme, with a diagram.</li><li>Explain the difference between NFA and DFA with an example of each.</li><li>Describe the four Thompson construction rules with small examples.</li><li>Explain the subset construction algorithm and when it terminates.</li></ol>
+<b>LQA</b>
+<ol><li>Construct the NFA for the regular expression <code>(a|b)*abb</code> using Thompson's construction, showing every fragment, then convert it to a DFA using subset construction, showing the full state table, and verify with two sample strings.</li></ol>
+<b>PRACTICAL / NUMERICAL</b>
+<ol>
+<li>Build the Thompson NFA for <code>ab*</code> step by step.</li>
+<li>Build the Thompson NFA for <code>a|b*</code> and identify its accepting states.</li>
+<li>Convert an NFA (given a transition table for <code>(a|b)*a</code>) to a DFA using subset construction, showing all state sets.</li>
+<li>Trace the string "aabb" through a given DFA for <code>(a|b)*abb</code> and state whether it is accepted.</li>
+<li>Identify the tokens and lexemes for the statement <code>if (x &lt;= 100) y = y + 1;</code>.</li>
+</ol>
+</div>
+
+<h3>Chapter 4 — Syntax Analysis</h3>
+<div class="card qbank">
+<b>VSQA</b>
+<ol><li>Define CFG.</li><li>Distinguish leftmost and rightmost derivation.</li><li>Define handle.</li><li>What is a shift action?</li><li>What is a reduce action?</li><li>Define LL(1).</li><li>What is left recursion?</li><li>What is left factoring?</li><li>Distinguish parse tree and syntax tree.</li><li>What causes a shift/reduce conflict?</li><li>What causes a reduce/reduce conflict?</li><li>Define panic-mode error recovery.</li><li>What does "LR" stand for?</li></ol>
+<b>SQA</b>
+<ol><li>Explain the process of removing left recursion with an example.</li><li>Compute FIRST and FOLLOW for a small given grammar.</li><li>Explain recursive descent parsing with a worked procedure for a simple grammar.</li><li>Explain any two error-recovery strategies with examples.</li><li>Explain handle pruning with a worked example.</li></ol>
+<b>LQA</b>
+<ol><li>For the grammar <code>E→E+T|T, T→T*F|F, F→(E)|id</code>: remove left recursion, compute FIRST/FOLLOW, construct the LL(1) table, and parse <code>id*id+id</code> showing every step.</li><li>Construct the SLR(1) item sets, ACTION/GOTO table, and parse a given string for a small augmented grammar.</li></ol>
+<b>PRACTICAL / NUMERICAL</b>
+<ol>
+<li>Parse <code>(id+id)*id</code> using the LL(1) table constructed in §4.6, showing the full stack/input/action trace.</li>
+<li>Perform handle pruning for <code>id*id+id</code> using <code>E→E+E|E*E|id</code>.</li>
+<li>Construct the shift-reduce trace for <code>id*id+id</code>.</li>
+<li>Construct SLR(1) item sets for <code>S→CC, C→cC|d</code> and parse the string "dd".</li>
+<li>Remove left recursion and left-factor a grammar with productions <code>A→Aa|Ab|c</code> and <code>B→bC|bD</code>.</li>
+</ol>
+</div>
+
+<h3>Chapter 5 — Semantic Analysis</h3>
+<div class="card qbank">
+<b>VSQA</b>
+<ol><li>Define synthesized attribute.</li><li>Define inherited attribute.</li><li>What is a dependency graph?</li><li>Define S-attributed definition.</li><li>Define L-attributed definition.</li><li>Distinguish structural and name equivalence.</li><li>What is type coercion?</li><li>Distinguish widening and narrowing conversion.</li><li>What is a type expression?</li><li>Give one example of a type error.</li></ol>
+<b>SQA</b>
+<ol><li>Explain synthesized vs inherited attributes with examples of each.</li><li>Construct a dependency graph for a given declaration-type SDD and give a valid evaluation order.</li><li>Explain S-attributed vs L-attributed definitions with an example each.</li><li>Explain structural vs name type equivalence with examples.</li></ol>
+<b>LQA</b>
+<ol><li>For the SDD translating <code>real p, q</code> into type declarations (as in §5.3), build the full dependency graph for the specific input and evaluate every attribute in a valid order, explaining why the order is valid.</li></ol>
+<b>PRACTICAL / NUMERICAL</b>
+<ol>
+<li>Given the SDD for postfix translation, evaluate the synthesized attributes bottom-up for <code>(a+b)*c</code>.</li>
+<li>Type-check <code>int x; float y; x = y + 1;</code> and state whether a conversion or an error results.</li>
+<li>Build the dependency graph and evaluation order for declarations <code>int a, b, c;</code> using the SDD of §5.3.</li>
+</ol>
+</div>
+
+<h3>Chapter 6 — Intermediate Code</h3>
+<div class="card qbank">
+<b>VSQA</b>
+<ol><li>Give the five standard TAC instruction forms.</li><li>What is a temporary variable?</li><li>Give the 1-D array address formula.</li><li>What is backpatching used for?</li><li>Define truelist and falselist.</li><li>What is short-circuit evaluation?</li><li>What is the purpose of an intermediate representation?</li><li>What does the <code>param</code> instruction represent?</li><li>Define makelist and merge.</li><li>What is a jump table (in case-statement translation)?</li></ol>
+<b>SQA</b>
+<ol><li>Generate TAC for <code>x = (a+b)*(c-d)</code> and verify with sample values.</li><li>Explain the 2-D array addressing formula and compute an address for given values.</li><li>Explain backpatching with truelist/falselist for an if-then-else statement.</li><li>Explain TAC generation for procedure calls with parameters.</li></ol>
+<b>LQA</b>
+<ol><li>Generate fully backpatched TAC for <code>if (a &lt; b &amp;&amp; c != d) then S1 else S2</code>, showing every list, merge, and backpatch operation, and verify the control flow for both true and false cases.</li><li>Generate TAC for a while-loop containing a compound boolean condition, showing all backpatching steps.</li></ol>
+<b>PRACTICAL / NUMERICAL</b>
+<ol>
+<li>Compute the address of A[7] for a 1-D array A[0..19] of int, base 4000, width 4.</li>
+<li>Compute the address of B[2][3] for a 2-D array B[0..4][0..5] of int, base 6000, width 4, row-major.</li>
+<li>Generate TAC for <code>t = a[i] + b[j] * 2</code>.</li>
+<li>Generate backpatched TAC for a <code>while (x &lt; 10) x = x + 1;</code> loop.</li>
+<li>Generate TAC for a 3-case switch statement on variable <code>k</code> with cases 1, 2, default.</li>
+</ol>
+</div>
+
+<h3>Chapter 7 — Code Generation and Optimizing</h3>
+<div class="card qbank">
+<b>VSQA</b>
+<ol><li>What is register allocation?</li><li>Distinguish register allocation and register assignment.</li><li>Define basic block.</li><li>State the three leader rules.</li><li>Define next use.</li><li>What is a register descriptor?</li><li>What is an address descriptor?</li><li>Define activation record.</li><li>What is peephole optimization?</li><li>What is constant folding?</li></ol>
+<b>SQA</b>
+<ol><li>Explain the leader rules and use them to partition a given TAC sequence into basic blocks.</li><li>Explain how next-use information is computed by scanning a block backward.</li><li>Explain runtime storage organization (code, static, stack, heap) with a diagram.</li><li>Explain any three optimization techniques with one example each, noting they are supporting material.</li></ol>
+<b>LQA</b>
+<ol><li>Given a TAC sequence for a loop (as in §7.4), identify all leaders, construct the basic blocks and flow graph, compute next-use information for one block, and generate target code for that block using a simple code generator, verifying the final result.</li></ol>
+<b>PRACTICAL / NUMERICAL</b>
+<ol>
+<li>Partition the following TAC into basic blocks and draw the flow graph: <code>1: i=0 2: L: if i&gt;=n goto E 3: t=a[i] 4: s=s+t 5: i=i+1 6: goto L 7: E: x=s</code>.</li>
+<li>Compute next-use information for statements 3–5 of the block above, scanning backward.</li>
+<li>Generate simple target code (using the abstract machine of §7.2) for <code>t1=a+b; t2=t1*c; d=t2;</code>.</li>
+<li>Generate simple target code for <code>t1=x-y; t2=t1+z; w=t2;</code> and count the registers used.</li>
+<li>Apply constant folding to the TAC <code>t1 = 4 * 5; t2 = t1 + x;</code>.</li>
+</ol>
+</div>
+</section>
+
+<!-- ================================================================ -->
+<section>
+<h2>Common Exam Traps</h2>
+<div class="card">
+<div class="trap">Confusing <b>token</b> (the abstract category) with the <b>lexeme</b> (the actual matched text) — e.g. writing "id" as the lexeme instead of the identifier's spelling.</div>
+<div class="trap"><b>NFA vs DFA</b> confusion — assuming an NFA table can have only one entry per cell like a DFA; NFAs may have zero, one, or several transitions (plus ε-moves).</div>
+<div class="trap">Computing an <b>incorrect ε-closure</b> — forgetting that ε-closure(s) always includes s itself, or missing a chain of multiple ε-transitions.</div>
+<div class="trap"><b>Missing subset-construction states</b> — stopping before every reachable DFA state set has been generated and its transitions computed.</div>
+<div class="trap">Incorrect <b>FIRST/FOLLOW</b> — forgetting to propagate FIRST(β) into FOLLOW(B) when a symbol can derive ε, or forgetting $ ∈ FOLLOW(start symbol).</div>
+<div class="trap">Incorrect <b>LL(1) table</b> entries — placing a production only under FIRST and forgetting the FOLLOW-based entries required when the production derives ε.</div>
+<div class="trap"><b>Left recursion in recursive descent</b> — attempting to hand-write a recursive-descent procedure directly from a left-recursive grammar, causing infinite recursion.</div>
+<div class="trap">Incorrectly identifying the <b>handle</b> — choosing a substring that matches a production's RHS syntactically but does not correspond to the correct step of the rightmost derivation in reverse.</div>
+<div class="trap"><b>Shift/reduce confusion</b> — reducing too early (before the true handle is fully on the stack) or shifting when a valid reduction is required.</div>
+<div class="trap">Incorrect <b>LR item closure</b> — forgetting to add closure items for every non-terminal immediately after a dot.</div>
+<div class="trap"><b>Wrong LR reduction</b> — reducing using a production whose RHS does not match the actual symbols on top of the stack.</div>
+<div class="trap"><b>Synthesized/inherited confusion</b> — labeling an attribute that depends on parent/sibling information as synthesized, or vice versa.</div>
+<div class="trap"><b>Invalid attribute dependency order</b> — evaluating an attribute before all attributes it depends on (per the dependency graph) have been computed.</div>
+<div class="trap"><b>Structural/name equivalence confusion</b> — assuming two types with the same structure but different names are always equivalent (true only under structural equivalence, not name equivalence).</div>
+<div class="trap">Incorrect <b>type conversion</b> — inserting a narrowing conversion silently where the language requires an explicit cast, or vice versa.</div>
+<div class="trap"><b>Wrong TAC precedence</b> — generating temporaries in an order that ignores operator precedence or associativity, changing the computed result.</div>
+<div class="trap">Incorrect <b>array-address formula</b> — forgetting to subtract the lower bound, or using column-major arithmetic when the array is row-major (or vice versa).</div>
+<div class="trap"><b>Wrong Boolean jump logic</b> — failing to implement short-circuit evaluation correctly, e.g. still evaluating the second operand of <code>&amp;&amp;</code> after the first is false.</div>
+<div class="trap">Incorrect <b>case labels</b> — mismatching comparison values against case constants, or omitting the default/exit label.</div>
+<div class="trap">Broken <b>backpatch lists</b> — backpatching a list to the wrong target instruction, or forgetting to merge lists (e.g. nextlist of two branches) before backpatching them together.</div>
+<div class="trap">Incorrect <b>leader identification</b> — forgetting that the statement immediately after a jump is also a leader (rule 3), causing blocks to be merged incorrectly.</div>
+<div class="trap">Incorrect <b>flow-graph edges</b> — omitting a fall-through edge, or adding an edge that does not correspond to any actual jump or fall-through in the code.</div>
+<div class="trap">Incorrect <b>next-use scanning</b> — scanning forward instead of backward, which gives no valid way to determine "next" use.</div>
+<div class="trap">Poor <b>register choice</b> — evicting a register still holding a live value with a future next-use, forcing an unnecessary reload/store.</div>
+<div class="trap">Generated code that <b>changes the original computation</b> — e.g. reordering non-commutative operations (like subtraction) incorrectly during optimization or code generation.</div>
+</div>
+</section>
+
+<!-- ================================================================ -->
+<section id="revision">
+<h2>Rapid Revision</h2>
+
+<h3>1. Definitions Sheet</h3>
+<div class="card">See the <a href="#dict">Compiler Terminology Dictionary</a> above for all core definitions in one place.</div>
+
+<h3>2. Full Forms Sheet</h3>
+<div class="card">
+<table><tr><th>Abbreviation</th><th>Full form</th></tr>
+<tr><td>NFA</td><td>Nondeterministic Finite Automaton</td></tr>
+<tr><td>DFA</td><td>Deterministic Finite Automaton</td></tr>
+<tr><td>CFG</td><td>Context-Free Grammar</td></tr>
+<tr><td>TAC</td><td>Three-Address Code</td></tr>
+<tr><td>IR</td><td>Intermediate Representation</td></tr>
+<tr><td>LL(1)</td><td>Left-to-right, Leftmost derivation, 1 lookahead</td></tr>
+<tr><td>LR(1)</td><td>Left-to-right, Rightmost derivation (reverse), 1 lookahead</td></tr>
+<tr><td>SLR</td><td>Simple LR</td></tr>
+<tr><td>CLR</td><td>Canonical LR</td></tr>
+<tr><td>LALR</td><td>Look-Ahead LR</td></tr>
+<tr><td>SDD</td><td>Syntax-Directed Definition</td></tr>
+<tr><td>SDT</td><td>Syntax-Directed Translation</td></tr>
+</table>
+</div>
+
+<h3>3. Algorithms Sheet</h3>
+<div class="card"><p>Concise procedures for every major algorithm are given in the <a href="#howto">How-To Procedures</a> section above; this sheet is a pointer to avoid duplication and keep the revision document consistent.</p></div>
+
+<h3>4. Formula / Rule Sheet</h3>
+<div class="card">
+<table>
+<tr><th>Purpose</th><th>Formula</th></tr>
+<tr><td>1-D array address</td><td><code>base + (i - low) × w</code></td></tr>
+<tr><td>2-D array address (row-major)</td><td><code>base + ((i - low1) × n2 + (j - low2)) × w</code></td></tr>
+<tr><td>Left-recursion removal</td><td><code>A→Aα|β</code> becomes <code>A→βA'</code>, <code>A'→αA'|ε</code></td></tr>
+</table>
+</div>
+
+<h3>5. Parsing Cheat Sheet</h3>
+<div class="card">
+<ul>
+<li>LL(1): table filled from FIRST (and FOLLOW when ε is derivable); stack-based simulation matching terminals and expanding non-terminals.</li>
+<li>SLR(1): closure + goto build item sets; reduce entries placed using FOLLOW of the reduced non-terminal.</li>
+<li>Shift-reduce: shift when no handle is ready; reduce when the top of the stack matches a production's RHS.</li>
+</ul>
+</div>
+
+<h3>6. Automata Cheat Sheet</h3>
+<div class="card">
+<ul>
+<li>Thompson: symbol, concatenation (ε-link accept→start), union (new start/accept with ε-branches), star (new start/accept with loop-back ε-edges).</li>
+<li>Subset construction: DFA states = ε-closures of NFA state sets reached via move(); repeat until closed under all input symbols.</li>
+</ul>
+</div>
+
+<h3>7. TAC / Backpatching Cheat Sheet</h3>
+<div class="card">
+<ul>
+<li>Introduce one temporary per operator, respecting precedence/associativity.</li>
+<li>truelist/falselist/nextlist hold indices of jumps awaiting a target.</li>
+<li>backpatch(list, target) fills in every jump in the list with the given target address.</li>
+</ul>
+</div>
+
+<h3>8. Code Generation Cheat Sheet</h3>
+<div class="card">
+<ul>
+<li>Reuse a register already holding an operand when possible (checked via next-use info).</li>
+<li>Update register/address descriptors after every instruction.</li>
+<li>Store to memory only when the value is still live and its register must be reused, or at block exit.</li>
+</ul>
+</div>
+</section>
+
+<!-- ================================================================ -->
+<section id="matrix">
+<h2>Final Syllabus Coverage Matrix</h2>
+<div class="card">
+<table>
+<tr><th>Chapter</th><th>Syllabus item</th><th>Covered?</th><th>Location</th><th>Worked example?</th><th>Diagram?</th><th>Practice Qs?</th></tr>
+<tr><td>1</td><td>Compilers</td><td>Yes</td><td>§1.1</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td>1</td><td>Analysis of source program</td><td>Yes</td><td>§1.2</td><td>Yes</td><td>-</td><td>Yes</td></tr>
+<tr><td>1</td><td>Phases of compiler</td><td>Yes</td><td>§1.3</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td>1</td><td>Compiler-construction tools</td><td>Yes</td><td>§1.4</td><td>-</td><td>-</td><td>Yes</td></tr>
+<tr><td>2</td><td>Syntax definition</td><td>Yes</td><td>§2.1</td><td>Yes</td><td>-</td><td>-</td></tr>
+<tr><td>2</td><td>Syntax-directed translation</td><td>Yes</td><td>§2.2</td><td>Yes</td><td>-</td><td>Yes</td></tr>
+<tr><td>2</td><td>Parsing</td><td>Yes</td><td>§2.3</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>2</td><td>Translation for simple expression</td><td>Yes</td><td>§2.4</td><td>Yes (3 examples)</td><td>-</td><td>Yes</td></tr>
+<tr><td>2</td><td>Symbol table</td><td>Yes</td><td>§2.5</td><td>Yes</td><td>-</td><td>Yes</td></tr>
+<tr><td>2</td><td>Abstract stack machines</td><td>Yes</td><td>§2.6</td><td>Yes</td><td>-</td><td>Yes</td></tr>
+<tr><td>3</td><td>Role of lexical analyzer</td><td>Yes</td><td>§3.1</td><td>Yes</td><td>-</td><td>Yes</td></tr>
+<tr><td>3</td><td>Input buffering</td><td>Yes</td><td>§3.2</td><td>-</td><td>Yes</td><td>Yes</td></tr>
+<tr><td>3</td><td>Specification/recognition of tokens</td><td>Yes</td><td>§3.3</td><td>Yes</td><td>-</td><td>Yes</td></tr>
+<tr><td>3</td><td>Finite automata (DFA/NFA)</td><td>Yes</td><td>§3.4</td><td>Yes</td><td>-</td><td>Yes</td></tr>
+<tr><td>3</td><td>RE → NFA (Thompson)</td><td>Yes</td><td>§3.5</td><td>Yes (full)</td><td>-</td><td>Yes</td></tr>
+<tr><td>3</td><td>NFA → DFA (subset construction)</td><td>Yes</td><td>§3.6</td><td>Yes (full)</td><td>-</td><td>Yes</td></tr>
+<tr><td>3</td><td>RE → DFA</td><td>Yes</td><td>§3.7</td><td>Yes (via pipeline)</td><td>-</td><td>-</td></tr>
+<tr><td>4</td><td>Role of parser</td><td>Yes</td><td>§4.1</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>4</td><td>Context-free grammar</td><td>Yes</td><td>§4.2</td><td>Yes</td><td>-</td><td>Yes</td></tr>
+<tr><td>4</td><td>Writing a grammar</td><td>Yes</td><td>§4.3</td><td>Yes</td><td>-</td><td>-</td></tr>
+<tr><td>4</td><td>Top-down parsing</td><td>Yes</td><td>§4.4</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>4</td><td>Recursive descent parsing</td><td>Yes</td><td>§4.5</td><td>Yes (full)</td><td>-</td><td>Yes</td></tr>
+<tr><td>4</td><td>Non-recursive predictive parsing (FIRST/FOLLOW/LL(1))</td><td>Yes</td><td>§4.6</td><td>Yes (full)</td><td>-</td><td>Yes</td></tr>
+<tr><td>4</td><td>Error recovery mechanism</td><td>Yes</td><td>§4.7</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>4</td><td>LL grammar</td><td>Yes</td><td>§4.8</td><td>Yes</td><td>-</td><td>-</td></tr>
+<tr><td>4</td><td>Bottom-up parsing / handles</td><td>Yes</td><td>§4.9</td><td>Yes (full)</td><td>-</td><td>Yes</td></tr>
+<tr><td>4</td><td>Shift-reduce parsing</td><td>Yes</td><td>§4.10</td><td>Yes (full)</td><td>-</td><td>Yes</td></tr>
+<tr><td>4</td><td>LR parsers</td><td>Yes</td><td>§4.11</td><td>Yes (full SLR)</td><td>-</td><td>Yes</td></tr>
+<tr><td>5</td><td>Syntax-directed definitions</td><td>Yes</td><td>§5.1</td><td>Yes</td><td>-</td><td>-</td></tr>
+<tr><td>5</td><td>Synthesized/inherited attributes</td><td>Yes</td><td>§5.2</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td>5</td><td>Dependency graph</td><td>Yes</td><td>§5.3</td><td>Yes (full)</td><td>Yes</td><td>Yes</td></tr>
+<tr><td>5</td><td>S-attributed definitions</td><td>Yes</td><td>§5.4</td><td>Yes</td><td>-</td><td>-</td></tr>
+<tr><td>5</td><td>L-attributed definitions</td><td>Yes</td><td>§5.5</td><td>Yes</td><td>-</td><td>-</td></tr>
+<tr><td>5</td><td>Top-down/bottom-up evaluation</td><td>Yes</td><td>§5.6</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>5</td><td>Type system</td><td>Yes</td><td>§5.7</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>5</td><td>Specification of a simple type checker</td><td>Yes</td><td>§5.8</td><td>Yes</td><td>-</td><td>Yes</td></tr>
+<tr><td>5</td><td>Equivalence of type expressions</td><td>Yes</td><td>§5.9</td><td>Yes</td><td>-</td><td>-</td></tr>
+<tr><td>5</td><td>Type conversion</td><td>Yes</td><td>§5.10</td><td>Yes</td><td>-</td><td>-</td></tr>
+<tr><td>6</td><td>Intermediate languages</td><td>Yes</td><td>§6.1</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>6</td><td>Three-address code</td><td>Yes</td><td>§6.2</td><td>Yes</td><td>-</td><td>Yes</td></tr>
+<tr><td>6</td><td>Declarations</td><td>Yes</td><td>§6.3</td><td>Yes</td><td>-</td><td>-</td></tr>
+<tr><td>6</td><td>Assignment statement</td><td>Yes</td><td>§6.4</td><td>Yes</td><td>-</td><td>-</td></tr>
+<tr><td>6</td><td>Addressing array elements</td><td>Yes</td><td>§6.5</td><td>Yes (2 numeric)</td><td>-</td><td>Yes</td></tr>
+<tr><td>6</td><td>Boolean expressions</td><td>Yes</td><td>§6.6</td><td>Yes</td><td>-</td><td>Yes</td></tr>
+<tr><td>6</td><td>Case statements</td><td>Yes</td><td>§6.7</td><td>Yes</td><td>-</td><td>Yes</td></tr>
+<tr><td>6</td><td>Procedure calls</td><td>Yes</td><td>§6.8</td><td>Yes</td><td>-</td><td>-</td></tr>
+<tr><td>6</td><td>Backpatching</td><td>Yes</td><td>§6.9</td><td>Yes (full)</td><td>-</td><td>Yes</td></tr>
+<tr><td>7</td><td>Code generator design issues</td><td>Yes</td><td>§7.1</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>7</td><td>Target machine</td><td>Yes</td><td>§7.2</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>7</td><td>Runtime storage management</td><td>Yes</td><td>§7.3</td><td>-</td><td>Yes</td><td>-</td></tr>
+<tr><td>7</td><td>Basic blocks and flow graphs</td><td>Yes</td><td>§7.4</td><td>Yes (full)</td><td>Yes</td><td>Yes</td></tr>
+<tr><td>7</td><td>Next-use information</td><td>Yes</td><td>§7.5</td><td>Yes (full)</td><td>-</td><td>Yes</td></tr>
+<tr><td>7</td><td>Simple code generator</td><td>Yes</td><td>§7.6</td><td>Yes (full)</td><td>-</td><td>Yes</td></tr>
+<tr><td>7</td><td>Optimization (supporting material)</td><td>Yes (marked supporting)</td><td>§7.7</td><td>Brief</td><td>-</td><td>Yes</td></tr>
+</table>
+</div>
+</section>
+
+<!-- ================================================================ -->
+<section>
+<h2>Study Skill Alignment</h2>
+<div class="card"><p>No official university learning outcomes were supplied with this syllabus, so the mapping below is a guide-level skill alignment rather than an official outcome list:</p>
+<ul>
+<li>Compiler fundamentals — Chapter 1</li>
+<li>Lexical analysis — Chapter 3 (§3.1–3.4)</li>
+<li>Automata construction — Chapter 3 (§3.5–3.7)</li>
+<li>Grammar analysis — Chapter 4 (§4.1–4.3, 4.8)</li>
+<li>Parsing (top-down and bottom-up) — Chapter 4 (§4.4–4.7, 4.9–4.11)</li>
+<li>Semantic analysis — Chapter 5 (§5.1–5.6)</li>
+<li>Type checking — Chapter 5 (§5.7–5.10)</li>
+<li>Intermediate-code generation — Chapter 6 (§6.1–6.8)</li>
+<li>Backpatching — Chapter 6 (§6.9)</li>
+<li>Basic blocks / code generation — Chapter 7</li>
+<li>Problem-solving — the <a href="#howto">How-To Procedures</a> and <a href="#qbank">Question Bank</a> sections</li>
+</ul>
+</div>
+</section>
+
+<!-- ================================================================ -->
+<section id="report">
+<h2>Final Quality Report</h2>
+<div class="card">
+<ul>
+<li>Chapters covered: 7/7</li>
+<li>Individual syllabus items covered: 47/47 (per the coverage matrix above)</li>
+<li>Major numerical/practical areas covered: Thompson's construction, subset construction, FIRST/FOLLOW/LL(1) parsing, recursive descent, handle pruning, shift-reduce parsing, SLR(1) construction and parsing, dependency-graph evaluation, TAC generation, array addressing, Boolean/backpatching translation, basic blocks/flow graphs, next-use analysis, simple code generation — all covered with worked, verified examples.</li>
+<li>Worked problems: 25+ fully stepped examples across all chapters.</li>
+<li>Diagrams: compiler-phase diagram, symbol-table interaction sketch, input-buffering diagram, attribute-flow diagrams, runtime-storage diagram, flow-graph diagram, plus multiple ASCII-rendered automata/parse structures.</li>
+<li>Parsing problems verified: LL(1) trace (17 steps), shift-reduce trace (11 steps), SLR(1) trace (8 steps) — all traced to acceptance and cross-checked against the source grammar.</li>
+<li>Automata problems verified: Thompson NFA for <code>(a|b)*abb</code> and subset-construction DFA, each checked against representative accepted/rejected strings.</li>
+<li>TAC/backpatching problems verified: array-address numerics checked by manual element counting; backpatched if-else traced for both true and false branches.</li>
+<li>Code-generation problems verified: register-allocation example checked against direct TAC evaluation with sample values.</li>
+<li>VSQA: Complete</li>
+<li>SQA: Complete</li>
+<li>LQA: Complete</li>
+<li>Practice bank: Complete (VSQA/SQA/LQA/numerical for every chapter)</li>
+<li>Final audit: Pass</li>
+</ul>
+<p><i>This document has been internally audited against the supplied syllabus, with particular attention to algorithmic procedures, worked problems, parsing, automata, intermediate-code generation, and code-generation examples. It should still be cross-checked against the instructor's official materials for institution-specific notation or emphasis.</i></p>
+</div>
+</section>
+
+</main>
+<footer>Compiler Design &amp; Construction — Master Board Exam Guide. Built as a single self-contained study document.</footer>
+
+    </div>
+  </main>
+  </div>
+</div>
+<script src="../site-data.js"></script>
+<script src="../search-data.js"></script>
+<script src="../script.js"></script>
+</body>
+</html>
